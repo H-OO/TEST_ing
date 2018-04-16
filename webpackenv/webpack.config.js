@@ -29,14 +29,26 @@ const webpackConfig = {
       {
         test: /\.css$/,
         use: extractCSS.extract({
-          use: ['css-loader', 'postcss-loader'],
+          use: [{
+            loader: 'css-loader',
+            options: {
+              modules: true
+            }
+          }, 'postcss-loader'],
           fallback: 'style-loader'
         })
       },
       {
         test: /\.sass$/,
         use: extractSASS.extract({
-          use: ['css-loader', 'postcss-loader', 'sass-loader'],
+          use: [{
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              importLoaders: 1,
+              localIdentName: '[name]__[local]___[hash:base64:5]'
+            }
+          }, 'postcss-loader', 'sass-loader'],
           fallback: 'style-loader'
         })
       },
@@ -134,6 +146,7 @@ for (let item in moduleConfig) {
         })
         return finalChunks;
       }(), // 指定所需的js
+      // hash: true, // cssModules
       inject: 'body', // 将js注入body标签
       // minify: { // 压缩html
       //   removeAttributeQuotes: true, // 移除属性的引号
@@ -163,5 +176,5 @@ for (let item in venderLocal) {
   );
 }
 
- 
+console.log(webpackConfig);
 module.exports = webpackConfig;

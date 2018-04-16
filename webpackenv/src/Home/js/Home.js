@@ -1,5 +1,6 @@
-import '../css/Home.css';
+import h from '../css/Home.css';
 import '../sass/Home.sass';
+console.log(h);
 
 import _ from 'lodash';
 
