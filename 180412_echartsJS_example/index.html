@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>user_balance</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./lib/echarts.min.js"></script>
+</head>
+
+<body>
+  <div class="user_balance"></div>
+  <script>
+    // 商户余额 userBalance
+    // 可用余额 usableBalance
+    // 今日收款 todayIn
+    // 收款总额 totalIn
+    // 手续费 serviceCharge
+    // 提现中金额 withdrawing
+    // 已提现金额 totalOut
+    // 阈值 thresholdValue
+    // 保证金 cashDeposit
+
+    var data = [{
+        value: 40,
+        name: "Accessibility",
+        path: "Accessibility"
+      },
+      {
+        value: 180,
+        name: "Accounts",
+        path: "Accounts"
+      },
+      {
+        value: 1904,
+        name: "AddressBook Plug-Ins",
+        path: "AddressBook Plug-Ins"
+      },
+      {
+        value: 53228,
+        name: "Automator",
+        path: "Automator"
+      },
+      {
+        value: 2908,
+        name: "ColorSync",
+        path: "ColorSync"
+      },
+      {
+        value: 112,
+        name: "Filters",
+        path: "Filters"
+      },
+      {
+        value: 2900,
+        name: "ImageCapture",
+        path: "ImageCapture"
+      },
+      {
+        value: 800,
+        name: "LoginPlugins",
+        path: "LoginPlugins"
+      },
+      {
+        value: 700,
+        name: "Sounds",
+        path: "Sounds"
+      }
+    ];
+
+    var option = {
+      title: {
+        text: 'Disk Usage',
+        left: 'center'
+      },
+      series: [{
+        name: 'Disk Usage',
+        type: 'treemap',
+        visibleMin: 300,
+        label: {
+          show: true,
+          formatter: '{b}'
+        },
+        itemStyle: {
+          normal: {
+            borderColor: '#fff'
+          }
+        },
+        levels: [{
+            itemStyle: {
+              normal: {
+                borderWidth: 0,
+                gapWidth: 5
+              }
+            }
+          },
+          {
+            itemStyle: {
+              normal: {
+                gapWidth: 1
+              }
+            }
+          },
+          {
+            colorSaturation: [0.35, 0.5],
+            itemStyle: {
+              normal: {
+                gapWidth: 1,
+                borderColorSaturation: 0.6
+              }
+            }
+          }
+        ],
+        data
+      }]
+    };
+
+    var userBalanceChart = echarts.init(document.querySelector('.user_balance'));
+    userBalanceChart.setOption(option);
+
+    window.onresize = function () {
+      userBalanceChart.dispose();
+      userBalanceChart = echarts.init(document.querySelector('.user_balance'));
+      userBalanceChart.setOption(option);
+    }
+  </script>
+</body>
+
+</html>
