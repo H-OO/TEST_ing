@@ -7,5 +7,4 @@ const venderLocal = {
     path: 'src/lib/echarts.min.js'
   }
 };
-
 module.exports = venderLocal;
