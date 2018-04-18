@@ -14,7 +14,7 @@ class NewItem extends React.Component {
     });
     return (
       <div>
-        <button onClick={}>addNewItem</button>
+        <button onClick={this.props.onClick}>addNewItem</button>
         <div>{itemsHTML}</div>
       </div>
     )
