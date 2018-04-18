@@ -8,12 +8,14 @@
   <title>user_balance</title>
   <link rel="stylesheet" href="./css/style.css">
   <script src="./lib/echarts.min.js"></script>
+  <script src="./lib/jquery1.7.2.min.js"></script>
 </head>
 
 <body>
   <div class="user_balance"></div>
   <script>
     // 商户余额 userBalance
+
     // 可用余额 usableBalance
     // 今日收款 todayIn
     // 收款总额 totalIn
@@ -23,7 +25,19 @@
     // 阈值 thresholdValue
     // 保证金 cashDeposit
 
-    var data = [{
+    // 手续费 all_charge_fee 
+    // 保证金 bond
+    // 可用余额 can_use_left_money 
+    // 已提现金额 daifu_money 
+    // 收款总额 in_all_money
+    // 商户余额 left_money
+    // 提现中金额 on_daifu 
+    // 今日收款 today_in_money 
+    // 阈值 yuzhi 
+
+    var data = [
+      // 
+      {
         value: 40,
         name: "Accessibility",
         path: "Accessibility"
@@ -125,6 +139,16 @@
       userBalanceChart = echarts.init(document.querySelector('.user_balance'));
       userBalanceChart.setOption(option);
     }
+
+    $.ajax({
+      url: 'http://paypay.com/Bestpay/Business/asyGetLeftMoney',
+      type: 'GET',
+      // dataType: 'JSONP',
+      // jsonp: 'jsonpCallback',
+      success: function (data) {
+        console.log(data);
+      }
+    })
   </script>
 </body>
 
