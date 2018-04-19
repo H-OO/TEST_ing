@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import NewItemControl from '../newItem/NewItemControl';
+import NewItemControl from '../NewItem/NewItemControl';
 
 class App extends Component {
   render() {

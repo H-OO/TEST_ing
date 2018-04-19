@@ -21,7 +21,7 @@ class NewItemControl extends React.Component {
     })
   }
   addNewItemAction() {
-    const text = 'New Item'
+    const text = 'New Item';
     Action.addNewItemAction(text);
   }
   componentDidMount() {
