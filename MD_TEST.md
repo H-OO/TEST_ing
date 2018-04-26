@@ -37,3 +37,11 @@
 【每一项】
 
 ---
+
+
+```js
+const a = 'test';
+function b() {
+  console.log('b');
+}
+```
