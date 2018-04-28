@@ -7,8 +7,6 @@ const rem = () => {
   _doc.querySelector('body').style.fontSize = '16px';
   const w = window.innerWidth;
   const fontSize = w / 375 * 100;
-  console.log(fontSize);
-  
   _doc.querySelector('html').style.fontSize = fontSize + 'px';
 }
 

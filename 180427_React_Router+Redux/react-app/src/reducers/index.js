@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
 
-import Home from './HomeReducer';
+import Tab from '../reducers/Tab/TabReducer';
 
 export default combineReducers({
-  Home
+  Tab
 });
