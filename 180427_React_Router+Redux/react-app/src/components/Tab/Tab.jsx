@@ -35,6 +35,39 @@ class Tab extends React.Component {
   }
   componentDidMount() {
     store.subscribe(this.addLineSlideListener);
+    
+    if (this.props.location.pathname === '/right') {
+      this.lineSlideRight();
+    }
+
+    let touchStartPlace = 0,
+      touchEndPlace = 0;
+    let calculateONOFF = false;
+      
+    window.ontouchstart = (e) => {
+      touchStartPlace = e.targetTouches[0].clientX;
+    }
+    window.ontouchmove = (e) => {
+      touchEndPlace = e.targetTouches[0].clientX;
+      calculateONOFF = true;
+    }
+    window.ontouchend =  (e) => {
+      if (!calculateONOFF) {
+        return;
+      }
+      const offsetPx = touchEndPlace - touchStartPlace;
+      console.log(this);
+      
+      if (offsetPx > 100) {
+        this.props.history.push('/left');
+        this.lineSlideLeft();
+        console.log('显示L');
+      } else if (offsetPx < -100) {
+        this.props.history.push('/right');
+        this.lineSlideRight();
+        console.log('显示R');
+      }
+    }
   }
   render() {
     return (

@@ -16,9 +16,9 @@ class Home extends React.Component {
     return (
       <BrowserRouter>
         <div className="home_wrap">
-          <Tab />
-          <Route path='/left' component={Left} />
-          <Route path='/right' component={Right} />
+          <Route path='/' component={Tab} />
+          <Route exact path='/left' component={Left} />
+          <Route exact path='/right' component={Right} />
         </div>
       </BrowserRouter>
     )
