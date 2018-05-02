@@ -1,6 +1,10 @@
 import './Left.scss';
 import React from 'react';
 import BScroll from 'better-scroll';
+import Drag from '../../assets/drag';
+
+console.log(Drag);
+
 
 // import store from '../../store/store';
 // import TabActionCreater from '../../actions/Tab/TabActionCreater';
@@ -13,38 +17,7 @@ class Left extends React.Component {
       // console.log(e);
     })
 
-    // let touchStartPlace = 0,
-    //   touchEndPlace = 0;
-    // let calculateONOFF = false;
-      
-    // window.ontouchstart = (e) => {
-    //   touchStartPlace = e.targetTouches[0].clientX;
-    // }
-    // window.ontouchmove = (e) => {
-    //   touchEndPlace = e.targetTouches[0].clientX;
-    //   calculateONOFF = true;
-    // }
-    // window.ontouchend =  (e) => {
-    //   if (!calculateONOFF) {
-    //     return;
-    //   }
-    //   const offsetPx = touchEndPlace - touchStartPlace;
-    //   if (offsetPx > 100) {
-    //     this.props.history.push('/left');
-    //     TabActionCreater({
-    //       type: 'LINE_SLIDE',
-    //       lineSlide: false
-    //     })(store.dispatch, store.getState)
-    //     console.log('显示L');
-    //   } else if (offsetPx < -100) {
-    //     this.props.history.push('/right');
-    //     TabActionCreater({
-    //       type: 'LINE_SLIDE',
-    //       lineSlide: true
-    //     })(store.dispatch, store.getState)
-    //     console.log('显示R');
-    //   }
-    // }
+    // 
   }
   render() {
     return (

@@ -67,6 +67,7 @@ class Tab extends React.Component {
         this.lineSlideRight();
         console.log('显示R');
       }
+      calculateONOFF = false;
     }
   }
   render() {
