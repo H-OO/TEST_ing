@@ -6,6 +6,7 @@ import { NavLink } from 'react-router-dom';
 import store from '../../store/store';
 import TabActionCreater from '../../actions/Tab/TabActionCreater';
 
+
 class Tab extends React.Component {
   constructor() {
     super();
@@ -52,6 +53,7 @@ class Tab extends React.Component {
       calculateONOFF = true;
     }
     window.ontouchend =  (e) => {
+      return;
       if (!calculateONOFF) {
         return;
       }

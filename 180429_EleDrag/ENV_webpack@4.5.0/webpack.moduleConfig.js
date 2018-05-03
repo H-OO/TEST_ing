@@ -7,7 +7,7 @@
  */
 const config = {
   Try: {
-    chunks: ['drag']
+    chunks: ['drag', 'move']
   }
 };
 

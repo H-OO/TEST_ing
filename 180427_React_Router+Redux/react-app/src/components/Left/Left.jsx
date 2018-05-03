@@ -1,13 +1,12 @@
 import './Left.scss';
 import React from 'react';
 import BScroll from 'better-scroll';
-import Drag from '../../assets/drag';
-
-console.log(Drag);
-
 
 // import store from '../../store/store';
 // import TabActionCreater from '../../actions/Tab/TabActionCreater';
+
+import Move from '../../assets/move';
+import Drag from '../../assets/drag';
 
 class Left extends React.Component {
   componentDidMount() {
@@ -17,7 +16,27 @@ class Left extends React.Component {
       // console.log(e);
     })
 
-    // 
+    // 拉拽
+    const drag = new Drag({
+      target: this.refs.left_BScroll,
+      direction: 'horizontal',
+      callback: () => {
+        const _drag = drag;
+        const {
+          offsetLeft
+        } = _drag.targetDom;
+        // 判断是否执行回弹动画
+        if (offsetLeft > 0 || offsetLeft < 0) {
+          if (offsetLeft > 100 || offsetLeft < 100) {
+            this.props.history.push('/right');
+          } else {
+            Move['ease']([offsetLeft, 0], 800, function (v) {
+              _drag.targetDom.style.left = v + 'px';
+            })
+          }
+        }
+      }
+    });
   }
   render() {
     return (

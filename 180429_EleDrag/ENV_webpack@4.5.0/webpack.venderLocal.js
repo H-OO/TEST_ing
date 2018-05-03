@@ -8,6 +8,9 @@ const venderLocal = {
   },
   drag: {
     path: 'src/lib_ES6/drag.js'
+  },
+  move: {
+    path: 'src/lib_ES5/move.js'
   }
 };
 module.exports = venderLocal;
