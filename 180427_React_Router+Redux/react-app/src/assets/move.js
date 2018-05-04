@@ -2,7 +2,7 @@
  * @author:flfwzgl https://github.com/flfwzgl
  * @copyright: MIT license */
 
-! function () {
+// ! function () {
 	var Move = function () {};
 
 	var curve = Move.prototype = {
@@ -30,14 +30,14 @@
 	// 例如: m.ease([0, 1000], 500, function(v){ ... }, fnEnd)
 	// 注意: 这些参数的顺序可以打乱!!!
 	if (typeof module === 'object' && module.exports) {
-		module.exports = new Move;
+		module.exports = new Move();
 	} else {
 		if (window.move) {
 			try {
 				console.log('move has been declared!');
 			} catch (e) {}
 		} else {
-			window.move = new Move;
+			window.move = new Move();
 		}
 	}
 
@@ -87,7 +87,7 @@
 
 		d = d || 500;
 
-		var from = +new Date, //起始时间
+		var from = +new Date(), //起始时间
 			x = 0,
 			y,
 			a = r[0],
@@ -102,7 +102,7 @@
 
 
 		_move(function () {
-			x = (+new Date - from) / d;
+			x = (+new Date() - from) / d;
 
 			if (x >= 1) {
 				// 动画结束
@@ -125,7 +125,7 @@
 		sin = Math.sin,
 		cos = Math.cos,
 		pow = Math.pow,
-		abs = Math.abs,
+		// abs = Math.abs,
 		sqrt = Math.sqrt;
 
 
@@ -189,4 +189,4 @@
 
 	})
 
-}();
+// }();

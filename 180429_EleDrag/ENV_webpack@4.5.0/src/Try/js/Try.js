@@ -2,45 +2,39 @@ import '../scss/Try.scss';
 import Drag from 'drag';
 import Move from 'move';
 
+// 双向拖拽实现例子
+const Move_ONOFF = [true, true];
 const drag0 = new Drag({
-  // box: '.parent',
-  // target: '.child0',
-  target: '.parent',
-  limit: false,
-  direction: 'horizontal', // [horizontal | vertical | double]
-  callback: () => {
-    // return;
-    const _drag = drag0;
+  target: document.querySelector('.parent'),
+  direction: 'double',
+  callback: params => {
+    const _drag = drag0; // 拖拽实例
     const {
-      offsetLeft,
-      offsetTop
-    } = _drag.targetDom;
-    // 判断是否执行回弹动画
-    if (offsetLeft > 0 || offsetLeft < 0) {
-      Move['ease']([offsetLeft, 0], 800, function (v) {
-        _drag.targetDom.style.left = v + 'px';
+      x,
+      y
+    } = params;
+    const site = {
+      x: 0,
+      y: 0
+    };
+    if (Move_ONOFF[0]) {
+      Move_ONOFF[0] = false;
+      Move['ease']([x, 0], 800, (v) => {
+        site.x = v;
+        _drag.targetDom.style.transform = `translate(${site.x}px, ${site.y}px)`;
+      }, () => {
+        console.log('x方向动画结束');
+        Move_ONOFF[0] = true;
       })
     }
-  }
-});
-
-const drag1 = new Drag({
-  // box: '.parent',
-  // target: '.child0',
-  target: '.parent',
-  limit: false,
-  direction: 'vertical', // [horizontal | vertical | double]
-  callback: () => {
-    // return;
-    const _drag = drag1;
-    const {
-      offsetLeft,
-      offsetTop
-    } = _drag.targetDom;
-    // 判断是否执行回弹动画
-    if (offsetTop > 0 || offsetTop < 0) {
-      Move['ease']([offsetTop, 0], 800, function (v) {
-        _drag.targetDom.style.top = v + 'px';
+    if (Move_ONOFF[1]) {
+      Move_ONOFF[1] = false;
+      Move['ease']([y, 0], 800, (v) => {
+        site.y = v;
+        _drag.targetDom.style.transform = `translate(${site.x}px, ${site.y}px)`;
+      }, () => {
+        console.log('y方向动画结束');
+        Move_ONOFF[1] = true;
       })
     }
   }

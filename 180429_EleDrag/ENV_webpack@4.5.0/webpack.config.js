@@ -81,7 +81,7 @@ const webpackConfig = {
 if (CURRENT_ENV === 'development') {
   webpackConfig.devtool = 'source-map';
   webpackConfig.devServer = {
-    host: '192.168.1.160', // 域名/IP，默认localhost
+    // host: '192.168.1.xxx', // 域名/IP，默认localhost
     // port: '5000', // 端口，默认8080
     contentBase: './dist', // devServer访问该目录的文件
     openPage: 'Try/Try.html', // 默认打开页面
