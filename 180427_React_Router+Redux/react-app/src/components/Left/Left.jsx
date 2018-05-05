@@ -18,43 +18,53 @@ class Left extends React.Component {
 
     // 拉拽
     const drag = new Drag({
-      target: this.refs.left_BScroll,
+      target: this.refs.left_drag,
       direction: 'horizontal',
       callback: params => {
         const _drag = drag; // 拖拽实例
         const {
           x
         } = params;
-        Move['ease']([x, 0], 800, (v) => {
-          console.log(v);
-          // _drag.targetDom.style.transform = `translateX(${v}px)`;
-        })
+        console.log(x);
+        if (x < -60) {
+          TabActionCreater({
+            type: 'LINE_SLIDE',
+            lineSlide: true
+          })(store.dispatch, store.getState)
+          this.props.history.push('/right');
+        } else {
+          Move['ease']([x, 0], 800, (v) => {
+            _drag.targetDom.style.transform = `translateX(${v}px)`;
+          })
+        }
       }
     });
   }
   render() {
     return (
-      <div className="left_BScroll left_In_Animation" ref="left_BScroll">
-        <div className="left_wrap">
-          <div className="left_item_0">
-            <div className="left_item_0_top"></div>
-            <div className="left_item_0_bottom">
-              <div className="left_item_0_bottom_thunk0"></div>
-              <div className="left_item_0_bottom_thunk1"></div>
+      <div className="left_drag" ref="left_drag">
+        <div className="left_BScroll left_In_Animation" ref="left_BScroll">
+          <div className="left_wrap">
+            <div className="left_item_0">
+              <div className="left_item_0_top"></div>
+              <div className="left_item_0_bottom">
+                <div className="left_item_0_bottom_thunk0"></div>
+                <div className="left_item_0_bottom_thunk1"></div>
+              </div>
             </div>
-          </div>
-          <div className="left_item_0">
-            <div className="left_item_0_top"></div>
-            <div className="left_item_0_bottom">
-              <div className="left_item_0_bottom_thunk0"></div>
-              <div className="left_item_0_bottom_thunk1"></div>
+            <div className="left_item_0">
+              <div className="left_item_0_top"></div>
+              <div className="left_item_0_bottom">
+                <div className="left_item_0_bottom_thunk0"></div>
+                <div className="left_item_0_bottom_thunk1"></div>
+              </div>
             </div>
-          </div>
-          <div className="left_item_0">
-            <div className="left_item_0_top"></div>
-            <div className="left_item_0_bottom">
-              <div className="left_item_0_bottom_thunk0"></div>
-              <div className="left_item_0_bottom_thunk1"></div>
+            <div className="left_item_0">
+              <div className="left_item_0_top"></div>
+              <div className="left_item_0_bottom">
+                <div className="left_item_0_bottom_thunk0"></div>
+                <div className="left_item_0_bottom_thunk1"></div>
+              </div>
             </div>
           </div>
         </div>
