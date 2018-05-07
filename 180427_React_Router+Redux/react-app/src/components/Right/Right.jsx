@@ -21,13 +21,12 @@ class Right extends React.Component {
         const {
           x
         } = params;
-        console.log(x);
         if (x > 60) {
           TabActionCreater({
             type: 'LINE_SLIDE',
             lineSlide: false
           })(store.dispatch, store.getState)
-          this.props.history.push('/left');
+          this.props.history.push('/tab/left');
         } else {
           Move['ease']([x, 0], 800, (v) => {
             _drag.targetDom.style.transform = `translateX(${v}px)`;

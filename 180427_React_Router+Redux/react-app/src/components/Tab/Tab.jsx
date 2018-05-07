@@ -44,8 +44,8 @@ class Tab extends React.Component {
     return (
       <div className='tab_wrap'>
         <div className='tab_menu'>
-          <NavLink to='/left' className='tab_menu_left' activeClassName='tab_menu_active' onClick={this.lineSlideLeft}>/Left</NavLink>
-          <NavLink to='/right' className='tab_menu_right' activeClassName='tab_menu_active' onClick={this.lineSlideRight}>/Right</NavLink>
+          <NavLink to='/tab/left' className='tab_menu_left' activeClassName='tab_menu_active' onClick={this.lineSlideLeft}>/Left</NavLink>
+          <NavLink to='/tab/right' className='tab_menu_right' activeClassName='tab_menu_active' onClick={this.lineSlideRight}>/Right</NavLink>
         </div>
         <div className='tab_line_box'>
           <div className={this.state.lineSlide ? 'tab_line tab_line_slide' : 'tab_line'}></div>

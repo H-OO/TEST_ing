@@ -141,7 +141,6 @@ const Drag = function (initMsg) {
     y: 0
   };
   const eventStartHandler = e => {
-    // e.stopPropagation();
     // 目标元素
     const _target = this.targetDom;
     // 获取目标元素的有用信息
@@ -162,8 +161,6 @@ const Drag = function (initMsg) {
     moveEventONOFF = true;
   };
   const eventIngHandler = e => {
-    console.log('_ING__');
-    // e.stopPropagation();
     // 判断是否开始移动模式
     if (!moveEventONOFF) {
       return;
@@ -217,9 +214,6 @@ const Drag = function (initMsg) {
     }
   };
   const eventEndHandler = e => {
-    console.log('_END__');
-    // e.stopPropagation();
-
     // 过滤不拖拽时产生的事件回调
     switch (direction) {
       case 'horizontal':

@@ -1,12 +1,15 @@
 import './Home.scss';
 import rem from '../../assets/rem';
-import React from 'react';
 
+import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+
+import Nav from '../Nav/Nav';
 import Tab from '../Tab/Tab';
 import Left from '../Left/Left';
 import Right from '../Right/Right';
-
-import { BrowserRouter, Route } from 'react-router-dom';
+import Cart from '../Cart/Cart';
+import List from '../List/List';
 
 class Home extends React.Component {
   componentWillMount() {
@@ -16,9 +19,12 @@ class Home extends React.Component {
     return (
       <BrowserRouter>
         <div className="home_wrap">
-          <Route path='/' component={Tab} />
-          <Route exact path='/left' component={Left} />
-          <Route exact path='/right' component={Right} />
+          <Route exact path='/' component={Nav} />
+          <Route path='/tab' component={Tab} />
+          <Route exact path='/tab/left' component={Left} />
+          <Route exact path='/tab/right' component={Right} />
+          <Route exact path='/cart' component={Cart} />
+          <Route exact path='/list' component={List} />
         </div>
       </BrowserRouter>
     )
