@@ -14,7 +14,8 @@ class Tab extends React.Component {
     this.lineSlideRight = this.lineSlideRight.bind(this);
     this.addLineSlideListener = this.addLineSlideListener.bind(this);
     this.state = {
-      lineSlide: store.getState().Tab.lineSlide
+      lineSlide: store.getState().Tab.lineSlide,
+      unsubscribe: null
     };
   }
   lineSlideLeft() {
@@ -35,10 +36,16 @@ class Tab extends React.Component {
     })
   }
   componentDidMount() {
-    store.subscribe(this.addLineSlideListener);
+    const unsubscribe = store.subscribe(this.addLineSlideListener);
+    this.setState({
+      unsubscribe
+    });
     if (this.props.location.pathname === '/right') {
       this.lineSlideRight();
     }
+  }
+  componentWillUnmount() {
+    this.state.unsubscribe(this.addLineSlideListener);
   }
   render() {
     return (

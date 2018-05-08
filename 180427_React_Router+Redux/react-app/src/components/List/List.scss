@@ -1,3 +1,64 @@
 .list_wrap {
   height: 100%;
+  button {
+    position: fixed;
+    z-index: 999;
+  }
+  .list_BScroll {
+    height: 100%;
+    overflow: hidden;
+    ul {
+      padding: 0.12rem;
+      li {
+        position: relative;
+        height: 0.9rem;
+        border-radius: 0.15rem;
+        margin-bottom: 0.12rem;
+        box-shadow: 0 0 0.1rem #ccc;
+        opacity: 0;
+        transform: scale(0.9);
+        &.li_show {
+          animation: list_list_show 2s ease 0s forwards;
+        }
+        .list_li_img {
+          position: absolute;
+          left: 0.08rem;
+          top: 0.08rem;
+          width: 0.74rem;
+          height: 0.74rem;
+          background-color: #56AEFC;
+          border-radius: 0.1rem;
+        }
+        .list_li_title {
+          position: absolute;
+          left: 1rem;
+          top: 0.17rem;
+          width: 1.6rem;
+          height: 0.2rem;
+          background-color: #56AEFC;
+          border-radius: 0.1rem;
+        }
+        .list_li_content {
+          position: absolute;
+          left: 1rem;
+          top: 0.52rem;
+          width: 1.2rem;
+          height: 0.2rem;
+          background-color: rgba(86, 174, 252, 0.705);
+          border-radius: 0.1rem;
+        }
+      }
+    }
+  }
+}
+
+@keyframes list_list_show {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

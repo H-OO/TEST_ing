@@ -5,7 +5,6 @@ const CartReducer = (state = {
 }, action) => {
   switch (action.type) {
     case 'CONTENT_SHOW':
-      let count = 1;
       return {
         contentShow: action.contentShow
       }

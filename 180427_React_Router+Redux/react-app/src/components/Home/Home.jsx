@@ -1,3 +1,4 @@
+import './reset.css';
 import './Home.scss';
 import rem from '../../assets/rem';
 

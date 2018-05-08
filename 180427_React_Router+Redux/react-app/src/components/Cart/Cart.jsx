@@ -13,7 +13,8 @@ class Cart extends React.Component {
     this.state = {
       contentShow: store.getState().Cart.contentShow,
       contentActive: store.getState().Cart.contentActive,
-      btnActive: store.getState().Cart.btnActive
+      btnActive: store.getState().Cart.btnActive,
+      unsubscribe: null
     };
   }
   boxHandler() {
@@ -41,8 +42,16 @@ class Cart extends React.Component {
   }
 
   componentDidMount() {
-    store.subscribe(this.addStateListener);
+    const unsubscribe = store.subscribe(this.addStateListener);
+    this.setState({
+      unsubscribe
+    })
   }
+
+  componentWillUnmount() {
+    this.state.unsubscribe(this.addStateListener);
+  }
+
   render() {
     return (
       <div className="cart_wrap">
