@@ -13,7 +13,13 @@ const ListReducer = (state = [], action) => {
         return item
       });
       newList_test.push('x');
-      console.log(newList_test);
+      newList_test.push('x');
+      newList_test.push('x');
+      newList_test.push('x');
+      newList_test.push('x');
+      newList_test.push('x');
+      newList_test.push('x');
+      newList_test.push('x');
      return newList_test;
     default:
       return state;

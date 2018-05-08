@@ -13,7 +13,8 @@ class List extends React.Component {
     this.handler = this.handler.bind(this);
     this.state = {
       list: store.getState().List,
-      unsubscribe: null
+      unsubscribe: null,
+      setAnimation: [0, 0]
     };
   }
   handler() {
@@ -23,12 +24,15 @@ class List extends React.Component {
     })
   }
   addListListener() {
-    console.log(store.getState().List.length);
-    // 拿到每个数组的长度
+    const setAnimation = this.state.setAnimation.map(item => {
+      return item;
+    });
+    setAnimation.shift();
+    setAnimation.push(store.getState().List.length);
     
     this.setState({
       list: store.getState().List,
-      refresh: null
+      setAnimation
     });
   }
   componentDidMount() {
@@ -45,11 +49,24 @@ class List extends React.Component {
   render() {
     // li
     const _lis = this.state.list;
+    // console.log(_lis);
+    // console.log(this.state.setAnimation);
+    const setAnimation = this.state.setAnimation;    
     const lis = _lis.map((item, i) => {
-      setTimeout(() => {
-        const liDOM = this.refs['li_' + i];
-        liDOM && liDOM.classList.add('li_show');
-      }, 200 * i)
+      if (setAnimation[0] === 0) {
+        setTimeout(() => {
+          const liDOM = this.refs['li_' + i];
+          liDOM && liDOM.classList.add('li_show');
+        }, 200 * i)
+      } else {
+        if (i > setAnimation[0] - 1) {
+          setTimeout(() => {
+            const liDOM = this.refs['li_' + i];
+            liDOM && liDOM.classList.add('li_show');
+          }, 200 * (i - setAnimation[0]))
+        }
+      }
+      
       return (
         <li key={i} ref={'li_' + i}>
           <div className="list_li_img"></div>
