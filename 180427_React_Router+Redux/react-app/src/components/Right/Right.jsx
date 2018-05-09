@@ -3,6 +3,7 @@ import React from 'react';
 import BScroll from 'better-scroll';
 
 import store from '../../store/store';
+import HeaderActionCreater from '../../actions/Header/HeaderActionCreater';
 import TabActionCreater from '../../actions/Tab/TabActionCreater';
 
 import Move from '../../assets/move';
@@ -10,6 +11,12 @@ import Drag from '../../assets/drag';
 
 class Right extends React.Component {
   componentDidMount() {
+    HeaderActionCreater({
+      type: 'TITLE',
+      title: 'Right'
+    })(store.dispatch, store.getState);
+
+    // BS
     new BScroll(this.refs.right_BScroll);
 
     // 拉拽
@@ -26,7 +33,7 @@ class Right extends React.Component {
             type: 'LINE_SLIDE',
             lineSlide: false
           })(store.dispatch, store.getState)
-          this.props.history.push('/tab/left');
+          this.props.history.replace('/tab/left');
         } else {
           Move['ease']([x, 0], 800, (v) => {
             _drag.targetDom.style.transform = `translateX(${v}px)`;

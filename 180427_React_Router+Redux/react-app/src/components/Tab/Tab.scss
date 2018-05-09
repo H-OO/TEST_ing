@@ -1,7 +1,7 @@
 .tab_wrap {
   position: fixed;
   width: 100%;
-  padding: 0.2rem 0;
+  padding-top: 0.4rem;
   background-color: #fff;
   z-index: 999;
   .tab_menu {
@@ -10,7 +10,6 @@
     justify-content: space-around;
     .tab_menu_left,
     .tab_menu_right {
-      transition: all 0.6s;
       flex: 0 0 1.2rem;
       height: 0.25rem;
       line-height: 0.25rem;
@@ -22,7 +21,6 @@
       text-decoration: none;
     }
     .tab_menu_active {
-      transition: all 0.6s;
       background-color: #019EF6;
       opacity: 1;
     }

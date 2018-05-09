@@ -2,8 +2,9 @@ import './Cart.scss';
 
 import React from 'react';
 
-import CartActionCreater from '../../actions/Cart/CartActionCreater';
 import store from '../../store/store';
+import HeaderActionCreater from '../../actions/Header/HeaderActionCreater';
+import CartActionCreater from '../../actions/Cart/CartActionCreater';
 
 class Cart extends React.Component {
   constructor() {
@@ -16,6 +17,26 @@ class Cart extends React.Component {
       btnActive: store.getState().Cart.btnActive,
       unsubscribe: null
     };
+  }
+  componentDidMount() {
+    HeaderActionCreater({
+      type: 'TITLE',
+      title: 'Cart'
+    })(store.dispatch, store.getState);
+
+    const unsubscribe = store.subscribe(this.addStateListener);
+    this.setState({
+      unsubscribe
+    })
+  }
+  componentWillUnmount() {
+    // 销毁之前样式重置
+    CartActionCreater({
+      type: 'ACTIVE',
+      contentActive: 'cart_content',
+      btnActive: 'cart_btn'
+    })(store.dispatch, store.getState)
+    this.state.unsubscribe(this.addStateListener);
   }
   boxHandler() {
     const show = 'cart_content show';
@@ -32,7 +53,6 @@ class Cart extends React.Component {
       btnActive: !this.state.btnActive === 'cart_btn' ? enter : this.state.btnActive === enter ? leave : enter
     })(store.dispatch, store.getState)
   }
-
   addStateListener() {
     this.setState({
       contentShow: store.getState().Cart.contentShow,
@@ -40,18 +60,6 @@ class Cart extends React.Component {
       btnActive: store.getState().Cart.btnActive
     })
   }
-
-  componentDidMount() {
-    const unsubscribe = store.subscribe(this.addStateListener);
-    this.setState({
-      unsubscribe
-    })
-  }
-
-  componentWillUnmount() {
-    this.state.unsubscribe(this.addStateListener);
-  }
-
   render() {
     return (
       <div className="cart_wrap">
@@ -60,7 +68,9 @@ class Cart extends React.Component {
             <div className="cart_row0"></div>
             <div className="cart_row1"></div>
           </div>
-          <div className={this.state.btnActive} onClick={this.boxHandler}></div>
+          <div className={this.state.btnActive} onClick={this.boxHandler}>
+            {this.state.btnActive === 'cart_btn' ? 'Show' : this.state.btnActive === 'cart_btn leave' ? 'Show' : 'Hide'}
+          </div>
         </div>
       </div>
     )

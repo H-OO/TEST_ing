@@ -3,6 +3,7 @@ import React from 'react';
 import BScroll from 'better-scroll';
 
 import store from '../../store/store';
+import HeaderActionCreater from '../../actions/Header/HeaderActionCreater';
 import TabActionCreater from '../../actions/Tab/TabActionCreater';
 
 import Move from '../../assets/move';
@@ -10,6 +11,11 @@ import Drag from '../../assets/drag';
 
 class Left extends React.Component {
   componentDidMount() {
+    HeaderActionCreater({
+      type: 'TITLE',
+      title: 'Left'
+    })(store.dispatch, store.getState);
+
     const BS = new BScroll(this.refs.left_BScroll, {});
     // touchEnd可用于实现 下拉刷新 上拉加载 功能
     BS.on('touchEnd', (e) => {
@@ -30,7 +36,7 @@ class Left extends React.Component {
             type: 'LINE_SLIDE',
             lineSlide: true
           })(store.dispatch, store.getState)
-          this.props.history.push('/tab/right');
+          this.props.history.replace('/tab/right');
         } else {
           Move['ease']([x, 0], 800, (v) => {
             _drag.targetDom.style.transform = `translateX(${v}px)`;

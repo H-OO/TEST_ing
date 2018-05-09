@@ -2,6 +2,7 @@ import './List.scss';
 import React from 'react';
 
 import store from '../../store/store';
+import HeaderActionCreater from '../../actions/Header/HeaderActionCreater';
 import ListActionCreater from '../../actions/List/ListActionCreater';
 
 import BScroll from 'better-scroll';
@@ -10,63 +11,78 @@ class List extends React.Component {
   constructor() {
     super();
     this.addListListener = this.addListListener.bind(this);
-    this.handler = this.handler.bind(this);
+    this.addAnimationScope = this.addAnimationScope.bind(this);
+    this.addItem = this.addItem.bind(this);
+    this.getLis = this.getLis.bind(this);
+
     this.state = {
-      list: store.getState().List,
-      unsubscribe: null,
-      setAnimation: [0, 0]
+      list: store.getState().List.list,
+      animationScope: store.getState().List.animationScope,
+      unsubscribe: null
     };
   }
-  handler() {
-    store.dispatch({
-      type: 'ADD_ITEM',
-      list: store.getState().List
-    })
-  }
-  addListListener() {
-    const setAnimation = this.state.setAnimation.map(item => {
-      return item;
-    });
-    setAnimation.shift();
-    setAnimation.push(store.getState().List.length);
-    
-    this.setState({
-      list: store.getState().List,
-      setAnimation
-    });
-  }
+  // 生命钩子 ↓↓↓
   componentDidMount() {
+    HeaderActionCreater({
+      type: 'TITLE',
+      title: 'List'
+    })(store.dispatch, store.getState);
+
     ListActionCreater()(store.dispatch, store.getState);
-    const unsubscribe = store.subscribe(this.addListListener);
+    const unsubscribe = store.subscribe(this.addListListener, this.addAnimationScope);
     this.setState({
       unsubscribe
     });
-    new BScroll(this.refs.list_BScroll);
+    const BS = new BScroll(this.refs.list_BScroll);
+    
+    BS.on('touchEnd', (e) => {
+      const ulHeight = this.refs.list_ul.offsetHeight;
+      const bottom = ulHeight - window.innerHeight;
+      if (Math.abs(e.y) > bottom + 30) {
+        this.addItem();
+      }
+    })
   }
   componentWillUnmount() {
-    this.state.unsubscribe(this.addListListener);
+    this.state.unsubscribe(this.addListListener, this.addAnimationScope);
   }
-  render() {
-    // li
-    const _lis = this.state.list;
-    // console.log(_lis);
-    // console.log(this.state.setAnimation);
-    const setAnimation = this.state.setAnimation;    
-    const lis = _lis.map((item, i) => {
-      if (setAnimation[0] === 0) {
+  // 生命钩子 ↑↑↑
+  // 订阅回调 ↓↓↓
+  addListListener() {
+    this.setState({
+      list: store.getState().List.list,
+      animationScope: store.getState().List.animationScope
+    });
+  }
+  addAnimationScope() {
+    this.setState({
+      animationScope: store.getState().List.animationScope
+    });
+  }
+  // 订阅回调 ↑↑↑
+  addItem() {
+    store.dispatch({
+      type: 'ADD_ITEM',
+      list: store.getState().List.list
+    })
+  }
+  getLis(list) {
+    const animationScope = this.state.animationScope;
+    const lis = list.map((item, i) => {
+      if (animationScope[0] === 0) {
         setTimeout(() => {
           const liDOM = this.refs['li_' + i];
           liDOM && liDOM.classList.add('li_show');
         }, 200 * i)
       } else {
-        if (i > setAnimation[0] - 1) {
+        if (i > animationScope[0] - 1) {
           setTimeout(() => {
             const liDOM = this.refs['li_' + i];
             liDOM && liDOM.classList.add('li_show');
-          }, 200 * (i - setAnimation[0]))
+          }, 200 * (i - animationScope[0]))
         }
       }
-      
+
       return (
         <li key={i} ref={'li_' + i}>
           <div className="list_li_img"></div>
@@ -75,10 +91,14 @@ class List extends React.Component {
         </li>
       )
     })
+    return lis;
+  }
+  render() {
+    // li
+    const lis = this.getLis(this.state.list);
 
     return (
       <div className="list_wrap">
-        <button onClick={this.handler}>ADD</button>
         <div className="list_BScroll" ref="list_BScroll">
           <ul ref="list_ul">
             {lis}
