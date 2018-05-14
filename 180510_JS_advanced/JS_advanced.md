@@ -102,8 +102,16 @@ ECMAScript 能够表示的数值范围
 * \n 换行
 * \b 空格
 
-**String 方法**
+**String**
 ---
+API
+* charAt 根据索引返回字符
+* charCodeAt 单个字符转 Unicode
+* concat 连接字符串
+* indexOf 正向检索字符串，返回字符串下标
+* lastIndexOf 反向检索字符串，返回字符串下标
+* match 正则检索，返回匹配字符
+
 数值、布尔值、对象和字符串值都 toString 方法  
 null 和 undefined 值没有 toString 方法  
 
@@ -215,5 +223,83 @@ instanceof 可以判断该实例是否为该构造函数实例化出来的
 /x/ instanceof RegExp; // true
 ```
 
-****
+**Array**
+---
+API
+* concat 拼接数组
+* eveny 遍历数组，判断所有元素是否满足同一条件，返回 Bool
+* filter 遍历数组，返回满足条件的元素组成的数组
+* forEach 遍历数组，无返回值
+* indexOf 正向获取元素下标
+* join 转成以其参数进行分割的字符串
+* lastIndexOf 反向获取元素下标
+* map 遍历数组，将返回的内容用新的空数组进行接收
+* pop 移除数组末项 【原】
+* push 最末端追加全部参数 【原】
+* reduce 累加器，数组从左往右累加
+* reduceRight 累加器，数组从右往左累加
+* reverse 反转数组 【原】
+* shift 移除数组首项 【原】
+* slice 切割数组
+* splice 切割或拼接替换数组 【原】
+* sort 数组升序或降序
+* some 遍历数组，检测是否有元素满足条件，返回 Bool
+* toString 转成以逗号分割的字符串
+* unshift 最前端追加全部参数 【原】
 
+**栈**
+---
+栈是一种LIFO（Last-In-First-Out）的数据结构
+```
+In -↓-↑- Out
+```
+
+**队列**
+---
+队列是一种FIFO（First-In-First-Out）的数据结构
+```
+-↓- In
+ -
+-↓- Out
+```
+
+**数组排序**
+---
+```js
+const arr = [2, 1, 3, 0, 4];
+
+// 冒泡排序
+function bubbleSort (arr) {
+  for (let index = 0, len = arr.length; index < len; index++) {
+    for (let i = index; i < len; i++) { // 优化
+      if (arr[index] > arr[i]) { // 升序 > | 降序 <
+        const tmp = arr[index];
+        arr[index] = arr[i];
+        arr[i] = tmp;
+      }
+    }
+  }
+  return arr;
+}
+
+// 快速排序
+function quickSort(arr) {
+  if (arr.length <= 1) {
+    return arr;
+  }
+  const pivotIndex = Math.floor(arr.length / 2);
+  const pivot = arr.splice(pivotIndex, 1)[0];
+  const left = [];
+  const right = [];
+  for (let i = 0, l = arr.length; i < l; i++) {
+    console.log(arr[i]);
+    if (arr[i] < pivot) {
+      left.push(arr[i]);
+    } else {
+      right.push(arr[i]);
+    }
+  }
+  return quickSort(left).concat([pivot], quickSort(right)); // 升序
+  // return quickSort(right).concat([pivot], quickSort(left)); // 降序
+}
+```
