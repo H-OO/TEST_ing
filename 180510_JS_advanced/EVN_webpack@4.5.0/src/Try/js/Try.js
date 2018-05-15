@@ -1,3 +1,3 @@
-const str = 'abc';
-const res = str.match(/ab/);
+const str = ' a bcdefg '
+const res = str.trim(1, 3);
 console.log(res);

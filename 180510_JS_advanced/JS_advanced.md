@@ -96,6 +96,9 @@ ECMAScript 能够表示的数值范围
 **Number 方法**
 ---
 * Number.parseInt() // 默认以十进制解析，传参数二可改成其他进制进行解析
+* Number.parseFloat() // 字符串转数字，保留浮点数
+* toString() // 传递参数返回进制数值的字符串
+* toFixed() // 保留几位小数
 
 **String 字面量**
 ---
@@ -110,7 +113,20 @@ API
 * concat 连接字符串
 * indexOf 正向检索字符串，返回字符串下标
 * lastIndexOf 反向检索字符串，返回字符串下标
-* match 正则检索，返回匹配字符
+* match 正则检索，返回匹配字符、索引、整个字符串
+* replace 替换
+* search 正则检索，返回索引
+* slice 切割
+* split 字符串转数组
+* subStr 选取字符串，参数1为起始下标，参数2为字符个数
+* subString 切割
+* toLocaleLowerCase 字母字符串转小写
+* toLocaleUpperCase 字母字符串转大写
+* toLowerCase 字母字符串转小写
+* toUpperCase 字母字符串转大写
+* toString 返回自身
+* trim 去首尾空格
+* valueOf 返回自身
 
 数值、布尔值、对象和字符串值都 toString 方法  
 null 和 undefined 值没有 toString 方法  
@@ -227,7 +243,7 @@ instanceof 可以判断该实例是否为该构造函数实例化出来的
 ---
 API
 * concat 拼接数组
-* eveny 遍历数组，判断所有元素是否满足同一条件，返回 Bool
+* every 遍历数组，判断所有元素是否满足同一条件，返回 Bool
 * filter 遍历数组，返回满足条件的元素组成的数组
 * forEach 遍历数组，无返回值
 * indexOf 正向获取元素下标
@@ -246,6 +262,7 @@ API
 * some 遍历数组，检测是否有元素满足条件，返回 Bool
 * toString 转成以逗号分割的字符串
 * unshift 最前端追加全部参数 【原】
+* valueOf 返回自身
 
 **栈**
 ---
@@ -303,3 +320,62 @@ function quickSort(arr) {
   // return quickSort(right).concat([pivot], quickSort(left)); // 降序
 }
 ```
+
+**Date**
+---
+API
+* getTime() 13位时间戳，单位ms
+* getFullYear() 年
+* getMonth() 月 语言规定返回0至11，即0表示1月
+* getDate() 日
+* getHours() 时
+* getMinutes() 分
+* getSeconds() 秒
+* getDay() 星期几
+* getMilliseconds() 3位时间戳，单位ms
+* getTimezoneOffset() 本地时间与UTC时间相差的分钟数 中国东八区-480 美国西五区300
+
+**RegExp**
+---
+API
+* exec() 接收字符串，返回数组，包含选中的字符串、字符串的起始位置下标、整个字符串
+* test() 接收字符串，返回 bool
+
+修饰符
+* g 全局，应用于所有字符串 global
+* i 不区分大小写 case-insensitive
+* m 多行模式 multiline
+
+表达式
+* [] 范围写法，[0-9]
+* | 其中任意一个规则匹配
+* () 分组符，为单独一项设置匹配规则
+
+元字符
+* \d 数字
+* \D 非数字
+* \s 空格
+* \S 非空格
+* \w 字母数字下划线
+* \W 非字母数字下划线
+
+量词
+* . 除换行符以外的其他单个字符
+* \* {0,}
+* \+ {1,}
+* ? {0,1}
+* [^] 取反 例如[^a-z] 忽略a-z的字符串
+
+支持符号
+* ^ 开始
+* $ 结束
+
+**Function**
+---
+函数没有重载，重复声明两个同名函数，只有最后一个函数会生效
+
+**Function内部属性**
+---
+函数内部两个特殊的对象
+* arguments
+* this
