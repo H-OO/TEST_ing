@@ -239,6 +239,8 @@ instanceof 可以判断该实例是否为该构造函数实例化出来的
 /x/ instanceof RegExp; // true
 ```
 
+## 第五章
+
 **Array**
 ---
 API
@@ -377,5 +379,22 @@ API
 **Function内部属性**
 ---
 函数内部两个特殊的对象
-* arguments
-* this
+* arguments 伪数组，用于接收传入的所有参数
+* this 默认指向使用对象，该指向会受 new call() apply() bind() 影响
+
+**Math**
+---
+API 常用
+* abs() 绝对值
+* ceil() 向上取整
+* floor() 向下取整
+* max() 选出一组数值的最大值
+* min() 选出一组数值的最小值
+* PI 获取圆周率 π
+* random() 获得大于等于0小于1的一个随机数
+* round() 四舍五入取整
+
+## 第六章
+
+****
+---
