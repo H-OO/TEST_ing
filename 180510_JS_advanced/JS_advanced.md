@@ -396,5 +396,42 @@ API 常用
 
 ## 第六章
 
-****
+**面向对象**
 ---
+目的：理解对象属性、创建对象、继承
+
+ECMAScript 中有两种属性：数据属性和访问器属性
+
+**数据属性**
+---
+4个描述其行为的特性
+* [[Configurable]] 能否通过 delete 操作符删除属性，默认值为 true
+* [[Enumerable]] 该属性能否 for-in 遍历获得，默认值为 true
+* [[Writable]] 能否修改属性的值，默认为 true
+* [[Value]] 保存属性值，在该位置进行读写操作，默认值为 undefined
+
+想修改属性默认的特性，需要使用 Object.defineProperty() 方法
+```js
+// 该方法接收三个参数：属性所在的对象、属性名、描述符对象
+// 描述符对象的属性必须是： configurable 、 enumerable 、 writable 、 value
+const person = {};
+Object.defineProperty(person, 'name', {
+  writable: false,
+  value: 'H_OO'
+});
+person.name = ''; // 非严格模式为无效操作 严格模式会报错
+console.log(person.name); // 'H_OO'
+```
+注意：建议不要在 IE8 使用Object.defineProperty() 方法
+
+**访问器属性**
+---
+* [[Configurable]] 
+* [[Enumerable]] 
+* [[Get]] 在读取属性时调用的函数
+* [[Set]] 在写入属性时调用的函数
+
+访问器属性不能直接定义，需要使用 Object.defineProperty() 方法
+```js
+
+```
