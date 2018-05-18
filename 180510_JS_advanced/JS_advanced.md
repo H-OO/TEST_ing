@@ -433,5 +433,139 @@ console.log(person.name); // 'H_OO'
 
 访问器属性不能直接定义，需要使用 Object.defineProperty() 方法
 ```js
-
+const data = {
+  _test: null
+};
+// Vue原理
+const vm = (obj, property) => {
+  Object.defineProperty(obj, property, {
+    get: function () {
+      return this['_' + property]
+    },
+    set: function(newValue) {
+      this['_' + property] = newValue;
+      console.log('修改视图...');
+    }
+  });
+  return obj;
+}
+// 设置属性
+const state = vm(data, 'test');
+console.log(state['test']); // null
+state['test'] = 'xxx'; // 重新赋值
+console.log(state['test']); // xxx
 ```
+
+**创建对象-工厂模式**
+---
+通过 new Object() 创建一个空对象，再对该对象定制属性，通过参数进行赋值
+```js
+function createPerson (name, age, job) {
+  const o = new Object();
+  o.name = name;
+  o.age = age;
+  o.job = job;
+  return o;
+}
+const person1 = createPerson('YY', 17, 'WEB');
+const person2 = createPerson('OO', 17, 'H5C3ES6');
+```
+
+**创建对象-构造函数模式**
+---
+通过函数、this、new操作符创建对象
+```js
+function Person (name, age, job) {
+  this.name = name;
+  this.age = age;
+  this.job = job;
+  // 不需要 return 也会将自身返回
+}
+const person1 = new Person('YY', 17, 'WEB');
+```
+
+**创建对象-原型模式**
+---
+通过函数的 prototype 属性访问构造函数原型对象添加成员，原型对象上的成员是被实例共享的
+```js
+function Person () {}
+Person.prototype.sayHi = () => {};
+const person1 = new Person();
+const person2 = new Person();
+console.log(person1.sayHi === person2.sayHi); // true
+```
+因为创建了一个新函数，就会根据一组特定的规则为该函数创建一个 prototype 属性  
+prototype 属性指向函数的原型对象  
+原型对象都会自动获得一个 constructor 属性  
+constructor 属性包含一个指向 prototype 属性所在函数的指针
+
+注意：实例对象添加与原型对象相同的属性时，不会影响原型对象上的属性  
+因为实例在使用某个属性时，先会在当前实例中查找，查不到再去原型对象中查找  
+如果原型对象中也没有，则返回 undefined
+
+**创建对象-构造函数模式与原型模式**
+---
+在 ECMAScript 中使用最广泛、认同度最高的一种
+```js
+function Person () {}
+Person.prototype = {
+  constructor: Person, // 替换了原有的原型对象 需要重新添加 constructor 属性
+  sayHi: function () {
+    console.log(this); // this 指向
+  }
+};
+const p1 = new Person();
+```
+
+**创建对象-动态原型模式**
+---
+保留构造函数模式与原型模式的优点，将所有的信息都封装在构造函数中  
+也就是说，通过检查某个应该存在的方法是否有效，来决定是否需要初始化原型
+```js
+function Person () {
+  this.name = 'yy';
+  // 只需检查其中一个即可
+  if (typeof this.sayHi != 'function') {
+    // 只执行一次
+    Person.prototype.sayHi = function () {
+      console.log(this);
+    }
+  }
+}
+const p1 = new Person();
+```
+注意：在已经创建了实例的情况下重写原型，会切断现有实例与新原型之间的联系
+
+**创建对象-寄生构造函数模式**
+---
+思想：创建一个函数用来封装创建对象的代码，然后再返回新创建的对象
+```js
+function Person (name) {
+  const o = new Object();
+  o.name = name;
+  o.sayHi = function () {
+    console.log(this.name);
+  }
+  return o;
+}
+const p1 = new Person('yy');
+p1.sayHi(); // yy
+```
+应用场景
+```js
+// 创建一个具有额外方法的特殊数组
+function SpecialArray () {
+  const arr = new Array();
+  arr.push.apply(arr, arguments);
+  arr.toPipedString = function () {
+    return this.join('|');
+  }
+  return arr;
+}
+const arr = new SpecialArray(1, 2, 3); // 获得特殊数组
+const res = arr.toPipedString(); // 使用特殊数组的方法
+console.log(res); // 1|2|3
+```
+
+****
+---
