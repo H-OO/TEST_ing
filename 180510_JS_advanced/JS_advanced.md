@@ -567,5 +567,28 @@ const res = arr.toPipedString(); // 使用特殊数组的方法
 console.log(res); // 1|2|3
 ```
 
-****
+**创建对象-稳妥构造函数模式**
 ---
+特征：构造函数内部不适用 this，使用构造函数不使用 new 操作符  
+适用于安全环境中，这些环境会禁止使用 this 和 new
+```js
+function Person (name) {
+  const o = new Object();
+  o.sayName = function () {
+    console.log(name);
+  }
+}
+const p = Person('YY'); // 不使用 new
+```
+
+**继承**
+---
+许多OO语言都支持两种继承方式：接口继承、实现继承  
+* 接口继承 只继承方法签名
+* 实现继承 继承实际的方法
+由于 ECMAScript 函数没有签名，所以不能实现接口继承  
+ECMAScript 只支持实现继承，主要依靠原型链来实现
+
+**原型链**
+---
+思想：利用原型让一个引用类型继承另一个引用类型的属性和方法
