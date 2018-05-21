@@ -592,3 +592,107 @@ ECMAScript 只支持实现继承，主要依靠原型链来实现
 **原型链**
 ---
 思想：利用原型让一个引用类型继承另一个引用类型的属性和方法
+
+优点：实现继承
+
+缺点：包含引用类型值的原型
+
+**继承-经典继承**
+---
+经典继承也叫借用构造函数继承  
+原理：通过apply() 和 call() 方法改变另一个构造函数的 this 指向
+```js
+// 将构造函数B的属性和方法继承给构造函数A的实例
+function A() {
+  B.call(this); // 继承
+}
+function B() {
+  this.arr = [1, 2, 3];
+}
+const a1 = new A();
+a1.arr.push(4);
+console.log(a1.arr);
+const a2 = new A();
+console.log(a2.arr);
+```
+优点：可传递参数  
+缺点：函数不可复用
+
+**继承-组合继承**
+---
+组合继承指将原型链和借用构造函数的技术组合在一起  
+思想：使用原型链实现对原型属性和方法的继承，而通过借用构造函数来实现对实例属性的继承  
+做法：将简单类型和引用类型设置在构造函数中，function类型设置在原型对象中  
+```js
+function A() {
+  B.call(this);
+}
+function B() {
+  this.arr = [1, 2, 3];
+}
+
+B.prototype.sayArr = function () {
+  console.log(this);
+  console.log(this.arr);
+};
+A.prototype = new B(); // A原型继承B实例
+// 原型链关系：a → a.__proto__ (b) → b.__proto__
+
+const a1 = new A();
+const a2 = new A();
+console.log(a1.arr === a2.arr); // false
+console.log(a1.sayArr === a2.sayArr); // true
+```
+
+**继承-原型式继承**
+---
+原生
+```js
+function object(o) {
+  function F() {}
+  F.prototype = o;
+  return new F();
+}
+const person = {
+  sayHi: function () {
+    console.log('Hi');
+  }
+};
+const p = object(person);
+p.sayHi(); // Hi
+```
+
+使用 Object.create 方法 (IE9+)
+```js
+const person = {
+  sayName: function () {
+    console.log(this.name);
+  }
+};
+const o1 = Object.create(person, {
+  name: {
+    value: 'yy'
+  }
+});
+const o2 = Object.create(person, {
+  name: {
+    value: 'oo'
+  }
+});
+o1.sayName(); // yy
+o2.sayName(); // oo
+console.log(o1.sayName === o2.sayName); // true
+```
+
+**继承-寄生式继承**
+---
+寄生式继承的思路与寄生构造函数和工厂模式类似，创建一个仅用于封装继承过程的函数  
+```js
+
+```
+
+**继承-寄生组合式继承**
+---
+
+```js
+```
