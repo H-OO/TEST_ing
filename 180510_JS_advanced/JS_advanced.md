@@ -456,6 +456,32 @@ state['test'] = 'xxx'; // 重新赋值
 console.log(state['test']); // xxx
 ```
 
+**定义多个属性**
+---
+注意运行环境
+```js
+const book = {};
+Object.defineProperties(book, {
+  _year: {
+    value: 2004
+  },
+  edition: {
+    value: 1
+  },
+  year: {
+    get: function () {
+      return this._year;
+    },
+    set: function (newValue) {
+      if (newValue > 2004) {
+        this._year = newValue;
+        this.edition += newValue - 2004;
+      }
+    }
+  }
+});
+```
+
 **创建对象-工厂模式**
 ---
 通过 new Object() 创建一个空对象，再对该对象定制属性，通过参数进行赋值
@@ -586,6 +612,7 @@ const p = Person('YY'); // 不使用 new
 许多OO语言都支持两种继承方式：接口继承、实现继承  
 * 接口继承 只继承方法签名
 * 实现继承 继承实际的方法
+
 由于 ECMAScript 函数没有签名，所以不能实现接口继承  
 ECMAScript 只支持实现继承，主要依靠原型链来实现
 
@@ -597,9 +624,9 @@ ECMAScript 只支持实现继承，主要依靠原型链来实现
 
 缺点：包含引用类型值的原型
 
-**继承-经典继承**
+**继承-借用构造函数继承**
 ---
-经典继承也叫借用构造函数继承  
+借用构造函数继承也叫经典继承  
 原理：通过apply() 和 call() 方法改变另一个构造函数的 this 指向
 ```js
 // 将构造函数B的属性和方法继承给构造函数A的实例
@@ -688,11 +715,45 @@ console.log(o1.sayName === o2.sayName); // true
 ---
 寄生式继承的思路与寄生构造函数和工厂模式类似，创建一个仅用于封装继承过程的函数  
 ```js
-
+function object(o) {
+  function F() {}
+  F.prototype = o;
+  return new F();
+}
+function createPerson(original) {
+  const clone = object(original);
+  clone.sayHi = function () {
+    console.log('Hi');
+  }
+  return clone;
+}
+const original = {};
+const p = createPerson(original);
+console.log(p); // {sayHi: f}
 ```
 
 **继承-寄生组合式继承**
 ---
-
+通过借用构造函数来继承属性，通过原型链的混成形式来继承方法
 ```js
+
 ```
+
+**小结**
+---
+创建对象的模式
+* 工厂模式：通过原生对象构造函数生成对象，然后添加属性，最后return
+* 构造函数模式：通过函数内部的this对象，生成对象使用 new 操作符
+* 原型模式：通过prototype添加属性
+* 组合模式：构造函数通过this用来设置属性，原型用来设置方法 【推荐】
+* 动态原型模式：通过 typeof 检查某个方法是否有效，来决定是否初始化原型
+* 寄生构造函数模式：想创建一个具有额外方法的特殊数组时
+* 稳妥构造函数模式：函数内部不使用 this 对象，生成对象不使用 new 操作符
+
+继承
+* 原型链继承：A.prototype = new B()
+* 借用构造函数继承：A构造函数内 B.call(this) 改变B构造函数的 this 指向
+* 组合继承：将A构造函数的原型替换成B构造函数的实例，A构造函数内 B.call(this)
+* 原型式继承：创建一个临时的构造函数，将传入的对象作为这个构造函数的原型
+* 寄生式继承：与原型式紧密结合，接收原型式返回的对象，然后增强该对象后再返回
+* 寄生组合式继承：
