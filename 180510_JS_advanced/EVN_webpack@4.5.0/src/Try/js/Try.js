@@ -1,22 +1,25 @@
-// function SuperType(name) {
-//   this.name = name;
-//   this.colors = ["red", "blue", "green"];
+// function createComparisonFunction(propertyName) {
+//   return function (object1, object2) {
+//     var value1 = object1[propertyName];
+//     var value2 = object2[propertyName];
+
+//     if (value1 < value2) {
+//       return -1;
+//     } else if (value1 > value2) {
+//       return 1;
+//     } else {
+//       return 0;
+//     }
+//   };
 // }
-// SuperType.prototype.sayName = function () {
-//   console.log(this.name);
-// };
 
-// function SubType(name, age) {
-//   SuperType.call(this, name); //第二次调用 SuperType()
 
-//   this.age = age;
-// }
-// SubType.prototype = new SuperType(); //第一次调用 SuperType()
-// SubType.prototype.constructor = SubType;
-// SubType.prototype.sayAge = function () {
-//   console.log(this.age);
-// };
-
-const str = '13012341234';
-const res = str.replace(/\s/g, '').replace(/(\d{3})(\d{0,4})(\d{0,4})/, '$1 $2 $3');
-console.log(res);
+function outer() {
+  const msg = 'Hi';
+  return function inner() {
+    console.log(msg);
+  }
+}
+const p = outer();
+console.log(p);
+p(); // Hi

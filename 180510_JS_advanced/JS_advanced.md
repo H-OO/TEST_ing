@@ -239,6 +239,25 @@ instanceof 可以判断该实例是否为该构造函数实例化出来的
 /x/ instanceof RegExp; // true
 ```
 
+**执行环境**
+---
+根据 ECMAScript 实现所在的宿主环境不同，表示执行环境的对象也不一样  
+Web 浏览器中，全局执行环境被认为是 window 对象  
+因此所有全局变量和函数都是作为 window 对象的属性和方法创建的  
+某个执行环境中的所有代码执行完毕后，该环境被销毁，保存在其中的所有变量和函数定义也随之销毁
+
+全局执行环境直到应用程序退出--例如关闭网页或浏览器--时才会被销毁
+
+每个函数都有自己的执行环境  
+当执行流进入一个函数时，函数的环境就会被推入一个环境栈中。  
+而在函数执行之后，栈将其环境弹出，把控制权返回给之前的执行环境。  
+
+**作用域**
+---
+当代码在一个环境中执行时，会创建变量对象的一个作用域链  
+作用域链的用途，是保证对执行环境有权访问的所有变量和函数的有序访问  
+作用域链的前端，始终都是当前执行的代码所在环境的变量对象
+
 ## 第五章
 
 **Array**
@@ -349,7 +368,7 @@ API
 * m 多行模式 multiline
 
 表达式
-* [] 范围写法，[0-9]
+* [] 范围写法，[0-9]、[a-zA-Z0-9]、[\w\.]
 * | 其中任意一个规则匹配
 * () 分组符，为单独一项设置匹配规则
 
@@ -371,6 +390,31 @@ API
 支持符号
 * ^ 开始
 * $ 结束
+
+```js
+// 例子1
+const str = 'http://www.baidu.com/a/b.html';
+// 截取域名
+str.match(/\/\/[\w\.]+/)[0].replace(/\//g, '') // 'www.baidu.com'
+// 截取文件名
+str.match(/[\w]+\.html/)[0].match(/\w+/)[0] // 'b'
+
+// 例子2
+const str = 'http://www.baidu.com/a/b.html?username=1&password=123';
+// 截取序列化后的参数变为对象形式
+const res = str.match(/\?.*/)[0].replace(/\?/, '').split(/&/);
+const param = {};
+res.forEach((item, i) => {
+  const tmp = item.split(/=/);
+  param[tmp[0]] = tmp[1];
+});
+console.log(param); // {username: "1", password: "123"}
+
+// replace $
+const str = '15012341234';
+const res = str.replace(/(\d{3})(\d{0,4})(\d{0,4})/, '$1-$2-$3');
+console.log(res); // 150-1234-1234
+```
 
 **Function**
 ---
@@ -626,7 +670,7 @@ ECMAScript 只支持实现继承，主要依靠原型链来实现
 
 **继承-借用构造函数继承**
 ---
-借用构造函数继承也叫经典继承  
+借用构造函数继承也叫伪经典继承  
 原理：通过apply() 和 call() 方法改变另一个构造函数的 this 指向
 ```js
 // 将构造函数B的属性和方法继承给构造函数A的实例
@@ -736,7 +780,36 @@ console.log(p); // {sayHi: f}
 ---
 通过借用构造函数来继承属性，通过原型链的混成形式来继承方法
 ```js
-
+// 父类
+function F(name) {
+  this.name = name;
+}
+F.prototype.say = function () {
+  console.log(this.name);
+}
+// 子类
+function C() {
+  F.apply(this, arguments); // 修改父类的this指向，继承属性
+}
+// 寄生组合式 ↓↓↓
+// 生成新对象 
+function object(o) {
+  function O() {}
+  O.prototype = o;
+  return new O();
+}
+// 继承方法
+function inheritPrototype(C, F) {
+  const prototype = object(F.prototype); // 创建对象 （原生方法）
+  // const prototype = Object.create(F.prototype); // 创建对象 （API方法）
+  prototype.constructor = F; // 增强对象
+  C.prototype = prototype; // 作为子类的原型
+}
+inheritPrototype(C, F);
+// 寄生组合式 ↑↑↑
+const c = new C('YY');
+console.log(c);
+c.say(); // YY
 ```
 
 **小结**
@@ -750,10 +823,55 @@ console.log(p); // {sayHi: f}
 * 寄生构造函数模式：想创建一个具有额外方法的特殊数组时
 * 稳妥构造函数模式：函数内部不使用 this 对象，生成对象不使用 new 操作符
 
-继承
+继承 (A子类 B父类)
 * 原型链继承：A.prototype = new B()
 * 借用构造函数继承：A构造函数内 B.call(this) 改变B构造函数的 this 指向
 * 组合继承：将A构造函数的原型替换成B构造函数的实例，A构造函数内 B.call(this)
 * 原型式继承：创建一个临时的构造函数，将传入的对象作为这个构造函数的原型
 * 寄生式继承：与原型式紧密结合，接收原型式返回的对象，然后增强该对象后再返回
-* 寄生组合式继承：
+* 寄生组合式继承：A.prototype.__proto__ = B.prototype 【经典继承】
+
+**递归**
+---
+```js
+function factorial(num) {
+  if (num <= 1) {
+    return 1;
+  } else {
+    return num * factorial(num - 1);
+  }
+}
+factorial(5); // 120
+```
+```
+num = 5
+|- 5 * factorial(4) // 5 * 24 = 120
+|-       4 * factorial(3) // 4 * 6 = 24
+|-             3 * factorial(2) // 3 * 2 = 6
+|-                   2 * factorial(1) // 2 * 1 = 2
+|-                         1
+```
+
+**闭包**
+---
+闭包是指有权访问另一个函数作用域中的变量的函数  
+常见方式：在一个函数内部创建另一个函数  
+
+* 使用闭包
+```js
+function outer() {
+  const msg = 'Hi';
+  return function inner() {
+    console.log(msg);
+  }
+}
+const p = outer(); // f inner () {}
+p(); // Hi
+```
+
+* 释放内存
+```js
+
+```
+
+* 函数被调用的时候都发生了什么 196
