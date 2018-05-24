@@ -831,6 +831,8 @@ c.say(); // YY
 * 寄生式继承：与原型式紧密结合，接收原型式返回的对象，然后增强该对象后再返回
 * 寄生组合式继承：A.prototype.__proto__ = B.prototype 【经典继承】
 
+## 第七章
+
 **递归**
 ---
 ```js
@@ -859,9 +861,9 @@ num = 5
 
 * 使用闭包
 ```js
-function outer() {
+function outer () {
   const msg = 'Hi';
-  return function inner() {
+  return function () {
     console.log(msg);
   }
 }
@@ -871,7 +873,96 @@ p(); // Hi
 
 * 释放内存
 ```js
+function outer () {
+  let num = 0;
+  return function () {
+    num++;
+    console.log(num);
+  }
+}
 
+let f = outer();
+document.addEventListener('click', function (e) {
+  f(); // 执行匿名函数
+}, false)
+
+document.addEventListener('dblclick', function (e) {
+  f = null; // 回收
+  f = outer(); // 重新创建
+}, false)
 ```
 
-* 函数被调用的时候都发生了什么 196
+**内存泄露**
+---
+IE9之前版本，如果闭包的作用域链中保存着一个 HTML 元素，那么就意味着该元素将无法被销毁
+```js
+// 泄露
+function handler() {
+  let ele = document.querySelector('#test');
+  ele.onclick = function () {
+    console.log(ele.id); // 存在对 ele 的引用
+  }
+}
+handler();
+
+// 解决方案
+function handler() {
+  let ele = document.querySelector('#test');
+  const id = ele.id; // 
+  ele.onclick = function () {
+    console.log(id);
+  }
+  ele = null; // 内存回收
+}
+handler();
+```
+
+**匿名函数**
+---
+匿名函数的执行环境具有全局性，因此其 this 对象通常指向 window  
+但是由于书写方式的不同，这一点可能不会那么明显
+```js
+// 对象中使用匿名函数 this 指向会丢失
+const obj = {
+  a: function () {
+    return function () {
+      console.log(this); // undefined
+    }
+  }
+};
+obj.a();
+```
+
+## 第八章
+BOM
+
+**window对象-窗口位置**
+---
+* screenX 浏览器与显示屏左边界的距离
+* screenY 浏览器与显示屏上边界的距离
+
+**window对象-窗口大小**
+---
+* outerWidth 浏览器整体宽度
+* outerHeight 浏览器整体高度
+* innerWidth 可视窗口宽度
+* innerHeight 可视窗口高度
+
+**window对象-导航**
+---
+* open() 跳转至开启一个新标签 参数1为[域名|本服务器HTML路径] 参数2为[_self|_blank]
+* close() 关闭当前标签页
+
+**定时器**
+---
+* setTimeout
+* clearTimeout
+* setInterval
+* clearInterval
+
+**系统对话框**
+---
+显示这些系统对话框，代码会停止执行，关闭后又恢复执行
+* alert() 系统提示框
+* confirm() 系统确认框 返回bool
+* prompt() 系统输入框 返回输入内容
