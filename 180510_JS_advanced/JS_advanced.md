@@ -118,8 +118,8 @@ API
 * search 正则检索，返回索引
 * slice 切割
 * split 字符串转数组
-* subStr 选取字符串，参数1为起始下标，参数2为字符个数
-* subString 切割
+* substr 选取字符串，参数1为起始下标，参数2为字符个数
+* substring 切割
 * toLocaleLowerCase 字母字符串转小写
 * toLocaleUpperCase 字母字符串转大写
 * toLowerCase 字母字符串转小写
@@ -381,15 +381,17 @@ API
 * \W 非字母数字下划线
 
 量词
-* . 除换行符以外的其他单个字符
 * \* {0,}
 * \+ {1,}
 * ? {0,1}
-* [^] 取反 例如[^a-z] 忽略a-z的字符串
 
 支持符号
+* . 除换行符以外的其他单个字符
 * ^ 开始
 * $ 结束
+
+取反
+* [^] 例如[^a-z] 忽略a-z的字符串
 
 ```js
 // 例子1
@@ -414,6 +416,11 @@ console.log(param); // {username: "1", password: "123"}
 const str = '15012341234';
 const res = str.replace(/(\d{3})(\d{0,4})(\d{0,4})/, '$1-$2-$3');
 console.log(res); // 150-1234-1234
+
+// 包裹不确定字符
+const str = `$t(Aa._01)aaa$t(Aa._02)`;
+const res = str.match(/\$t\([\.\w]*\)/g);
+console.log(res); // ['$t(Aa._01)', '$t(Aa._02)']
 ```
 
 **Function**
@@ -966,3 +973,50 @@ BOM
 * alert() 系统提示框
 * confirm() 系统确认框 返回bool
 * prompt() 系统输入框 返回输入内容
+
+**location对象**
+---
+它提供了与当前窗口中加载的文档有关的信息，还提供了一些导航功能  
+既是window对象的属性，又是document对象的属性  
+https://github.com:80/H-OO/Note?username=H-OO#123
+* hash #123
+* host github.com:80
+* hostname github.com
+* href https://github.com:80/H-OO/Note?username=H-OO#123
+* pathname /H-OO/Note
+* port 80
+* protocol https:
+* search ?username=H-OO
+
+**navigator对象**
+---
+navigator.userAgent 获取用户设备信息
+* WeChat MicroMessenger
+* 安卓 Android
+* iOS iPhone
+* iPad iPad
+* PC 非以上则视为PC端
+获取设备信息后，可先将字符串的字母转小写，再通过 indexOf() 进行检查
+
+**screen对象**
+---
+表明客户端的能力，其中包括浏览器窗口外部的显示器的信息，如像素宽度和高度等
+* availHeight
+* availLeft
+* availTop
+* availWidth
+* colorDepth
+* height
+* orientation
+* pixelDepth
+* width
+
+**history对象**
+---
+出于安全方面的考虑，开发人员无法得知用户浏览过的 URL  
+* back() 退后一页
+* forward() 前进一页
+* go() 传递number类型代表前进或后退几页，string类型则跳转最近的与参数匹配的页
+* length 第一个页面 (history.length === 0)
+* replace() 导航到一个新 URL，同时该 URL 会替换浏览器历史记录中当前显示的页面
+
