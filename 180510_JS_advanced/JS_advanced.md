@@ -1020,3 +1020,75 @@ navigator.userAgent 获取用户设备信息
 * length 第一个页面 (history.length === 0)
 * replace() 导航到一个新 URL，同时该 URL 会替换浏览器历史记录中当前显示的页面
 
+
+## 第十章
+DOM
+```
+Document
+  |- html
+      |- head
+      |   |- title
+      |- body
+```
+
+**Node类型**
+---
+Node.nodeType 获取节点类型 返回number类型 1~12  
+节点类型由Node类型中定义的12个数值常量来表示，下列为常用类型：
+* Node.ELEMENT_NODE // 1
+* Node.ATTRIBUTE_NODE // 2
+* Node.TEXT_NODE // 3
+* Node.COMMENT_NODE // 8
+
+**Node元素属性**
+---
+* childNodes 返回一个伪数组，包含所有子节点
+* children 返回一个伪数组，包含所有子元素节点
+* firstChild 第一个子节点
+* firstElementChild 第一个子元素节点
+* hasChildNodes() 是否拥有子节点 返回bool
+* lastChild 最后一个子节点
+* lastElementChild 最后一个子元素节点
+
+**Node子元素列表**
+---
+* nextSibling 下一个兄弟节点
+* previousSibling 上一个兄弟节点
+* parentNode 最近的父节点
+
+**操作节点**
+---
+* appendChild() 用于向 childNodes 列表的末尾添加一个节点（排队）
+* insertBefore() 参数1为新创建的节点 参数2为参照节点（插队）
+* replaceChild() 参数1为新创建的节点 参数2为要替换的节点（替换）
+* removeChild() 
+```js
+// insertBefore 方法是将节点插入到参照节点的位置，参照节点往后挪一位
+const ul = document.querySelector('ul');
+const li = document.createElement('li');
+// 第二个参数传null，则节点插入后成为最后一个子节点
+ul.insertBefore(li, null); // 成为最后一个子节点，与appendChild方法作用相同
+// 插入后成为第一个子节点
+ul.insertBefore(li, ul.firstChild);
+// 插入后成为最后一个子节点
+ul.insertBefore(li, ul.lastChild);
+```
+
+**其他节点方法**
+---
+* cloneNode() 克隆节点，接收一个bool参数，表示是否深度克隆
+```js
+// cloneNode
+const ul = document.querySelector('ul');
+const deep = document.cloneNode(ul, true); // 复制节点及其整个子节点树
+const shallow = document.cloneNode(ul, false); // 复制单个节点
+```
+
+**document**
+---
+* document.documentElement 获取html元素
+* document.body
+* document.title
+* document.referrer 获取来源页面的URL，不包含hash或search部分
+* document.URL 获取完整URL
+* document.domain 获取域名（可设置）
