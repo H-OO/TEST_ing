@@ -421,6 +421,10 @@ console.log(res); // 150-1234-1234
 const str = `$t(Aa._01)aaa$t(Aa._02)`;
 const res = str.match(/\$t\([\.\w]*\)/g);
 console.log(res); // ['$t(Aa._01)', '$t(Aa._02)']
+
+// 获取计算属性 transform 的 translate X 与 Y
+const str = 'matrix(1, 0, 0, 1, -100, 0)';
+const res = str.match(/[^a-z\(\)]+/)[0].split(/\,/).slice(-2); // ['-100', '0']
 ```
 
 **Function**
@@ -1049,6 +1053,8 @@ Node.nodeType 获取节点类型 返回number类型 1~12
 * hasChildNodes() 是否拥有子节点 返回bool
 * lastChild 最后一个子节点
 * lastElementChild 最后一个子元素节点
+* nodeName / tagName 获取大写的标签名
+* 
 
 **Node子元素列表**
 ---
@@ -1061,7 +1067,7 @@ Node.nodeType 获取节点类型 返回number类型 1~12
 * appendChild() 用于向 childNodes 列表的末尾添加一个节点（排队）
 * insertBefore() 参数1为新创建的节点 参数2为参照节点（插队）
 * replaceChild() 参数1为新创建的节点 参数2为要替换的节点（替换）
-* removeChild() 
+* removeChild() 将需要移除的子节点传入
 ```js
 // insertBefore 方法是将节点插入到参照节点的位置，参照节点往后挪一位
 const ul = document.querySelector('ul');
@@ -1092,3 +1098,153 @@ const shallow = document.cloneNode(ul, false); // 复制单个节点
 * document.referrer 获取来源页面的URL，不包含hash或search部分
 * document.URL 获取完整URL
 * document.domain 获取域名（可设置）
+
+**元素属性方法**
+---
+* attribute 元素属性对象
+* getAttribute 获取元素属性
+* removeAttribute 移除元素属性
+* setAttribute 设置元素属性
+
+**表格**
+---
+```html
+<table border="1">
+  <tbody>
+    <tr>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+```
+
+**innerHTML**
+---
+不支持innerHTML的元素
+* head
+* html
+* style
+* table
+* tbody
+* thead
+* tfoot
+* tr
+
+**script**
+---
+async 和 defer 的区别
+```js
+// 读到就加载并执行
+<script src="x.js"></script>
+
+// 加载和渲染后续文档元素的过程将和 x.js 的加载与执行并行进行（异步）
+<script async src="x.js"></script>
+
+// 加载和渲染后续文档元素的过程将和 x.js 的加载并行进行（异步）
+// 但 x.js 的执行要在所有元素解析完成之后，DOMContentLoaded事件触发之前完成
+<script defer src="x.js"></script>
+```
+
+**classList**
+---
+* add() // 添加类名
+* contains() // 检查类名是否存在，返回bool
+* remove() // 移除类名
+* toggle() // 类名不存在就添加，存在就移除
+
+**scrollIntoView方法**
+---
+控制页面滚动
+* Element.scrollIntoView(true); // 元素滚动到顶部与窗口顶部平齐
+* Element.scrollIntoView(false); // 元素滚动到底部与窗口底部平齐
+
+**盒子模型**
+---
+盒子模型：margin+border+padding+content
+* box-sizing: content-box; // content+border+padding（content、border、padding为平级关系）
+* box-sizing: border-box; // content（content中包含了border与padding）
+
+**offset**
+---
+* offsetLeft 与最近一个有定位的父元素的左侧距离
+* offsetTop 与最近一个有定位的父元素的顶部距离
+* offsetWidth border+padding+content
+* offsetHeight border+padding+content
+
+**client**
+---
+* clientWidth padding+content
+* clientHeight padding+content
+
+**scroll**
+---
+* scrollLeft 设置目标元素从视口元素左侧移出了多少px（边框不属于视口）
+* scrollTop 设置目标元素从视口元素顶部移出了多少px （边框不属于视口）
+* scrollWidth padding+content
+* scrollHeight padding+content
+PS: scrollLeft/scrollTop 默认是0（通过父元素进行设置和取值）
+```js
+// p 为父元素；c 为子元素
+// 设置子元素向上偏移10px
+p.scrollTop = 10;
+// 获取子元素向上偏移量
+console.log(p.scrollTop); // 10
+```
+
+**计算样式**
+---
+通过 getComputedStyle 方法获取 CSSStyleDeclaration 对象（只读）  
+该方法可接收两个参数：参数1为要获取计算样式的元素，参数2为一个伪元素字符串（例如":after"，可选）  
+PS: CSSStyleDeclaration 对象中的样式属性值为 string 类型，并会携带单位
+```js
+Element.getComputedStyle(DOM, null); // 获取 DOM 计算样式
+Element.getComputedStyle(DOM, ':after'); // 获取 DOM 伪元素计算样式
+```
+
+**JS事件机制**
+---
+分为三个阶段
+* 捕获阶段
+* 目标阶段
+* 冒泡阶段
+
+**阻止冒泡**
+---
+```js
+// 兼容写法
+window.event ? window.event.cancelBubble = true : e.stopPropagation();
+```
+
+**默认行为**
+---
+```js
+// 兼容写法
+window.event ?  window.event.returnValue = false : e.preventDefault();
+```
+
+**UI事件**
+---
+* load 页面完全加载后触发
+* resize 窗口大小变化触发
+* scroll 滚动带滚动条的元素触发
+
+**鼠标与滚轮事件**
+---
+* click
+* dblclick
+* mousedown 鼠标任意键按下触发
+* mouseenter 鼠标移入触发（不冒泡）
+* mouseleave 鼠标移出触发（不冒泡）
+* mousemove 鼠标在元素内部移动重复触发
+* mouseout 鼠标移入触发（冒泡）
+* mouseover 鼠标移出触发（冒泡）
+* mouseup 鼠标释放按钮触发
+* mousewheel 鼠标滚轮滚动触发
+
+**触摸设备**
+---
+在面向 iPhone 和 iPad 开发注意
+* 不支持dblclick事件，双击浏览器窗口会放大界面，无法改变该行为
+* 轻击触发事件顺序 mousemove → mouseup → click
+* mousemove 事件也会触发 mouseover 和 mouseout 事件
+* 双指滑动触发 mousewheel 和 scroll 事件
