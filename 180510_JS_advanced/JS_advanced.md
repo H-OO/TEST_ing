@@ -1245,6 +1245,244 @@ window.event ?  window.event.returnValue = false : e.preventDefault();
 ---
 在面向 iPhone 和 iPad 开发注意
 * 不支持dblclick事件，双击浏览器窗口会放大界面，无法改变该行为
-* 轻击触发事件顺序 mousemove → mouseup → click
+* 轻击触发事件顺序 mousemove → mousedown → mouseup → click
 * mousemove 事件也会触发 mouseover 和 mouseout 事件
 * 双指滑动触发 mousewheel 和 scroll 事件
+
+**移动端touch事件**
+---
+* touchstart
+* touchmove
+* touchend
+PS: touch事件都会冒泡
+```
+iOS and Android 事件触发顺序
+// 轻击
+touchstart → touchend → click
+// 点击移动（没有click）
+touchstart → touchmove → touchend
+```
+
+**mouse与touch事件触发顺序**
+---
+元素监听以下事件
+* touchstart
+* mouseover
+* mousemove
+* mousedown
+* mouseup
+* click
+* touchmove
+* touchend
+```
+// 轻击
+touchstart
+↓
+touchend
+↓
+mouseover
+↓
+mousemove
+↓
+mousedown
+↓
+mouseup
+↓
+click
+
+// 点击移动
+touchstart
+↓
+mouseover
+↓
+mousemove
+↓
+touchmove
+↓
+touchend
+```
+
+**手势事件**
+---
+* gesturestart 当一个手指已经按在屏幕上而另一个手指又触摸屏幕时触发
+* gesturechange 当触摸屏幕的任何一个手指的位置发生变化时触发
+* gestureend 当任何一个手指从屏幕上面移开时触发
+
+**键盘与文件事件**
+---
+* keydown 按下键盘任意键触发，按住不放会重复触发
+* keypress 按下键盘字符键触发，按住不放会重复触发
+* keyup 释放键盘任意键触发
+* textInput 在可编辑区域中输入字符触发
+
+**节点变动事件**
+---
+* DOMSubtreeModified DOM结构发生变化触发（在其他事件触发后触发）
+* DOMNodeInserted 一个节点作为子节点被插入到另一个节点中触发
+* DOMNodeRemoved 节点从其父节点中移除触发
+* DOMNodeInsertedIntoDocument 一个节点被直接插入文档或通过子树间接插入文档之后触发（这个事件在 DOMNodeInserted 之后触发）
+* DOMNodeRemovedFromDocument 一个节点被直接从文档中移除或通过子树间接从文档中移除之前触发（这个事件在 DOMNodeRemoved 之后触发）
+* DOMAttrModified 在特性被修改之后触发
+* DOMCharacterDataModified 在文本节点的值发生变化时触发
+
+**浏览器事件**
+---
+* beforeunload 浏览器销毁页面之前触发
+* DOMContentLoaded 形成完整的 DOM 树之后触发
+* hashchange URL的hash值发生改变触发
+
+**移除事件**
+---
+纯粹的DOM操作，例如 removeChild() 和 replaceChild() 方法，会移除事件  
+如果是使用innerHTML替换子节点树，那么子节点树中的事件可能不会被移除
+```js
+// 使用innerHTML替换子节点树之前需要移除相关事件处理程序
+Element.onclick = null; // 先移除事件处理程序
+Element.innerHTML = ''; // 再移除子节点树
+```
+
+**剪贴板事件**
+---
+* beforecopy 复制操作前触发
+* copy 复制操作时触发
+* beforecut 剪切操作前触发
+* cut 剪切操作时触发
+* beforepaste 粘贴操作前触发
+* paste 粘贴操作时触发
+
+## 第21章
+
+**XMLHttpRequest对象**
+---
+```js
+const xhr = new XMLHttpRequest(); // 实例化
+xhr.open('get', 'example.txt', true); // 接收三个参数，分别是：请求发生、接口地址，是否异步
+xhr.send(null); // 请求参数（对部分浏览器为必须项），无参传null
+// 发送请求给服务器...
+
+// xhr.abort(); // 接收响应之前，xhr对象会停止触发事件（后续还需解除对xhr对象的引用）
+```
+收到服务器响应后，响应的数据会自动填充xhr对象的属性，相关属性：
+* responseText 作为响应主体被返回的文本
+* status 响应的HTTP状态（请求响应先检查status属性）
+* statusText HTTP状态的说明
+
+**HTTP状态码**
+---
+* 1开头 临时响应并需要请求者继续执行操作
+* 2开头 成功处理了请求
+* 3开头 请求重定向
+* 4开头 表示请求可能出错
+* 5开头 服务器内部错误
+```
+常用状态码
+100 继续
+200 成功
+302 重定向
+304 缓存中取
+401 未授权
+403 拒绝请求
+404 找不到
+500 服务器错误
+```
+
+**readyState属性**
+---
+* 0 未初始化（未调用open方法）
+* 1 启动（已经调用open方法，但未调用send方法）
+* 2 发送（已经调用send方法，但尚未接收到响应）
+* 3 接收（接收到部分响应数据）
+* 4 完成（接收到全部响应数据）
+监听 readyState 属性值的改变，使用 readystatechange 事件
+
+**HTTP头部信息**
+---
+* Accept 浏览器能够处理的内容类型
+* Accept-Charset 浏览器能够显示的字符集
+* Accept-Encoding 浏览器能够处理的压缩编码
+* Accept-Language 浏览器当前设置的语言
+* Connection 浏览器与服务器之间连接的类型
+* Cookie 当前页面设置的任何 Cookie
+* Host 发出请求的页面所在的域
+* Referer 发出请求的页面的 URI
+* User-Agent 浏览器的用户代理字符串
+
+**编码与解码**
+---
+```js
+encodeURI('username=用户名'); // username=%E7%94%A8%E6%88%B7%E5%90%8D
+decodeURI('username=%E7%94%A8%E6%88%B7%E5%90%8D'); // username=用户名
+
+encodeURIComponent('username=用户名'); // username%3D%E7%94%A8%E6%88%B7%E5%90%8D
+decodeURIComponent('username%3D%E7%94%A8%E6%88%B7%E5%90%8D'); // username=用户名
+
+escape('username=用户名'); // "username%3D%u7528%u6237%u540D"
+unescape('username%3D%u7528%u6237%u540D'); // username=用户名
+```
+
+**XHR传输FormData**
+---
+将 Content-Type 头部信息设置为 application/x-www-form-urlencoded  
+也就是表单提交时的内容类型
+
+**FormData对象**
+---
+主要为序列化表单以及创建与表单格式相同的数据（用于XHR传输）提供了便利  
+情景1：获取表单元素上填入的数据
+```html
+<form action="" id="f">
+  <label for="">Username:</label>
+  <input type="text" name="username">
+  <br>
+  <label for="">Password:</label>
+  <input type="text" name="password">
+  <br>
+  <input type="submit" value="Submit" id="submit">
+</form>
+```
+```js
+// 获取表单元素
+const formEle = document.forms[0];
+// submit按钮
+const submit = document.querySelector('#submit');
+// 填写完表单后点击submit
+submit.addEventListener('click', e => {
+  e.preventDefault(); // 阻止默认行为
+  const data = new FormData(formEle); // 获取FormData对象
+  console.log(data.get('username')); // 打印 username 对应的值
+});
+```
+情景2：自定义表单数据，用于XHR传输
+```js
+// 创建空表单
+const data = new FormData();
+// 加入表单数据
+data.append('username', 'xxx');
+data.append('password', '123');
+// 验证是否加入
+console.log(data.get('username')); // xxx
+console.log(data.get('password')); // 123
+```
+
+**选择图片资源并在浏览器上显示**
+---
+window.URL.createObjectURL() 接收选中的图片资源，返回 blob 字符串
+```html
+<input type="file" id="file">
+<img id="insert_img" width="300" height="400">
+```
+```js
+const inputFile = document.querySelector('#file');
+const insertImg = document.querySelector('#insert_img');
+inputFile.addEventListener('change', e => {
+  const target = e.target;
+  // 取消操作也会触发change事件
+  if (target.files.length === 0) {
+    return;
+  }
+  // 获取 blob 字符串
+  const url = window.URL.createObjectURL(target.files.item(0));
+  // 设置图片路径
+  insertImg.src = url;
+});
+```
