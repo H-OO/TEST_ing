@@ -1054,7 +1054,6 @@ Node.nodeType 获取节点类型 返回number类型 1~12
 * lastChild 最后一个子节点
 * lastElementChild 最后一个子元素节点
 * nodeName / tagName 获取大写的标签名
-* 
 
 **Node子元素列表**
 ---
@@ -1463,10 +1462,12 @@ data.append('password', '123');
 console.log(data.get('username')); // xxx
 console.log(data.get('password')); // 123
 ```
+使用 FormData 的方便之处体现在不必明确地在 XHR 对象上设置请求头部  
+XHR 对象能够识别传入的数据类型是 FormData 的实例，并配置适当的头部信息
 
 **选择图片资源并在浏览器上显示**
 ---
-window.URL.createObjectURL() 接收选中的图片资源，返回 blob 字符串
+window.URL.createObjectURL() 接收选中的资源，返回 blob 字符串
 ```html
 <input type="file" id="file">
 <img id="insert_img" width="300" height="400">
@@ -1486,3 +1487,123 @@ inputFile.addEventListener('change', e => {
   insertImg.src = url;
 });
 ```
+
+**重写XHR响应的MIME类型**
+---
+```js
+xhr.open('get', 'test.txt', true);
+xhr.overrideMimeType('text/xml'); // 在send方法之前才能保证重写响应的MIME类型
+xhr.send(null);
+```
+
+**进度事件**
+---
+客户端与服务器通信有关事件
+* loadstart 接收到响应数据的第一个字节时触发
+* progress 接收响应期间持续不断触发
+* error 请求发生错误时触发
+* abort 调用 abort() 方法而终止连接时触发
+* load 完整接收响应数据时触发
+
+**progress事件**
+---
+三个额外的属性
+* lengthComputable 进度信息是否可用的布尔值
+* position 已经接收的字节数
+* totalSize 根据Content-Length响应头部确定的预期字节数
+
+可用来创建进度指示器功能
+```js
+xhr.onprogress = function (e) {
+  if (e.lengthComputable) {
+    // e.position
+    // e.totalSize
+  }
+}
+```
+
+**跨域-图像Ping**
+---
+通过 onload 和 onerror 事件处理程序来确定是否接收到了响应
+```js
+const img = new Image();
+img.onload = function (e) {}
+img.onerror = function (e) {}
+img.src = ''; // 设置接口路径
+```
+缺点：只能发送GET请求、无法访问服务器的响应文本
+
+**跨域-JSONP**
+---
+通过 script 标签的 src 属性进行跨域  
+将回调函数名作为search传递过服务器
+
+**跨域-WebSocket**
+---
+实时通信，突破同源策略
+```js
+// 建立连接
+const ws = new WebSocket('ws://www.xxx.com');
+// 向服务器发送数据使用 send() 方法，并传入任意字符串
+ws.send('Hello');
+// 接收服务器数据使用 message 事件
+wx.onmessage = function (e) {
+  // 数据
+  const data = e.data;
+}
+// 断开连接
+ws.close();
+```
+注意：WebSocket只能发送纯文本，对于复杂的数据结构需要先要序列化成JSON字符串
+* ws.OPENING 0 正在建立连接
+* ws.OPEN 1 已经建立连接
+* ws.CLOSING 2 正在关闭连接
+* ws.CLOSE 3 已经关闭连接
+
+连接生命周期不同阶段触发的事件：
+* open 在成功建立连接时触发
+* error 在发生错误时触发，连续不能持续
+* close 在连接关闭时触发
+
+close 事件的 event 对象有额外的三个属性：
+* wasClean 布尔值，表示连接是否已经关闭
+* code 服务器返回的数值状态码
+* reason 服务器发回的消息
+
+**安全-XSS攻击**
+---
+XSS指浏览器从上到下解析页面，遇到包含在普通元素标签的脚本并将其执行
+
+危害：这些包含在普通元素标签的脚本通常都是攻击者写入的，可恶意获取其他用户的隐私信息，例如cookie等
+
+攻击方式：innerHTML + script  
+情景：后端渲染存在  
+原因：页面由后台返回，攻击的脚本已经被插入节点中  
+防御处理：  
+将包含`<script></script>`或`\u003cscript\u003e\u003c/script\u003e`的数据内容进行转移符替换  
+转义后`&lt;script&gt;&lt;/script&gt;`  
+注意：innerHTML 能将 unicode 码转成字符实体
+```
+|   <    |    >   | 实体括号
+| \u003c | \u003e | unicode码
+-------------------
+|  &lt;  |  &gt;  | 转义符
+```
+```js
+const str = "<script></script> \u003cscript\u003e\u003c/script\u003e";
+const newStr = str.replace(/</g, '&lt;').replace(/>/g, '&gt;'); // 能处理实体括号和unicode码
+console.log(newStr); // &lt;script&gt;&lt;/script&gt; &lt;script&gt;&lt;/script&gt;
+```
+PS:输出内容包含`javascript:`也需要进行转义处理  
+
+攻击方式：innerHTML + img  
+情景：前后端渲染都存在  
+原因：innerHTML 能解析具有 img 标签结构的字符串
+```js
+const ele = document.querySelector('.test');
+ele.innerHTML = '<img src="" onerror="javascript:alert(1)">';
+```
+
+**安全-CSRF攻击**
+---
+跨站点请求伪造
