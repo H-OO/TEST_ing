@@ -1580,7 +1580,7 @@ XSS指浏览器从上到下解析页面，遇到包含在普通元素标签的�
 情景：后端渲染存在  
 原因：页面由后台返回，攻击的脚本已经被插入节点中  
 防御处理：  
-将包含`<script></script>`或`\u003cscript\u003e\u003c/script\u003e`的数据内容进行转移符替换  
+将包含`<script></script>`或`\u003cscript\u003e\u003c/script\u003e`的数据内容进行转义符替换  
 转义后`&lt;script&gt;&lt;/script&gt;`  
 注意：innerHTML 能将 unicode 码转成字符实体
 ```
@@ -1598,10 +1598,39 @@ PS:输出内容包含`javascript:`也需要进行转义处理
 
 攻击方式：innerHTML + img  
 情景：前后端渲染都存在  
-原因：innerHTML 能解析具有 img 标签结构的字符串
+原因：innerHTML 能解析具有 img 标签结构的字符串  
+防御处理：  
+将包含`<img>`或`\u003cimg\u003e`的数据内容进行转义符替换  
+转义后`&lt;img&gt;`
 ```js
+// 使用 img 标签攻击
 const ele = document.querySelector('.test');
 ele.innerHTML = '<img src="" onerror="javascript:alert(1)">';
+// 使用 unicode 码配合 img 标签攻击
+const ele = document.querySelector('.test');
+let data = '\u003cimg src="" onerror="javascript:alert(1);"\u003e';
+ele.innerHTML = data;
+
+// 防御
+const ele = document.querySelector('.test');
+let data = '\u003cimg src="" onerror="javascript:alert(1);"\u003e';
+data = data.replace(/[\u003c]/g, '\\u003c').replace(/[\u003e]/g, '\\u003e');
+ele.innerHTML = data;
+```
+
+攻击方式：innerHTML + URL search  
+情景：前端渲染存在  
+原因：从 URL 中获取 search 参数使用  
+防御处理：获取 search 参数后，先进行转义
+```js
+// ?username=<img%20src=""%20onerror="javascript:alert(1);">
+let data = decodeURIComponent(location.search); // 解码
+// ?username=<img src="" onerror="javascript:alert(1);">
+
+// 防御
+data = data.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/=/g, '&#61;');
+// 使用
+ele.innerHTML = data;
 ```
 
 **安全-CSRF攻击**
