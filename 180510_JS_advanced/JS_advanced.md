@@ -1572,7 +1572,7 @@ close 事件的 event 对象有额外的三个属性：
 
 **安全-XSS攻击**
 ---
-XSS指浏览器从上到下解析页面，遇到包含在普通元素标签的脚本并将其执行
+XSS指浏览器执行包含在普通元素标签内脚本
 
 危害：这些包含在普通元素标签的脚本通常都是攻击者写入的，可恶意获取其他用户的隐私信息，例如cookie等
 
@@ -1636,3 +1636,32 @@ ele.innerHTML = data;
 **安全-CSRF攻击**
 ---
 跨站点请求伪造
+
+危害：伪造用户请求进行敏感操作
+
+攻击方式：抓包，获得 token，伪造用户请求  
+防御处理：使用对称加密算法，加密请求参数  
+```js
+// Multiple-precision.js
+// Barrett-modular-reduction.js
+// RSA.js
+// 十六进制公钥
+const rsa_n =
+  "C34E069415AC02FC4EA5F45779B7568506713E9210789D527BB89EE462662A1D0E94285E1A764F111D553ADD7C65673161E69298A8BE2212DF8016787E2F4859CD599516880D79EE5130FC5F8B7F69476938557CD3B8A79A612F1DDACCADAA5B6953ECC4716091E7C5E9F045B28004D33548EC89ED5C6B2C64D6C3697C5B9DD3";
+// 服务器端返回的 token
+let token = 'xxxxxxxxxx';F
+// 加密 ↓↓↓
+setMaxDigits(131); //131 => n的十六进制位数/2+3
+const key = new RSAKeyPair("10001", '', rsa_n); // 10001 => e的十六进制
+const _token = encryptedString(key, token); // 不支持汉字
+// 加密 ↑↑↑
+console.log(_token); // 0fe4cce62e82818c0d47dc3315494bc9a41721385e301e349344a81fe91b656665e99499ee4a2fc8115ae7d1d018ec84471ed5c263704af3a017303075f4b6c8575ddb617aecaa7a96a9a6d57df9285d0402ccb091ead3d69222aea8a21f6469928f4e2666cefc3d62e7cd6d9d75f3c1c088470dc2f7bb0c2120d50b3ff9983c
+```
+加密后还会存在安全问题：请求可能被重复提交，造成用户经济损失，这需要后台进行判断
+
+攻击方式：token在登录时被抓取，攻击者使用各一个公钥加密信息伪造用户请求  
+防御处理：  
+登录接口参数添加浏览器指纹项，将请求参数进行公钥加密，发送给后台  
+后台私钥解密将浏览器指纹保存，返回私钥加密后的token（浏览器指纹与该token进行绑定）  
+敏感操作后台都需要验证浏览器指纹与初次登录提交的浏览器指纹是否一致  
+不一致则中断该操作，并让 token 失效
