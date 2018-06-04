@@ -1673,3 +1673,27 @@ console.log(_token); // 0fe4cce62e82818c0d47dc3315494bc9a41721385e301e349344a81f
 * 重要的内容记得要加密传输(无论是利用https也好，自己加密也好)
 * get请求与post请求，要严格遵守规范，不要混用，不要将一些危险的提交使用jsonp完成
 * 对于URL上携带的信息，要谨慎使用
+
+**优化-函数节流**
+---
+```js
+const processor = {
+  // 定时器
+  timer: null,
+  // 想执行的操作
+  todo: function () {
+    console.log('todo...');
+  },
+  // 节流：触发方法先清除上一个定时器
+  process: function () {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      this.todo();
+    }, 100)
+  }
+};
+
+window.addEventListener('resize', e => {
+  processor.process();
+});
+```
