@@ -1,16 +1,23 @@
 const http = require('http');
-const file = require('./controler/file.js');
+const url = require('url');
+const router = require('./router/router');
 
 http.createServer((req, res) => {
-  // 设置响应头
-  res.writeHead(200, {
-    'Content-Type': 'text/html; charset=utf-8'
-  });
   // 清除第二次访问
   if (req.url !== '/favicon.ico') {
-    file.readImg('./public/img.jpg', res);
-    console.log('主线程');
+    let {pathname} = url.parse(req.url);
+    pathname = pathname.slice(1);
+    let {query} = url.parse(req.url, true);
+    // 异常处理 try{}catch(err){}
+    try {
+      router[pathname](req, res);
+    } catch (err) {
+      res.writeHead(200, {
+        'Content-Type': 'text/html; charset=utf-8'
+      });
+      res.write('404');
+      res.end();
+    }
   }
-  // res.end(); // http协议尾，用于结束请求
 }).listen(8000);
-console.log('↓↓↓ 服务启动 localhost:8000 ↓↓↓');
+console.log('Server run at localhost:8000');

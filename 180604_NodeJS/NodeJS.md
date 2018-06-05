@@ -18,12 +18,14 @@
 
 **http**
 ---
-目的
-* 使用 Node 内置 http 对象
-* 设置请求头（文件类型与编码格式）
-* 数据回显
-* 设置协议尾，结束请求（需在回显方法后设置）
-* 清除第二次访问
+Node内置对象，开启服务、监听端口
+* 导入使用: const http = require('http')
+* 创建服务: http.createServer((req, res) => {})
+* 设置请求头: res.writeHead 方法
+* 数据回显: res.write 方法
+* 设置协议尾，结束请求: res.end 方法
+* 清除第二次访问: if(req.url !== '/favicon.ico') {}
+* 监听端口: http.listen 方法
 ```JS
 const http = require('http');
 http.createServer((req, res) => {
@@ -42,218 +44,168 @@ console.log('服务启动 localhost:8000');
 
 **模块**
 ---
-目的
-* 定义模块
-* 输出模块
-* 导入模块
-```JS
-/*************_/src/module.js_*************/
-// 定义模块
-function User(name, age) {
-  this.name = name;
-  this.age = age;
-}
-// 输出模块
-module.exports = {
-  User
-};
-
-/*************_/src/node.js_*************/
-// 导入模块
-const module = require('/src/module.js');
-const {
-  User
-} = m1;
-const user = new User('H_OO', '17');
-console.log(user); // {name: 'H_OO', age: '17'}
-```
+* 定义模块 (function)
+* 输出模块 (module.exports)
+* 导入模块 (require)
 
 **url**
 ---
-目的
-* 使用 Node 内置的 url 对象
-* 获取浏览器端访问的全路径url
-```JS
-/*************_/src/node.js_*************/
-const http = require('http');
-const url = require('url');
-const c = require('./controler/c.js');
+Node内置对象，用于获取浏览器url
+* 获取url对象: url.parse(req.url)
 
-http.createServer((req, res) => {
-  // 设置响应头
-  res.writeHead(200, {
-    'Content-Type': 'text/html; charset=utf-8'
-  });
-  // 清除第二次访问
-  if (req.url !== '/favicon.ico') {
-    let {pathname} = url.parse(req.url); // 路径名
-    pathname = pathname.slice(1);
-    c[pathname](req, res); // 根据路径调用方法
-  }
-  res.end(); // http协议尾，用于结束请求
-}).listen(8000);
-console.log('↓↓↓ 服务启动 localhost:8000 ↓↓↓');
+**fs**
+---
+Node内置对象，用于读写文件
 
-/*************_/src/controler/c.js_*************/
-function login(req, res) {
-  res.write('登录');  
-}
-function join(req, res) {
-  res.write('注册');  
-}
-
-module.exports = {
-  login,
-  join
-};
-
-/*************_Brower_*************/
-// localhost:8000/login
-// localhost:8000/join
-```
+**path**
+---
+Node内置对象，用于设置相对路径写法
+`path.resolve(__dirname, '')`
 
 **读取文件**
 ---
-目的
-* 同步读取 fs.readFileSync()
-* 异步读取 fs.readFile()
-```JS
-/*************_/src/node.js_*************/
-const http = require('http');
-const file = require('./controler/file.js');
-
-http.createServer((req, res) => {
-  // 设置响应头
-  res.writeHead(200, {
-    'Content-Type': 'text/html; charset=utf-8'
-  });
-  // 清除第二次访问
-  if (req.url !== '/favicon.ico') {
-    file.readFile('./public/tmp.txt'); // 读取文件
-  }
-  res.end(); // http协议尾，用于结束请求
-}).listen(8000);
-console.log('↓↓↓ 服务启动 localhost:8000 ↓↓↓');
-/*************_/src/controler/file.js_*************/
-const fs = require('fs');
-const file = {
-  readFile: function (path) {
-    console.log('__异步读取__');
-    fs.readFile(path, (err, data) => {
-      if (err) {
-      } else {
-        // data isBuffer
-        console.log(data.toString());
-      }
-    });
-  },
-  readFileSync: function (path) {
-    console.log('__同步读取__');
-    const data = fs.readFileSync(path, 'utf-8');
-    console.log(data);
-    return data;
-  }
-};
-module.exports = file;
+* 异步读取: fs.readFile 方法
+* 同步读取: fs.readFileSync 方法
+```
+// fs.readFile(path, 'binary', callback)
+path 读取路径
+'binary' 二进制读取
+callback 读取动作结束执行回调 (err, file) => {}
 ```
 
 **保存文件**
 ---
-目的
-* 同步保存与异步保存的区别
-```JS
-/*************_/src/node.js_*************/
-const http = require('http');
-const file = require('./controler/file.js');
+* 异步保存: fs.writeFile 方法
+* 同步保存: fs.writeFileSync 方法
+```
+// fs.writeFile(path, content, callback)
+path 存储路径+文件名+后缀
+content 存入的内容
+callback 存储动作结束执行回调 (err) => {}
 
-http.createServer((req, res) => {
-  // 设置响应头
-  res.writeHead(200, {
-    'Content-Type': 'text/html; charset=utf-8'
-  });
-  // 清除第二次访问
-  if (req.url !== '/favicon.ico') {
-    file.writeFile('./public/tmp_write.txt', 'Hello world!'); // 异步写入
-  }
-  res.end(); // http协议尾，用于结束请求
-}).listen(8000);
-console.log('↓↓↓ 服务启动 localhost:8000 ↓↓↓');
-
-/*************_/src/controler/file.js_*************/
-const fs = require('fs');
-const file = {
-  writeFile: function (path, data) {
-    console.log('__异步保存__');
-    fs.writeFile(path, data, (err) => {
-      if (err) {
-        
-      } else {
-        console.log('saved!!!');
-      }
-    });
-  },
-  writeFileSync: function (path, data) {
-    console.log('__同步保存__');
-    fs.writeFileSync(path, data);
-  }
-};
-
-module.exports = file;
+// fs.writeFileSync(path, content)
+path 存储路径+文件名+后缀
+content 存入的内容
 ```
 
-**读取图片并回显**
+**需求-读取图片并回显**
 ---
 * 读取方法 fs.readFile(path, 'binary', callback)
 * 设置图片文件对应的响应头 image/jpeg
 * 以二进制的格式传输回显
-```JS
-/*************_/src/node.js_*************/
-const http = require('http');
-const file = require('./controler/file.js');
+* 传输过程中不允许与其他文件同时进行
 
+**需求-同时显示文本与图片**
+---
+先返回html，浏览器解析到 img 标签再发送获取对应图片的请求
+```HTML
+<!--_./view/index.html_-->
+<img src="./img" alt="">
+```
+```JS
+/******************_./node.js_******************/
+const http = require('http');
+const url = require('url');
+const router = require('./router/router');
 http.createServer((req, res) => {
-  // 设置响应头
-  res.writeHead(200, {
-    'Content-Type': 'text/html; charset=utf-8'
-  });
   // 清除第二次访问
   if (req.url !== '/favicon.ico') {
-    file.readImg('./public/img.jpg', res);
-    console.log('主线程');
+    let {pathname} = url.parse(req.url);
+    pathname = pathname.slice(1);
+    // 异常处理
+    try {
+      router[pathname](req, res);
+    } catch (err) {
+      res.writeHead(200, {
+        'Content-Type': 'text/html; charset=utf-8'
+      });
+      res.write('404');
+      res.end();
+    }
   }
-  // res.end(); // http协议尾，用于结束请求
 }).listen(8000);
-console.log('↓↓↓ 服务启动 localhost:8000 ↓↓↓');
+console.log('Server run at localhost:8000');
 
-/*************_/src/controler/file.js_*************/
-const fs = require('fs');
-const file = {
-  readImg: function (path, res) {
-    // 读取方法
-    fs.readFile(path, 'binary', (err, file) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log('__输出图片__');
-        // 设置响应头
-        res.writeHead(200, {
-          'Content-Type': 'image/jpeg; charset=utf-8'
-        });
-        res.write(file, 'binary'); // 以二进制格式传输回显
-        res.end(); // http协议尾，用于结束请求
-      }
-    })
+/******************_./router/router.js_******************/
+const file = require('../controler/file');
+module.exports = {
+  // 处理登录请求
+  login: (req, res) => {
+    file.readFile('./view/index.html', req, res);
+  },
+  // 获取图片
+  img: (req, res) => {
+    file.readImg('./public/logo.png', req, res);
   }
 };
 
+/******************_./control/file.js_******************/
+const fs = require('fs');
+const bale = {
+  getFile: (path, req, res) => {
+    fs.readFile(path, 'binary', (err, file) => {
+      if (err) {
+        console.log('404');
+      } else {
+        res.write(file, 'binary'); // 以二进制格式回显
+      }
+      res.end(); // http协议尾，用于结束请求
+    });
+  }
+};
+const file = {
+  readFile: (path, req, res) => {
+    // html文件响应头
+    res.writeHead(200, {
+      'Content-Type': 'text/html; charset=utf-8'
+    });
+    bale.getFile(path, req, res);
+  },
+  readImg: (path, req, res) => {
+    // 图片响应头
+    res.writeHead(200, {
+      'Content-Type': 'image/png; charset=utf-8'
+    });
+    bale.getFile(path, req, res);
+  }
+};
 module.exports = file;
 ```
 
-****
+**异常处理**
 ---
+使用 try...catch 语句包裹易出错代码  
+主动抛出错误使用 throw 操作符
+```JS
+try {
+  // 易错代码
+} catch (err) {
+  // 捕获错误
+}
 
+throw // 主动抛出错误给 catch 捕获
+```
 
+**参数接收**
+---
+* get 同步接收
+* post 异步接收
+```JS
+/****************_GET_****************/
+const url = require('url');
+const {query} = url.parse(req.url, true); // true 表示是否将 query 转成对象形式使用
 
+/****************_POST_****************/
+const querystring = require('querystring'); // post请求参数获取
+let post = '';
+req.on('data', (chunk) => {
+  post += chunk; // ifBuffer
+});
+req.on('end', () => {
+  post = querystring.parse(post); // isObj
+  // todosomething...
+});
+```
 
 
 
