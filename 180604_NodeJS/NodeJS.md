@@ -1,19 +1,6 @@
 # NodeJS
 单线程、异步、事件驱动
 
-```
-【http、fs、】
-模块制作与调用
-路由
-读取文件
-写文件
-读取图片
-路由改造
-异常处理(try...catch)
-参数接收
-异步流程控制(async)
-```
-
 ## 基础
 
 **http**
@@ -207,7 +194,46 @@ req.on('end', () => {
 });
 ```
 
+**async**
+---
+异步流程控制
+* 串行无关联 async.series
+* 并行无关联 async.parallel
+* 串行有关联
+```JS
+/****************_series 与 parallel_****************/
+const async = require('async'); // npm
+async.series({ // parallel
+  one: (done) => {
+    done(null, '_one_');
+  },
+  two: (done) => {
+    done(null, '_two_');
+  }
+}, (err, succ) => {
+  if (err) {
+  } else {
+    // todosomething...
+  }
+});
 
+/****************_waterfall_****************/
+async.waterfall([(done) => {
+  done(null, '_one_');
+}, (preValue, done) => {
+  console.log(preValue); // '_one_'
+  done(null, '_two_');
+}], (err, preValue) => {
+  console.log(preValue); // '_two_'
+});
+```
+区别：  
+串行无关联中某个行为错误将导致其他行为不会得到执行  
+并行无关联中某个行为错误不影响其他行为的执行  
+行为错误通过 done 方法抛出错误信息，最终在回调函数的参数1 err 去捕获错误行为
+
+**直接连接MySQL**
+---
 
 
 

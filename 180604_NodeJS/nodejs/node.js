@@ -1,6 +1,6 @@
 const http = require('http');
 const url = require('url');
-const router = require('./router/router');
+const router = require('./src/router/router');
 
 http.createServer((req, res) => {
   // 清除第二次访问

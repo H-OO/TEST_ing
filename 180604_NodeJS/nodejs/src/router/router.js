@@ -1,6 +1,7 @@
 const url = require('url');
 const fs = require('fs');
 const path = require('path');
+const async = require('async');
 const file = require('../controler/file');
 
 const querystring = require('querystring'); // post请求参数获取
@@ -8,7 +9,7 @@ const querystring = require('querystring'); // post请求参数获取
 module.exports = {
   // 首页
   index: (req, res) => {
-    file.readFile('./view/index.html', req, res);
+    file.readFile(path.resolve(__dirname, '../view/index.html'), req, res);
   },
   // 处理登录请求
   login: (req, res) => {
@@ -72,6 +73,68 @@ module.exports = {
   },
   // 获取图片
   img: (req, res) => {
-    file.readImg('./public/logo.png', req, res);
+    file.readImg(path.resolve(__dirname, '../public/logo.png'), req, res);
+  },
+  // async 串行无关联 series
+  series: (req, res) => {
+    res.writeHead(200, {
+      'Content-Type': 'text/html; charset=utf-8'
+    });
+    res.write('async series ing...');
+    async.parallel({
+      one: (done) => {
+        let count = 0;
+        let timer = setInterval(() => {
+          if (count > 3) {
+            clearInterval(timer);
+            done('one_err', '__——one——__');
+          }
+          console.log('__one__');
+          count++; 
+        }, 1000)
+      },
+      two: (done) => {
+        console.log('__two__');
+        done(null, '__——two——__');
+      }
+    }, (err, succ) => {
+      console.log(err)
+      console.log(succ)
+      // if (err) {
+      //   console.log('---');
+      //   console.log(err);
+      // } else {
+      //   res.write('async series success!');
+      //   console.log(succ);
+      // }
+      res.end();
+    })
+  },
+  // waterfall
+  waterfall: (req, res) => {
+    res.writeHead(200, {
+      'Content-Type': 'text/html; charset=utf-8'
+    });
+    async.waterfall([(done) => {
+      let count = 0;
+      let timer = setInterval(() => {
+        if (count > 3) {
+          clearInterval(timer);
+          done(null, '__one__');
+        }
+        console.log(count);
+        count++;
+      }, 1000);
+    }, (preValue, done) => {
+      console.log('---');
+      console.log(preValue);
+      done(null, '__two__');
+    }], (err, succ) => {
+      console.log('--over--');
+      
+      console.log(err);
+      console.log(succ);
+      res.end();
+    })
   }
 };
