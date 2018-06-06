@@ -1,5 +1,5 @@
 {
-  "name": "nodejs",
+  "name": "connect-mongodb",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,10 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "async": "^2.6.1"
-  },
   "dependencies": {
-    "mysql": "^2.15.0"
+    "mongodb": "^3.0.10"
   }
 }
