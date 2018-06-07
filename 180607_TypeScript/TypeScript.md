@@ -85,4 +85,25 @@ arr = [1, '2']; // Error
 arr[3] = '3'; // OK 越界元素使用联合类型 (string|number)
 /*******************_enum_*******************/
 
+/*******************_any_*******************/
+// 不进行类型检查
+let test: any = 123;
+let arr: any[] = [1, '2', true];
+/*******************_void_*******************/
+// 没有任何类型，只能赋值 undefined 或 null
+let test: void = null;
+/*******************_undefined 和 null_*******************/
+// 默认情况下，两者为所有类型的子类型
+let test: number = undefined;
+// 使用 --strictNullChecks 标记，两者只能赋值给 void 和自身 (推荐使用标记)
+let test: void = undefined;
+/*******************_never_*******************/
+// 永不存在的值类型
+// never类型是任何类型的子类型，没有任何类型可以赋值给never类型 (除了自身之外)
+/*******************_类型断言_*******************/
+// 人为做了类型检查
+let test: string = '123'；
+let length1: number = (<string>test).length; // 断言方式1 尖括号
+let length2: number = (test as string).length; // 断言方式2 as (JSX语法支持)
+
 ```
