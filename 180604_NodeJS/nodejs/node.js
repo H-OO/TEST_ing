@@ -1,6 +1,27 @@
 const http = require('http');
 const url = require('url');
 const router = require('./src/router/router');
+const events = require('events');
+
+// const eventEmit = new events.EventEmitter();
+// eventEmit.once('test', (a, b) => {
+//   console.log(a);
+//   console.log(b);
+// });
+// eventEmit.emit('test', 'aa', 'bb');
+
+const {User} = require('./src/event/event');
+const user = new User();
+user.events.once('login', (param) => {
+  user.login(param);
+});
+user.events.once('join', (param) => {
+  user.join(param);
+});
+user.events.emit('login', {loginMsg: '_login_'});
+user.events.emit('join', {joinMsg: '_join_'});
+
+
 
 http.createServer((req, res) => {
   // 清除第二次访问

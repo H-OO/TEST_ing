@@ -425,7 +425,16 @@ console.log(res); // ['$t(Aa._01)', '$t(Aa._02)']
 // 获取计算属性 transform 的 translate X 与 Y
 const str = 'matrix(1, 0, 0, 1, -100, 0)';
 const res = str.match(/[^a-z\(\)]+/)[0].split(/\,/).slice(-2); // ['-100', '0']
+
+// 获取唯一结构中的内容
+const str = ',{"type":"ping"},';
+console.log(str);
+let res1 = str.match(/\{"type":"(.+)\"}/)[1]; // 方式1 只匹配双引号
+let res2 = str.match(/{.{1}type.{1}:.{1}(.+).{1}}/)[1]; // 方式2 不规定单双引号
+console.log(res1); // ping
+console.log(res2); // ping
 ```
+match 方法返回一个数字，包含正向匹配、反向匹配的字符串（注意不要使用修饰符g）
 
 **Function**
 ---

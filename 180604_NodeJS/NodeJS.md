@@ -199,7 +199,7 @@ req.on('end', () => {
 异步流程控制
 * 串行无关联 async.series
 * 并行无关联 async.parallel
-* 串行有关联
+* 串行有关联 async.waterfall
 ```JS
 /****************_series 与 parallel_****************/
 const async = require('async'); // npm
@@ -232,8 +232,47 @@ async.waterfall([(done) => {
 并行无关联中某个行为错误不影响其他行为的执行  
 行为错误通过 done 方法抛出错误信息，最终在回调函数的参数1 err 去捕获错误行为
 
-**直接连接MySQL**
+**events**
 ---
+Node内置对象
+* once('eventName', callback)
+* emit('eventName', callback)
+```JS
+/****************_简单版_****************/
+const eventEmit = new events.EventEmitter();
+eventEmit.once('test', (a, b) => {
+  console.log(a); // aa
+  console.log(b); // bb
+});
+eventEmit.emit('test', 'aa', 'bb');
+
+/****************_封装版_****************/
+/****************_/src/event/event.js_****************/
+const events = require('events');
+function User() {
+  this.events = new events.EventEmitter();
+  this.login = (param) => {
+    console.log('登录', param);
+  }
+  this.join = (param) => {
+    console.log('注册', param);
+  }
+}
+module.exports = {
+  User
+};
+/****************_node.js_****************/
+const {User} = require('./src/event/event');
+const user = new User();
+user.events.once('login', (param) => {
+  user.login(param);
+});
+user.events.once('join', (param) => {
+  user.join(param);
+});
+user.events.emit('login', {loginMsg: '_login_'});
+user.events.emit('join', {joinMsg: '_join_'});
+```
 
 
 
