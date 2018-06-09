@@ -1,7 +1,7 @@
 interface SquareConfig {
   a?: string;
   b?: number;
-  [propName: string]: any;
+  // [propName: string]: any;
 }
 
 function test(param: SquareConfig): SquareConfig {
