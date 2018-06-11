@@ -274,5 +274,52 @@ res.handler(123);
 **继承接口**
 ---
 ```TS
+interface A {
+  a: string;
+}
+interface B {
+  b: number;
+}
+interface C extends A, B {
+  c: number[]
+}
+let test: C = {
+  a: '123',
+  b: 123,
+  c: [1, 2, 3]
+};
+```
 
+**混合类型**
+---
+```TS
+interface A {
+  // 单个时为函数接口
+  (a: string): void;
+  // 多个时为混合类型接口
+  value: number;
+  handler(b: string): void;
+};
+function test(): A {
+  let x = <A>function (a: string) {}; // 类型断言
+  x.value = 123;
+  x.handler = function () {};
+  return x;
+}
+```
+
+**接口继承类**
+---
+接口会继承类的 private 成员  
+这个接口类型只能被这个类或其子类所实现 implements
+```TS
+class Test {
+  private state: any;
+}
+interface A extends Test {
+  handler(): void;
+}
+class Button extends Test implements A {
+  handler() {}
+}
 ```
