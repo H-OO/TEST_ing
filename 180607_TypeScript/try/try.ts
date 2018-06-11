@@ -1,18 +1,18 @@
-interface SquareConfig {
-  a?: string;
-  b?: number;
-  // [propName: string]: any;
+interface TestConstructor {
+  new(x: string): TestInterface; // 实例: TestInterface
 }
 
-function test(param: SquareConfig): SquareConfig {
-  return param;
+interface TestInterface {
+  handler(param: number): void;
 }
 
-const o = {
-  a: '1',
-  b: 2,
-  c: []
-};
+class Test implements TestInterface {
+  // 类使用接口时，接口只对实例部分进行检查
+  // 构造函数属于静态部分，不检查
+  constructor(x: string) { }
+  // 实例部分，检查
+  handler(param: number) { }
+}
 
-const res = test(o);
-console.log(res);
+const res = new Test('x');
+res.handler(123);

@@ -190,3 +190,89 @@ class C {
   m() {} // 原型中
 }
 ```
+
+**函数类型**
+---
+```TS
+interface c {
+  (
+    one: string,
+    two: number
+  ): void;
+}
+let test: c;
+test = function (one, two) {
+  console.log(one);
+  console.log(two);
+}
+test('1', 2);
+```
+
+**字符串索引签名**
+---
+```TS
+/******************_数组使用_******************/
+interface f_arr {
+  [index: number]: string; // 规定索引签名是number类型，返回值是字符串类型
+}
+let arr: f_arr = ['1', '2']; // 元素都为string
+/******************_对象使用_******************/
+interface f_obj {
+  [propName: string]: number; // 规定索引签名是string类型，返回值是number类型
+}
+let obj: f_obj = {
+  one: 1 // string: number
+};
+// 返回值不限制可使用 any
+interface f_obj {
+  one: string;
+  two: number;
+  [propName: string]: any; // 除one与two外，其他规定为 string: any 类型
+}
+let obj: f_obj = {
+  one: '1',
+  two: 2,
+  three: null
+};
+```
+
+**类类型**
+---
+```TS
+// interface 定义接口
+interface c {
+  one: number;
+  two(param: string): void;
+}
+// implements 使用接口
+class C implements c {
+  one = 123; // 实例中
+  two(param: string) {} // 原型中
+}
+```
+
+**类静态部分与实例部分的区别**
+---
+类使用接口时，接口只对实例部分进行检查
+```TS
+interface TestConstructor {
+  new(x: string): TestInterface; // 实例: TestInterface
+}
+interface TestInterface {
+  handler(param: number): void;
+}
+class Test implements TestInterface {
+  // 构造函数属于静态部分，不检查
+  constructor(x: string) { }
+  // 实例部分，检查
+  handler(param: number) { }
+}
+const res = new Test('x');
+res.handler(123);
+```
+
+**继承接口**
+---
+```TS
+
+```
