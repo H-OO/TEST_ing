@@ -82,6 +82,19 @@ console.log(test.res); // _a_ _b_
 
 **基础数据类型**
 ---
+12种基本数据类型
+* 布尔
+* 数字
+* 字符串
+* 数组
+* 元组
+* 枚举
+* any
+* void
+* null
+* undefined
+* never
+* Symbols
 ```TS
 /****************_布尔值_****************/
 let bool: boolean = true;
@@ -322,4 +335,144 @@ interface A extends Test {
 class Button extends Test implements A {
   handler() {}
 }
+```
+
+**类**
+---
+类继承
+```TS
+/******************_简单继承例子_******************/
+class A {
+  name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  sayName() { }
+}
+class B extends A { } // B继承A（B原型替换成A实例）
+const res = new B('H'); // 实例化
+// res.name // 实例属性
+// res.sayName // B原型A实例原型中的方法
+/******************_成员默认用 public 标记_******************/
+class A {
+  public name: string;
+  public constructor(name: string) {
+    this.name = name;
+  }
+  public sayName() { }
+}
+/******************_成员改成用 private 标记_******************/
+class A {
+  private name: string; // 属性私有化
+  constructor(name: string) {
+    this.name = name;
+  }
+  sayName() {
+    return this.name;
+  }
+}
+const a = new A('H');
+const res = a.sayName();
+console.log(res); // H
+/******************_成员改成用 protected 标记_******************/
+// protected 与 private 行为相似，但 protected 成员在派生类中可以访问
+// 从类的外部无法访问
+class P {
+  protected name: string; // 派生类访问该属性 [protected OK | private Error]
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+class C extends P {
+  protected age: number;
+  constructor(name: string, age: number) {
+    super(name); // 将参数传递给父类构造函数，改变父类构造函数属性的 this 指向
+    this.age = age;
+  }
+  // 访问P类 name 属性
+  public sayName() {
+    console.log(this.name);
+  }
+}
+const c = new C('H', 17);
+console.log(c); // {name: 'H', age: 17}
+c.sayName(); // H
+/******************_成员改成用 readonly 标记_******************/
+class A {
+  readonly name: string; // 构造函数实例化后不可篡改该属性
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+const a = new A('H');
+console.log(a.name); // H
+```
+
+**参数属性**
+---
+类中构造函数参数 public 属性名 简化属性写法
+```TS
+/******************_简化前_******************/
+class A {
+  public name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  sayName() {
+    return this.name;
+  }
+}
+/******************_简化后_******************/
+class A {
+  constructor(public name: string) {
+    // public name 等同于 this.name = name
+  }
+  sayName() {
+    return this.name;
+  }
+}
+/******************_同样的用法_******************/
+const a = new A('H');
+const res = a.sayName();
+console.log(res); // H
+```
+
+**存取器**
+---
+对访问存取属性值添加限制，使用 get set 模式
+
+**静态属性**
+---
+static 修饰符，将属性设置为静态属性  
+静态属性只能被类本身访问，实例不能访问
+```TS
+class A {
+  public static msg: string; // 静态属性只能被类本身访问，实例不能访问
+  public constructor(msg: string) {
+    A.msg = msg; // 类调用属性进行赋值
+  }
+}
+```
+
+**abstract抽象类**
+---
+```TS
+// 抽象类
+abstract class A {
+  constructor(public name: string) { }
+  sayName(): void {
+    console.log(this.name);
+  }
+  abstract sayHi(): void; // 派生类中必须有该方法
+}
+// 派生类
+class B extends A {
+  sayHi(): void {
+    console.log('Hi');
+  }
+  // 方法需要在抽象类中备案 → abstract 方法名(): void;
+  // 编译前会检查派生类中的方法在抽象类中是否存在
+}
+const b = new B('H');
+b.sayName(); // H
 ```
