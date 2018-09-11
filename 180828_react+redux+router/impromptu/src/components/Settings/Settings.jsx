@@ -35,7 +35,7 @@ class Settings extends Component {
   render() {
     return (
       <div>
-        <div>Settings</div>
+        <div>【Settings】</div>
         <button onClick={this.exit}>退出登录</button>
       </div>
     )

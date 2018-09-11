@@ -901,3 +901,221 @@ export default new Vuex.Store({
 
 // 访问state中的状态：this.$store.state.Test
 ```
+
+## vue深入理解
+
+**生命钩子-beforeCreate**
+---
+环节：实例`初始化`之后，未进行`数据观测(data observer)`和`event/watcher事件配置`  
+详细：当前环节只是将`data`的所有属性和`methods`的所有方法都加入实例而已  
+应用：异步请求数据  
+注意：当前环节修改`data`的属性无效
+
+**生命钩子-created**
+---
+环节：实例`创建完成`之后，已完成`数据观测(data observer)`，属性和方法运算，`watch/event事件回调`  
+详细：当前环节修改`data`的属性，还不会触发`计算属性`和`监听属性`，`this.$el`还不可访问  
+应用：异步请求数据  
+
+**生命钩子-beforeMount**
+---
+环节：相关`render`函数首次被调用  
+详细：之前或当前环节修改`data`的属性，只会触发`计算属性`，不会触发`监听属性`
+
+**生命钩子-mounted**
+---
+环节：`el`被新创建的`this.$el`替换，并挂载到实例上去之后  
+详细：之前或当前环节修改`data`的属性，先触发`监听属性`，再触发`计算属性`  
+注意：当前环节不保证所有子组件都一起挂载，如果希望整个视图都渲染完毕，可以通过`this.$nextTick`方法  
+```js
+export default {
+  mouted() {
+    this.$nextTick(() => {
+      // todosomething...
+    })
+  }
+}
+```
+
+**生命钩子-beforeUpdate**
+---
+环节：状态被改动，但未修复到视图上  
+应用：访问修复前的虚拟DOM，解除已经添加的事件监听  
+
+**生命钩子-updated**
+---
+环节：状态被改变，并修复到视图上  
+注意：避免在当前环节更改状态，如果要响应状态改变，最好通过`计算属性`或`监听属性`  
+     当前环节不保证所有子组件都一起被重绘，如果希望整个视图都渲染完毕，可以通过`this.$nextTick`方法
+
+**生命钩子-beforeDestroy**
+---
+环节：实例被销毁之前  
+应用：解除订阅行为
+
+**生命钩子-destroyed**
+---
+环节：实例完成销毁  
+详细：vue实例指示的所有东西都会解绑定，所有的事件监听器都会被移除，所有子实例也会被销毁
+
+**事件修饰符**
+---
+作用：让事件处理方法更加纯粹，不用去处理DOM事件的细节  
+* .stop      阻止冒泡
+* .prevent   阻止默认行为
+* .capture   
+* .self      当`event.target`为自己时触发
+* .once      只触发一次
+* .passive   告诉浏览器不阻止默认行为
+提示：修饰符可以串联使用
+
+**按键修饰符**
+---
+作用：监听某个按键
+* .enter
+* .tab
+* .delete
+* .esc
+* .space
+* .up
+* .down
+* .left
+* .right
+
+```html
+<!-- enter键 -->
+<button @keyup.13="handler">enter</button>
+<button @keyup.enter="handler">enter</button>
+```
+
+通过全局`Vue.config.keyCodes`对象可以自定义按键修饰符别名
+```js
+// 自定义
+Vue.config.keyCodes.f1 = 112
+// 使用 `@keyup.f1`
+```
+
+**系统修饰符**
+---
+* .ctrl
+* .alt
+* .shift
+* .meta    window/command
+
+```html
+<!-- Alt + C -->
+<input @keyup.alt.67="handler" />
+<!-- Ctrl + Click -->
+<div @click.ctrl="handler">Do something</div>
+```
+* .exact  精确按键组合触发
+```html
+<!-- 有且只有 Ctrl 被按下才触发 -->
+<button @click.ctrl.exact="handler">btn</button>
+<!-- 没有任何系统修饰符被按下的时候才触发 -->
+<button @click.exact="handler">btn</button>
+```
+
+**表单**
+---
+`v-model`属性的属性值表示接收的信息
+* 输入框  接收`value`
+* 复选框  接收一个数组
+* 单选框  接收最终项的`value`
+* 选择框  接收最终项的`value`
+* 多选框  接收一个数组
+```html
+<!-- 输入框 -->
+<!-- msg  -->
+<input v-model="msg" placeholder="请输入" />
+
+<!-- 复选框 -->
+<!-- toggle 接收布尔值 (没有`value`属性) -->
+<input type="checkbox" v-model="toggle" />
+<!-- checkedNames 默认值需为[] -->
+<input type="checkbox" value="A" v-model="checkedNames" />
+<input type="checkbox" value="B" v-model="checkedNames" />
+
+<!-- 单选框 -->
+<!-- picked 接收最终选择项的`value`属性的属性值 -->
+<input type="radio" value="A" v-model="picked" />
+<input type="radio" value="B" v-model="picked" />
+
+<!-- 选择框 -->
+<!-- selected 接收最终选择项的`value`属性的属性值 -->
+<!--  -->
+<select v-model="selected">
+  <option disabled value="">请选择</option>
+  <option value="a">A</option>
+  <option value="b">B</option>
+</select>
+<!-- 复选框则在`select`标签中加入`multiple`属性，`selected`默认值需为[] -->
+
+```
+
+自定义值绑定
+```html
+<!-- 选中时`toggle`为ok，未选中则为no -->
+<input
+  type="checkbox"
+  v-model="toggle"
+  true-value="ok"
+  false-value="no"
+>
+```
+
+**过渡&动画**
+---
+通过`transition`组件，为其中的元素添加`过渡&动画`效果
+
+进入(过渡)
+* name-enter          进入过渡的开始状态(当前样式)
+* name-enter-to       进入过渡的结束状态(目标样式)
+* name-enter-active   进入过渡的全过程(过渡的过程时间、延时、曲线函数)
+
+离开(过渡)
+* name-leave          离开过渡的开始状态(当前样式)
+* name-leave-to       离开过渡的结束状态(目标样式)
+* name-leave-active   离开过渡的全过程(过渡的过程时间、延时、曲线函数)
+
+```
+<transition name="fade">
+  <div></div>
+</transition>
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+```
+
+进入/离开(动画)
+* name-enter-active   进入动画
+* name-leave-active   离开动画
+
+```
+<transition name="bounce">
+  <div></div>
+</transition>
+.bounce-enter-active {
+  animation: bounce-in .5s;
+}
+.bounce-leave-active {
+  animation: bounce-in .5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+```

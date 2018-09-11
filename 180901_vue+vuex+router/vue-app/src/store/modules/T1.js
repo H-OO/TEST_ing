@@ -9,16 +9,16 @@ export default {
         type: 'test',
         payload: params.payload
       })
-      return new Promise((resolve, reject) => {
-        // 异步
-        setTimeout(() => {
-          store.commit({
-            type: 'test',
-            payload: 'async'
-          })
-          resolve()
-        }, 0)
-      })
+      // return new Promise((resolve, reject) => {
+      //   // 异步
+      //   setTimeout(() => {
+      //     store.commit({
+      //       type: 'test',
+      //       payload: 'async'
+      //     })
+      //     resolve()
+      //   }, 0)
+      // })
     }
   },
   mutations: {

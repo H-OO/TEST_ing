@@ -4,7 +4,7 @@
       <router-view/>
     </keep-alive>
     <br>
-    <div>缓存列表：{{myCacheToString}}</div>
+    <!-- <div>缓存列表：{{myCacheToString}}</div> -->
   </div>
 </template>
 

@@ -46,11 +46,13 @@ class GoodsList extends Component {
     const list = this.getList(this.state.list);
     return (
       <div>
-        <div>GoodsList</div>
+        <div>【GoodsList】</div>
         <ul>
           {list}
         </ul>
         <button onClick={this.goBack}>上一页</button>
+        <br/>
+        <div></div>
       </div>
     )
   }

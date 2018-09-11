@@ -7,6 +7,9 @@ class Login extends Component {
     this.login = this.login.bind(this);
     this.pathJump = this.pathJump.bind(this);
     this.form = React.createRef();
+    this.state = {
+      num: 0
+    };
   }
   login(e) {
     e.preventDefault();
@@ -44,9 +47,10 @@ class Login extends Component {
     this.state.unsubscribe(this.pathJump);
   }
   render() {
+    const {num} = this.state;
     return (
       <div>
-        <div>Login</div>
+        <div>【Login】</div>
         <form action="" ref={this.form} onSubmit={this.login}>
           <label>username</label>
           <input type="text" name="username"/>
@@ -56,6 +60,8 @@ class Login extends Component {
           <br/>
           <button type="submit">submit</button>
         </form>
+        <br/>
+        <div>{num}</div>
       </div>
     )
   }

@@ -5,6 +5,7 @@ import Login from '../Login/Login';
 import Settings from '../Settings/Settings';
 import GoodsList from '../GoodsList/GoodsList';
 import GoodsDetail from '../GoodsDetail/GoodsDetail';
+// import test1 from '../T1/T1';
 
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
           <Route path='/settings' component={Settings} />
           <Route path='/goodslist' component={GoodsList} />
           <Route path='/goodsdetail/:id' component={GoodsDetail} />
+          {/* <Route path='/t1' component={test1} /> */}
         </div>
       </BrowserRouter>
     )

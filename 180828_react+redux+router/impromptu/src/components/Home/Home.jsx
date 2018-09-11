@@ -12,7 +12,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <div>Home</div>
+        <div>【Home】</div>
         <Link to='/settings'>Settings</Link>
         <br/>
         <Link to='/goodslist'>Goodslist</Link>
