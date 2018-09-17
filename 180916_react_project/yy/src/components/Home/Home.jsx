@@ -10,13 +10,13 @@ class Home extends Component {
   render() {
     const {num} = this.state;
     return (
-      <div>
+      <div className='home'>
         <h2>Home</h2>
         <div>随机数：【 {num} 】</div>
         <div>
           <Link to='/list'>to List</Link>
           <br/>
-          <Link to='/tab'>to Tab</Link>
+          <Link to='/asyncComponent'>to asyncComponent</Link>
         </div>
       </div>
     )
