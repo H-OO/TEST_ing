@@ -17,6 +17,8 @@ class Home extends Component {
           <Link to='/list'>to List</Link>
           <br/>
           <Link to='/asyncComponent'>to asyncComponent</Link>
+          <br/>
+          <Link to='/userCenter'>to userCenter</Link>
         </div>
       </div>
     )

@@ -132,3 +132,52 @@ const asyncGetComponent = (callback) => {
 };
 <Route loadComponent={asyncGetComponent} path='/asyncComponent'></Route>
 ```
+
+**过滤器**
+---
+* enterFilter  进入组件之前执行过滤器，适用于登录状态检测
+* leaveFilter  组件解绑之前执行过滤器，
+
+使用场景：登录检测、权限检测、表单关闭检测
+```js
+/**
+ * `Route`组件的`enterFilter`属性
+ * `enterFilter`接收一个函数，函数有两个参数
+ * 参数1：callback 接收渲染组件的方法
+ * 参数2：props    接收`Route`组件绑定的属性
+ */
+
+// 过滤器处理函数
+handler(callback, props) {
+  // 获取登录状态
+  const {loginState} = store.getState().login;
+  if (loginState) {
+    // 已登录
+    callback();
+  } else {
+    // 未登录
+    // 跳转至登录页
+    window.location.hash = '/login';
+  }
+};
+
+// 组件路由配置
+<Route component={userCenter} path='/userCenter' enterFilter={this.handler} />
+
+// 前往该组件
+window.location.href = '/userCenter';
+```
+
+**配置代理Proxy服务器**
+---
+通过`package.json`的`proxy`字段解决跨域问题
+```json
+{
+  "proxy": "http://0.0.0.0:8080"
+}
+```
+```js
+axios.get('/foo')
+// 未添加`proxy`字段  http://localhost/foo
+// 添加`proxy`字段    http://0.0.0.0:8080/foo
+```
