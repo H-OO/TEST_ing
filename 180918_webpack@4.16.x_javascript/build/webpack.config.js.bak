@@ -1,0 +1,138 @@
+/**
+ * @const path 文件路径模块
+ * @const CleanWebpackPlugin 删除文件
+ * @const HtmlWebpackPlugin html文件处理插件
+ * @const ExtractTextPlugin 抽离样式插件
+ * @const extractCSS 抽离css样式
+ * @const extractSCSS 抽离scss编译出来的样式
+ * @const OptimizeCSSAssetsPlugin 优化css文件插件
+ * @const config 配置
+ */
+const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const extractCSS = new ExtractTextPlugin('[name]/[name].[hash:6].css');
+const extractSCSS = new ExtractTextPlugin('[name]/[name].[hash:8].css');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const config = {
+  mode: 'development', // development | production
+  devServer: {
+    // host: '192.168.1.xxx', // 域名/IP，默认localhost
+    // port: '5000', // 端口，默认8080
+    contentBase: './dist', // devServer访问该目录的文件
+    openPage: 'demo/demo.html', // 默认打开页面
+    inline: true // 用来支持dev-server自动刷新的配置
+  },
+  entry: {
+    demo: './src/demo/js/demo.js',
+    demo2: './src/demo2/js/demo2.js',
+  },
+  output: {
+    filename: '[name]/[name].js',  // [name]等同于entry[name]
+    path: __dirname + '/dist',
+    publicPath: '/' // 静态资源路径 (start /) (build ../)
+  },
+  module: {
+    rules: [
+      {
+        test: /\.html$/,
+        exclude: /node_modules/,
+        use: ['html-loader']
+      },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: extractCSS.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'postcss-loader']
+        })
+      },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        use: extractSCSS.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'postcss-loader', 'sass-loader']
+        })
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules|lib_es5/,
+        use: ['babel-loader']
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: '3072', // 图片大小小于limit时转换成base64进行存储
+            name: 'img/[name].[hash:6].[ext]' // 在输出文件夹中的路径（自动创建img文件夹存放所有图片）
+          }
+        }]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: '[name].[hash:6].[ext]',
+            outputPath: 'img/' // 输出到dist目录下img文件夹中
+          }
+        }]
+      }
+    ]
+  },
+  plugins: [
+    new CleanWebpackPlugin(['dist']), // clear dist dir
+    new HtmlWebpackPlugin({
+      filename: 'demo/demo.html', // 输出文件名 不能使用[name]自动切换
+      template: path.join(__dirname, 'src/demo/demo.html'), // 使用的模板html
+      inject: 'body', // 插入body标签底部
+      chunks: ['common', 'demo'], // 插入scripts标签 引入打包后的js
+      hash: true, // 文件名添加hash字符串
+      // 压缩html
+      minify: {
+        removeAttributeQuotes: true, // 移除属性的引号
+        removeComments: true, // 移除注释
+        collapseWhitespace: true // 移除空格
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'demo2/demo2.html', // 输出文件名 不能使用[name]自动切换
+      template: path.join(__dirname, 'src/demo2/demo2.html'), // 使用的模板html
+      inject: 'body', // 插入body标签底部
+      chunks: ['common', 'demo2'], // 插入scripts标签 引入打包后的js
+      hash: true, // 文件名添加hash字符串
+      // 压缩html
+      minify: {
+        removeAttributeQuotes: true, // 移除属性的引号
+        removeComments: true, // 移除注释
+        collapseWhitespace: true // 移除空格
+      }
+    }),
+    extractCSS,
+    extractSCSS,
+    new OptimizeCSSAssetsPlugin({
+      assetNameRegExp: /\.css\.*(?!.*map)/g, // 注意不要写成 /\.css$/g
+      cssProcessor: require('cssnano'), // css优化插件
+      cssProcessorOptions: {
+        discardComments: {
+          removeAll: true // 移除所有注释
+        },
+        autoprefixer: false // 关闭cssnano的autoprefixer功能
+      },
+      canPrint: true // 设置是否可以向控制台打日志 默认为true
+    })
+  ],
+  optimization: {
+    splitChunks: {
+      chunks: 'all', // async(默认, 只会提取异步加载模块的公共代码), initial(提取初始入口模块的公共代码), all(同时提取前两者)
+      minSize: 0, // 30000, // 大于30K会被抽离到公共模块
+      minChunks: 2, // 模块出现一次就会被抽离到公共模块中, 如果是1的话, 表示将所有的模块都提走, 针对pageA中, 如果只有自己引用jQuery, 那么会生成jQuery-vendor.js 的打包文件
+      maxAsyncRequests: 5, // 异步模块, 一次最多只能加载5个
+      name: 'common' // 打包出来公共模块的名称
+    }
+  }
+};
+module.exports = config;

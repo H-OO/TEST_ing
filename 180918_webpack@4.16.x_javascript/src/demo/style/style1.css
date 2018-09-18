@@ -1,0 +1,17 @@
+.hello {
+  color: #f00;
+  display: flex;
+}
+
+.font-gradient {
+  position: relative;
+  color: rgb(0, 81, 255);
+}
+
+.font-gradient::before {
+  content: attr(text);
+  position: absolute;
+  z-index: 10;
+  color: rgb(197, 20, 20);
+  -webkit-mask: linear-gradient(to left, rgb(0, 255, 0), transparent);
+}
