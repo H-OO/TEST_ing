@@ -87,7 +87,7 @@ const config = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(['dist', 'package'], {
+    new CleanWebpackPlugin(['dist', 'html', 'package'], {
       root: path.resolve(__dirname, '../'), // 通过改变root范围越过保护机制
       verbose: true // (true 测试/模拟删除，不删除文件) (false 删除文件)
     }),
@@ -123,7 +123,8 @@ for (let item in vendorRely) {
   // 注册项目模块
   entry[item] = __dirname + `/../src/${item}/js/${item}.js`;
   const tmp = {
-    filename: `${item}/${item}.html`, // 输出文件名 不能使用[name]自动切换
+    // filename: `${item}/${item}.html`, // 输出文件名 不能使用[name]自动切换
+    filename: path.join(__dirname, `/../html/${item}.html`), // 输出文件名 不能使用[name]自动切换
     template: path.join(__dirname, `/../src/${item}/${item}.html`), // 使用的模板html
     inject: 'body', // 插入body标签底部
     chunks: [`${item}`, '__BRIDGE__', ...vendorRely[item]], // 插入scripts标签 引入打包后的js

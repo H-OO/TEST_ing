@@ -12,12 +12,12 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const base = require('./webpack.base.js');
-// const FileManagerPlugin = require('filemanager-webpack-plugin');
+const FilesUploadCDN = require('../plugins/webpack.filesUploadCDN.js');
 const prodConfig = {
   mode: 'production',
   output: {
-    publicPath: '../' // 静态资源路径 (start /) (build ../)
-    // publicPath: '../dist/' // 静态资源路径 (start /) (build ../)
+    // publicPath: '../' // 静态资源路径 (start /) (build ../)
+    publicPath: 'http://cdn/project/' // 静态资源路径 (start /) (build ../)
   },
   optimization: {
     splitChunks: {
@@ -33,31 +33,16 @@ const prodConfig = {
       }
     }
   },
-  // plugins: [
-  //   // 压缩文件夹
-  //   new FileManagerPlugin({
-  //     onEnd: {
-  //       mkdir: [
-  //         path.resolve(__dirname, '../package')
-  //       ],
-  //       copy: [
-  //         {
-  //           source: path.resolve(__dirname, '../dist/demo/demo.html'),
-  //           destination: path.resolve(__dirname, '../package')
-  //         }
-  //       ],
-  //       delete: [
-  //         path.resolve(__dirname, '../dist/demo/demo.html')
-  //       ],
-  //       archive: [
-  //         {
-  //           source: path.resolve(__dirname, '../dist'),
-  //           destination: path.resolve(__dirname, '../package/dist.zip')
-  //         }
-  //       ]
-  //     }
-  //   })
-  // ]
+  plugins: [
+    // 将构建好的项目进行zip压缩并上传CDN
+    new FilesUploadCDN({
+      buildDir: 'dist',
+      output: {
+        dirname: 'package',
+        filename: 'dist.zip'
+      }
+    })
+  ]
 };
 // 整理模块依赖的所有第三方包，进行去重，将结果加入配置中进行注册抽离
 const vendorRely = require('./module.vendorRely');
@@ -76,17 +61,5 @@ vendorList.map(name => {
     test: new RegExp(name)
   };
 });
-
-// 选择性压缩zip
-// const fileManagerConfig = {
-//   onEnd: {
-//     mkdir: [],
-//     archive: []
-//   }
-// };
-// 问题：如何获取生成的文件名
-
-// 将压缩zip插件添加进webpack
-// prodConfig.plugins.push(new FileManagerPlugin(fileManagerConfig));
 
 module.exports = merge(base, prodConfig);

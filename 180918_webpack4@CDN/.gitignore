@@ -14,3 +14,7 @@ node_modules
 
 # webpack build
 dist
+html
+
+# archiver build
+package
