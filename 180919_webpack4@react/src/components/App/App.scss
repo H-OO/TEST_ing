@@ -1,0 +1,13 @@
+.App {
+  color: #ff0000;
+  text-align: center;
+  .App_logo {
+    animation: App_logo_spin infinite 20s linear;
+    height: 80px;
+  }
+}
+
+@keyframes App_logo_spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
