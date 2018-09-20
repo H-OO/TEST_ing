@@ -12,8 +12,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin'); // version@next
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const extractCSS = new ExtractTextPlugin('[name].[hash:6].css');
-const extractSCSS = new ExtractTextPlugin('[name].[hash:8].css');
+const extractSCSS = new ExtractTextPlugin('[name].[hash:5].css');
 
 const config = {
   mode: 'development',
@@ -21,23 +20,25 @@ const config = {
     index: path.resolve(__dirname, '../src/index.js')
   },
   output: {
-    filename: 'index.js',
+    filename: 'index.[hash:5].js',
     path: path.resolve(__dirname, '../dist'),
-    publicPath: './' // 静态资源路径 (start /) (build ../)
+    publicPath: './', // 静态资源路径 (start /) (build ../)
+    chunkFilename: '[name].[chunkhash:5].chunk.js'
   },
+  // optimization: {
+  //   splitChunks: {
+  //     chunks: 'async', // async(默认, 只会提取异步加载模块的公共代码), initial(提取初始入口模块的公共代码), all(同时提取前两者)
+  //     minSize: 0, // 大于0kb就被抽离到公共模块
+  //     minChunks: 1, // 模块出现2次就被抽离到公共模块
+  //     maxAsyncRequests: 5, // 异步模块, 一次最多只能加载5个
+  //     name: 'vender' // 打包出来公共模块的名称
+  //   }
+  // },
   resolve: {
     extensions: ['.js', '.jsx']
   },
   module: {
     rules: [
-      {
-        test: /\.css$/,
-        exclude: /node_modules/,
-        use: extractCSS.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'postcss-loader']
-        })
-      },
       {
         test: /\.scss$/,
         exclude: /node_modules/,
@@ -107,17 +108,7 @@ const config = {
       },
       canPrint: true // 设置是否可以向控制台打日志 默认为true
     }),
-    extractCSS,
     extractSCSS
-  ],
-  optimization: {
-    splitChunks: {
-      chunks: 'async', // async(默认, 只会提取异步加载模块的公共代码), initial(提取初始入口模块的公共代码), all(同时提取前两者)
-      minSize: 0, // 大于0kb就被抽离到公共模块
-      minChunks: 1, // 模块出现2次就被抽离到公共模块
-      maxAsyncRequests: 5, // 异步模块, 一次最多只能加载5个
-      name: 'vender' // 打包出来公共模块的名称
-    }
-  }
+  ]
 };
 module.exports = config;
