@@ -1,1 +1,4 @@
-console.log('c');
+function c() {
+  console.log('cc');
+}
+module.exports = c;

@@ -23,7 +23,7 @@ const config = {
     filename: 'index.[hash:5].js',
     path: path.resolve(__dirname, '../dist'),
     publicPath: './', // 静态资源路径 (start /) (build ../)
-    chunkFilename: '[name].[chunkhash:5].chunk.js'
+    chunkFilename: '[name].[chunkhash:5].js'
   },
   // optimization: {
   //   splitChunks: {

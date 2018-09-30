@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import './App.scss';
 import logo from './logo.svg';
+import { log } from 'util';
 
-require.ensure([], () => {
-  require('../../asset/a')
-  require('../../asset/b')
-}, 'chunk1')
+require.ensure(
+  [],
+  () => {
+    const a = require('../../asset/a');
+    a();
+    const b = require('../../asset/b');
+    b();
+  },
+  'asyncJs_0'
+);
 
 class App extends Component {
   constructor() {
@@ -13,18 +20,27 @@ class App extends Component {
     this.handler = this.handler.bind(this);
   }
   handler() {
-    require.ensure([], () => {
-      require('../../asset/c')
-    }, 'chunk2')
+    require.ensure(
+      [],
+      () => {
+        const c = require('../../asset/c');
+        c();
+      },
+      'asyncJs_1'
+    );
+  }
+  lodashHr() {
+    console.log(_.defaults({ 'a': 1 }, { 'a': 3, 'b': 2 }));
   }
   render() {
     return (
-      <div className='App'>
-        <img src={logo} alt="" className='App_logo' />
-        <br/>
+      <div className="App">
+        <img src={logo} alt="" className="App_logo" />
+        <br />
         <button onClick={this.handler}>get</button>
+        <button onClick={this.lodashHr}>lodash</button>
       </div>
-    )
+    );
   }
 }
 
