@@ -1,44 +1,45 @@
 /**
- * @const path
- * @const CleanWebpackPlugin
- * @const HtmlWebpackPlugin
- * @const ExtractTextPlugin
- * @const OptimizeCSSAssetsPlugin
- * 
- * @const config
+ * @const path 路径模块
+ * @const CleanWebpackPlugin 删除文件
+ * @const HtmlWebpackPlugin 处理html文件
+ * @const ExtractTextPlugin 抽离样式插件
+ * @const OptimizeCSSAssetsPlugin 压缩css
+ * @const extractCSS 抽离css
+ * @const extractSCSS 抽离scss
+ * @const vendorAlias 第三方包别名配置
+ * @const base 基础配置
  */
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin'); // version@next
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const extractSCSS = new ExtractTextPlugin('[name].[hash:5].css');
+const extractCSS = new ExtractTextPlugin('[name].[hash:4].css');
+const extractSCSS = new ExtractTextPlugin('[name].[hash:6].css');
+// const vendorAlias = './vendor.alias.js';
 
-const config = {
-  mode: 'development',
+const base = {
   entry: {
     index: path.resolve(__dirname, '../src/index.js')
   },
   output: {
     filename: 'index.[hash:5].js',
     path: path.resolve(__dirname, '../dist'),
-    publicPath: './', // 静态资源路径 (start /) (build ../)
     chunkFilename: '[name].[chunkhash:5].js'
   },
-  // optimization: {
-  //   splitChunks: {
-  //     chunks: 'async', // async(默认, 只会提取异步加载模块的公共代码), initial(提取初始入口模块的公共代码), all(同时提取前两者)
-  //     minSize: 0, // 大于0kb就被抽离到公共模块
-  //     minChunks: 1, // 模块出现2次就被抽离到公共模块
-  //     maxAsyncRequests: 5, // 异步模块, 一次最多只能加载5个
-  //     name: 'vender' // 打包出来公共模块的名称
-  //   }
-  // },
   resolve: {
     extensions: ['.js', '.jsx']
   },
   module: {
     rules: [
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: extractCSS.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'postcss-loader']
+        })
+      },
       {
         test: /\.scss$/,
         exclude: /node_modules/,
@@ -48,25 +49,38 @@ const config = {
         })
       },
       {
-        test: /\.js$/,
-        exclude: /(node_modules)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env', 'babel-preset-react']
-          }
-        }
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: ['babel-loader']
+        // use: {
+        //   loader: 'babel-loader',
+        //   options: {
+        //     presets: [['@babel/preset-env', {
+        //       targets: {
+        //         browsers: ['Android >= 4.0', 'ios >= 7']
+        //       }
+        //     }], '@babel/preset-react'],
+        //     plugins: ['@babel/plugin-transform-runtime']
+        //     // presets: ['@babel/preset-env', '@babel/preset-react'],
+        //     // plugins: ['@babel/plugin-transform-runtime']
+        //     // presets: ['@babel/preset-env', 'babel-preset-react'],
+        //     // plugins: ['@babel/plugin-transform-runtime']
+        //     // presets: ['es2015', 'babel-preset-react'], // ES6转ES5
+        //     // plugins: ['transform-runtime'], // 转ES6原生API 例如Promise、Object.assign
+        //   }
+        // }
       },
-      {
-        test: /\.jsx$/,
-        exclude: /(node_modules)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env','react'] // 在react环境下,也可以进行打包
-          }
-        }
-      },
+      // {
+        // test: /\.jsx$/,
+        // exclude: /node_modules/,
+      //   use: {
+      //     loader: 'babel-loader',
+      //     options: {
+      //       presets: ['@babel/preset-env', 'react'], // 在react环境下,也可以进行打包
+      //       plugins: ['@babel/plugin-transform-runtime']
+      //     }
+      //   }
+      // },
       {
         test: /\.(png|svg|jpg|gif)$/,
         use: [{
@@ -108,7 +122,8 @@ const config = {
       },
       canPrint: true // 设置是否可以向控制台打日志 默认为true
     }),
+    extractCSS,
     extractSCSS
   ]
 };
-module.exports = config;
+module.exports = base;

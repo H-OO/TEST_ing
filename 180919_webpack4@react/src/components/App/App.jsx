@@ -1,36 +1,52 @@
 import React, { Component } from 'react';
 import './App.scss';
 import logo from './logo.svg';
-import { log } from 'util';
-
-require.ensure(
-  [],
-  () => {
-    const a = require('../../asset/a');
-    a();
-    const b = require('../../asset/b');
-    b();
-  },
-  'asyncJs_0'
-);
 
 class App extends Component {
   constructor() {
     super();
     this.handler = this.handler.bind(this);
+    this.lodashHr = this.lodashHr.bind(this);
   }
   handler() {
+    const p = new Promise((done, err) => {
+      done('200');
+    });
+    p.then(msg => {
+      console.log(msg);
+    });
+  }
+  lodashHr() {
     require.ensure(
       [],
       () => {
-        const c = require('../../asset/c');
-        c();
+        const _ = require('lodash');
+        console.log(_.defaults({ a: 1 }, { a: 3, b: 2 }));
       },
-      'asyncJs_1'
+      'lodash'
     );
   }
-  lodashHr() {
-    console.log(_.defaults({ 'a': 1 }, { 'a': 3, 'b': 2 }));
+  componentWillMount() {
+    const o1 = {
+      a: 1
+    };
+    const o2 = {
+      a: 2,
+      b: 2
+    };
+    const o = Object.assign({}, o1, o2);
+    console.log(o);
+
+    const s = new Set();
+
+    [2, 3, 5, 4, 5, 2, 2].forEach(x => s.add(x));
+
+    for (let i of s) {
+      console.log(i);
+    }
+
+    function* foo() {}
+    console.log(foo);
   }
   render() {
     return (
