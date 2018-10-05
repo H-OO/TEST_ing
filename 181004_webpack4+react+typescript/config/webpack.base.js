@@ -20,7 +20,7 @@ const extractSCSS = new ExtractTextPlugin('[name].[hash:6].css');
 
 const base = {
   entry: {
-    index: path.resolve(__dirname, '../src/index.js')
+    index: path.resolve(__dirname, '../src/index.tsx')
   },
   output: {
     filename: 'index.[hash:5].js',
@@ -28,7 +28,7 @@ const base = {
     chunkFilename: '[name].[chunkhash:5].js'
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.tsx', '.ts', '.js']
   },
   module: {
     rules: [
@@ -49,9 +49,22 @@ const base = {
         })
       },
       {
-        test: /\.(js|jsx)$/,
+        test: /\.js$/,
         exclude: /node_modules/,
         use: ['babel-loader']
+      },
+      {
+        test: /\.tsx$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
+              experimentalWatchApi: true
+            }
+          }
+        ]
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
