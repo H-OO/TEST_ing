@@ -39,8 +39,6 @@ class App extends React.Component {
     // enum Arr {First = 1, Second = 4, Third};
     // let c: Arr = Arr.Third;
     // console.log(c);
-    
-    
 
     // const o1 = {
     //   a: 1
@@ -63,6 +61,60 @@ class App extends React.Component {
 
     // function* foo() {}
     // console.log(foo);
+    // let {a, b}: {a: number, b: string} = {a: 123, b: 'yy'};
+    // console.log(a, b);
+    // let o = {
+    //   a: 123,
+    //   b: 'yy'
+    // };
+
+    // let { a: first, b: second = 'oo'}: { a: number; b?: string } = o;
+
+    // console.log(first, second);
+
+    // let {a, b}: {a: number, b?: string} = { a: 123};
+
+    // 函数参数-对象解构
+    // type C = {a: number, b: string};
+    // // interface C {a: number, b: string};
+    // function foo(param: C): object {
+    //   // console.log(param);
+    //   return param
+    // }
+    // foo({ a: 123, b: 'yy' });
+
+    // type A = {
+    //   readonly first: string,
+    //   readonly second: number
+    // };
+
+    // const a: A = {
+    //   first: '123',
+    //   second: 123
+    // };
+
+    // console.log(a);
+
+    // a.first = '234';
+    // console.log(a);
+
+    // const arr: ReadonlyArray<any> = [1, 'x'];
+    // console.log(arr);
+    // arr.push(1, 2);
+    
+    interface A {
+      first: string,
+      second: number,
+      [propName: string]: any
+    }
+    const a: A = {
+      first: '123',
+      second: 123,
+      third: [],
+      fourth: {}
+    };
+    console.log(a);
+    
   }
   public render() {
     return (
