@@ -68,40 +68,6 @@ class App extends React.Component {
     //   a: 123,
     //   b: 'yy'
     // };
-
-    //   interface Counter {
-    //     (start: number): string;
-    //     interval: number;
-    //     reset(): void;
-    // }
-
-    // function getCounter(): Counter {
-    //     let counter = <Counter>function (start: number) { };
-    //     counter.interval = 123;
-    //     counter.reset = function () { };
-    //     return counter;
-    // }
-
-    class F {
-      constructor() {
-
-      }
-    }
-    class C extends F {
-      name: string;
-      constructor(name: string) {
-        super();
-        this.name = name;
-        this.sayHi = this.sayHi.bind(this); // 改变this
-        // console.log(this);
-      }
-      sayHi() {
-        console.log('Hi~');
-        console.log(this);
-      }
-    }
-    const c = new C('yy');
-    c.sayHi();
   }
   public render() {
     return (
