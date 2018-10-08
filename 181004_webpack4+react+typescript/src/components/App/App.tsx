@@ -2,6 +2,7 @@ import * as React from 'react';
 import './App.scss';
 import logo from './logo.svg';
 import { log } from 'util';
+import { func } from '../../../node_modules/@types/prop-types/index';
 
 class App extends React.Component {
   constructor(param: object) {
@@ -68,53 +69,39 @@ class App extends React.Component {
     //   b: 'yy'
     // };
 
-    // let { a: first, b: second = 'oo'}: { a: number; b?: string } = o;
-
-    // console.log(first, second);
-
-    // let {a, b}: {a: number, b?: string} = { a: 123};
-
-    // 函数参数-对象解构
-    // type C = {a: number, b: string};
-    // // interface C {a: number, b: string};
-    // function foo(param: C): object {
-    //   // console.log(param);
-    //   return param
+    //   interface Counter {
+    //     (start: number): string;
+    //     interval: number;
+    //     reset(): void;
     // }
-    // foo({ a: 123, b: 'yy' });
 
-    // type A = {
-    //   readonly first: string,
-    //   readonly second: number
-    // };
+    // function getCounter(): Counter {
+    //     let counter = <Counter>function (start: number) { };
+    //     counter.interval = 123;
+    //     counter.reset = function () { };
+    //     return counter;
+    // }
 
-    // const a: A = {
-    //   first: '123',
-    //   second: 123
-    // };
+    class F {
+      constructor() {
 
-    // console.log(a);
-
-    // a.first = '234';
-    // console.log(a);
-
-    // const arr: ReadonlyArray<any> = [1, 'x'];
-    // console.log(arr);
-    // arr.push(1, 2);
-    
-    interface A {
-      first: string,
-      second: number,
-      [propName: string]: any
+      }
     }
-    const a: A = {
-      first: '123',
-      second: 123,
-      third: [],
-      fourth: {}
-    };
-    console.log(a);
-    
+    class C extends F {
+      name: string;
+      constructor(name: string) {
+        super();
+        this.name = name;
+        this.sayHi = this.sayHi.bind(this); // 改变this
+        // console.log(this);
+      }
+      sayHi() {
+        console.log('Hi~');
+        console.log(this);
+      }
+    }
+    const c = new C('yy');
+    c.sayHi();
   }
   public render() {
     return (

@@ -24,7 +24,7 @@
 - `npm i -D webpack webpack-cli`
 - `npm i -D webpack-dev-server webpack-merge`
 - `npm i -D babel-loader @babel/core @babel/polyfill @babel/preset-env @babel/preset-react @babel/runtime`
-- `npm i -D ts-loader @types/react @types/react-dom`
+- `npm i -D ts-loader react react-dom @types/react @types/react-dom`
 
 包版本
 
@@ -42,6 +42,8 @@
   "@babel/runtime": "^7.1.2",
   "ts-loader": "^5.2.1",
   "typescript": "^3.1.1",
+  "react": "^16.5.2",
+  "react-dom": "^16.5.2",
   "@types/react": "^16.4.14",
   "@types/react-dom": "^16.0.8"
 }
