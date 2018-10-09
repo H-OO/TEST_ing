@@ -56,14 +56,14 @@ const foo: Foo = function(first, second) {
 foo('yy', 123);
 // 数组-索引类型
 interface Arr {
-  [index: number]: string
+  [index: number]: string;
 }
 const arr: Arr = ['a', 'b', 'c'];
 const a = arr[0];
 console.log(a); // 'a'
 // 对象-索引类型
 interface Obj {
-  [index: string]: number
+  [index: string]: number;
 }
 const obj: Obj = {
   first: 0,
@@ -123,9 +123,88 @@ console.log(p); // {name: "yy", age: 18}
 ## **类**
 
 属性成员
-* public  公共，外部可访问(默认)
-* private 私有，外部不可访问
+
+- public 公共，外部可访问(默认)
+- private 私有，外部不可访问
+- protected 子类内部可以访问父类中使用该标记的属性，子类外部不可访问
+- readonly 只读属性，只能在构造函数中初始化
+- static 静态属性，属性值不会再发生变化，只能在内部访问
+- abstract 抽象类，抽象类不能创建实例，抽象类中用`abstract`标记的属性需要在派生类中实现
+
+- extends 继承
+- implements 接口检测
+
+注意：派生类中定义的方法需在它的父类进行查找，也就是保存在原型对象中
 
 ```ts
+// 公共&私有
+interface PIF {
+  name: string;
+  age: number;
+  sayPhone(): void;
+}
+class P implements PIF {
+  public name: string;
+  public age: number;
+  private phone: string;
+  constructor(name: string, age: number, phone: string) {
+    this.name = name;
+    this.age = age;
+    this.phone = phone;
+  }
+  sayPhone(): void {
+    console.log(this.phone);
+  }
+}
+const p = new P('yy', 18, '150');
+p.sayPhone(); // '150'
+p.phone; // err 外部无法访问私有属性
 
+// 存储器属性
+class P {
+  private _name: string;
+  get name(): string {
+    return this._name;
+  }
+  set name(newName) {
+    this._name = newName;
+  }
+}
+const p = new P();
+p.name = 'yy';
+console.log(p.name);
+
+// 抽象类
+abstract class F {
+  constructor(public name: string) {}
+  abstract printName(): void; // 必须在派生类中实现
+}
+// 派生类
+class C extends F {
+  constructor(name: string) {
+    super(name); // 派生类构造函数必须调用`super`方法
+  }
+  printName(): void {
+    console.log(this.name);
+  }
+}
+// 抽象类不能创建实例
+// 抽象类中用`abstract`标记的属性需要在派生类中实现
+const c0: C = new C('yy');
+console.log(c0.name); // 'yy'
+c0.printName(); // 'yy'
+const c1: C = new C('oo');
+console.log(c1.name); // 'oo'
+c1.printName(); // 'oo'
+
+// 类作为接口
+class P1 {
+  name: string;
+  age: number;
+}
+interface P2 extends P1 {
+  add: string;
+}
+const p: P2 = { name: 'yy', age: 18, add: 'SZ' };
+console.log(p); // {name: "yy", age: 18, add: "SZ"}
 ```
