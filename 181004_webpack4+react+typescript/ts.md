@@ -208,3 +208,22 @@ interface P2 extends P1 {
 const p: P2 = { name: 'yy', age: 18, add: 'SZ' };
 console.log(p); // {name: "yy", age: 18, add: "SZ"}
 ```
+
+## **函数**
+
+```ts
+// 重载
+function handler(param: object): number;
+function handler(param: number): string;
+function handler(param: any): any {
+  if (typeof param === 'object') {
+    return 123
+  } else if (typeof param === 'number') {
+    return 'abc'
+  }
+}
+const res0 = handler({});
+console.log(res0); // 123
+const res1 = handler(0);
+console.log(res1); // 'abc'
+```

@@ -27,138 +27,120 @@ class App extends React.Component {
     // );
   }
   componentWillMount() {
-    // 类作为接口
-    class P1 {
-      name: string;
-      age: number;
+    // 重载
+    function handler(param: object): number;
+    function handler(param: number): string;
+    function handler(param: any): any {
+      if (typeof param === 'object') {
+        return 123
+      } else if (typeof param === 'number') {
+        return 'abc'
+      }
     }
-    class P2 extends P1 {
-      add: string;
-    }
-    const p: P2 = {
-      name: 'yy',
-      age: 18,
-      add: 'SZ'
-    };
-    console.log(p);
+    const res0 = handler({});
+    console.log(res0); // 123
+    const res1 = handler(0);
+    console.log(res1); // 'abc'
     
-    // interface P2 extends P1 {
-    //   add: string;
+
+    // let suits = ["hearts", "spades", "clubs", "diamonds"];
+
+    // function pickCard(x: any): any {
+    //     // Check to see if we're working with an object/array
+    //     // if so, they gave us the deck and we'll pick the card
+    //     if (typeof x == "object") {
+    //         let pickedCard = Math.floor(Math.random() * x.length);
+    //         return pickedCard;
+    //     }
+    //     // Otherwise just let them pick the card
+    //     else if (typeof x == "number") {
+    //         let pickedSuit = Math.floor(x / 13);
+    //         return { suit: suits[pickedSuit], card: x % 13 };
+    //     }
     // }
-    // const p: P2 = { name: 'yy', age: 18, add: 'SZ' };
-    // console.log(p); // {name: "yy", age: 18, add: "SZ"}
     
-    // // 抽象类
-    // abstract class F {
-    //   constructor(public name: string) {}
-    //   abstract printName(): void; // 必须在派生类中实现
-    // }
-    // // 派生类
-    // class C extends F {
-    //   constructor(name: string) {
-    //     super(name); // 派生类构造函数必须调用`super`方法
-    //   }
-    //   printName(): void {
-    //     console.log(this.name);
-    //   }
-    // }
-    // // 抽象类不能创建实例
-    // // 抽象类中用`abstract`标记的属性需要在派生类中实现
-    // const c0: C = new C('yy');
-    // console.log(c0.name); // 'yy'
-    // c0.printName(); // 'yy'
-    // const c1: C = new C('oo');
-    // console.log(c1.name); // 'oo'
-    // c1.printName(); // 'oo'
-    // abstract class Department {
-    //   constructor(public name: string) {}
+    // let myDeck = [{ suit: "diamonds", card: 2 }, { suit: "spades", card: 10 }, { suit: "hearts", card: 4 }];
+    // let pickedCard1 = myDeck[pickCard(myDeck)];
+    // console.log("card: " + pickedCard1.card + " of " + pickedCard1.suit);
+    
+    // let pickedCard2 = pickCard(15);
+    // console.log("card: " + pickedCard2.card + " of " + pickedCard2.suit);
 
-    //   printName(): void {
-    //     console.log('Department name: ' + this.name);
+    // let suits = ['hearts', 'spades', 'clubs', 'diamonds'];
+
+    // function pickCard(x: { suit: string; card: number }[]): number;
+    // function pickCard(x: number): { suit: string; card: number };
+    // function pickCard(x: any): any {
+    //   console.log('_p_');
+      
+    //   // Check to see if we're working with an object/array
+    //   // if so, they gave us the deck and we'll pick the card
+    //   if (typeof x == 'object') {
+    //     let pickedCard = Math.floor(Math.random() * x.length);
+    //     return pickedCard;
     //   }
-
-    //   abstract printMeeting(): void; // 必须在派生类中实现
-    // }
-
-    // class AccountingDepartment extends Department {
-    //   constructor() {
-    //     super('Accounting and Auditing'); // 在派生类的构造函数中必须调用 super()
-    //   }
-
-    //   printMeeting(): void {
-    //     console.log('The Accounting Department meets each Monday at 10am.');
-    //   }
-
-    //   generateReports(): void {
-    //     console.log('Generating accounting reports...');
+    //   // Otherwise just let them pick the card
+    //   else if (typeof x == 'number') {
+    //     let pickedSuit = Math.floor(x / 13);
+    //     return { suit: suits[pickedSuit], card: x % 13 };
     //   }
     // }
 
-    // let department: Department; // 允许创建一个对抽象类型的引用
-    // // department = new Department(); // 错误: 不能创建一个抽象类的实例
-    // department = new AccountingDepartment(); // 允许对一个抽象子类进行实例化和赋值
-    // department.printName();
-    // department.printMeeting();
-    // // department.generateReports(); // 错误: 方法在声明的抽象类中不存在
+    // let myDeck = [
+    //   { suit: 'diamonds', card: 2 },
+    //   { suit: 'spades', card: 10 },
+    //   { suit: 'hearts', card: 4 }
+    // ];
+    // console.log(pickCard);
+    
+    // let pickedCard1 = myDeck[pickCard(myDeck)];
+    // console.log('card: ' + pickedCard1.card + ' of ' + pickedCard1.suit);
 
-    // class Person {
-    //   protected name: string;
-    //   constructor(name: string) {
-    //     this.name = name;
+    // let pickedCard2 = pickCard(15);
+    // console.log('card: ' + pickedCard2.card + ' of ' + pickedCard2.suit);
+    // class Handler {
+    //   info: string;
+    //   onClickBad(this: Handler, e: Event) {
+    //     // oops, used this here. using this callback would crash at runtime
+    //     this.info = e.message;
     //   }
     // }
+    // let h = new Handler();
+    // uiElement.addClickListener(h.onClickBad); // error!
 
-    // class Employee extends Person {
-    //   private department: string;
+    // class Handler {
+    //   info: string;
+    //   onClickBad(this: Handler, e: Event) {
+    //     // oops, used this here. using this callback would crash at runtime
+    //     console.log(e);
 
-    //   constructor(name: string, department: string) {
-    //     super(name);
-    //     this.name = 'yy';
-    //     this.department = department;
-    //   }
-
-    //   public getElevatorPitch() {
-    //     return `Hello, my name is ${this.name} and I work in ${
-    //       this.department
-    //     }.`;
+    //     this.info = e.message;
     //   }
     // }
+    // let h = new Handler();
+    // console.log(h);
+    // h.onClickBad(Handler);
 
-    // let howard = new Employee('Howard', 'Sales');
-    // console.log(howard.getElevatorPitch());
-    // console.log(howard.name); // 错误
-
-    // class P {
-    //   readonly name: string;
-    //   constructor(name: string) {
-    //     this.name = name;
-    //     this.name = '_yy_';
-    //   }
-    //   change() {
+    // class A {
+    //   f() {
+    //     console.log(this);
     //   }
     // }
-    // const p = new P('yy');
-    // console.log(p);
-
-    // let a: Array<number | string | object> = [1, 2, 3, '1', {}];
+    // const a = new A();
     // console.log(a);
+    // a.f();
 
-    // let b: [string, number];
-    // // b = [1, '1'];
-    // b = ['1', 1];
-    // console.log(b);
-    // 枚举
-    // enum Arr {First = 1, Second = 4, Third};
-    // let c: Arr = Arr.Third;
-    // console.log(c);
+    // function a(this: void, msg: string) {
+    //   console.log(this);
+    //   console.log(msg);
 
-    // const o1 = {
-    //   a: 1
+    // }
+    // a('yy');
+
+    // const foo = () => {
+    //   console.log(this);
     // };
-    // const o2 = {
-    //   a: 2,
-    //   b: 2
-    // };
+    // foo();
 
     // const o = Object.assign({}, o1, o2);
     // console.log(o);
