@@ -28,7 +28,7 @@ const base = {
     chunkFilename: '[name].[chunkhash:5].js'
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js']
+    extensions: ['.js', '.ts', '.tsx']
   },
   module: {
     rules: [
@@ -54,7 +54,7 @@ const base = {
         use: ['babel-loader']
       },
       {
-        test: /\.tsx$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
         use: [
           {

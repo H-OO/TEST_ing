@@ -24,7 +24,10 @@
 - `npm i -D webpack webpack-cli`
 - `npm i -D webpack-dev-server webpack-merge`
 - `npm i -D babel-loader @babel/core @babel/polyfill @babel/preset-env @babel/preset-react @babel/runtime`
-- `npm i -D ts-loader react react-dom @types/react @types/react-dom`
+- `npm i -D ts-loader react react-dom @types/react @types/react-dom @types/es6-shim @types/webpack-env`
+
+`@types/es6-shim` ES6 语法垫片  
+`@types/webpack-env` 用于解决 `类型“NodeRequire”上不存在属性“ensure”。`
 
 包版本
 
@@ -45,7 +48,9 @@
   "react": "^16.5.2",
   "react-dom": "^16.5.2",
   "@types/react": "^16.4.14",
-  "@types/react-dom": "^16.0.8"
+  "@types/react-dom": "^16.0.8",
+  "@types/es6-shim": "^0.31.37",
+  "@types/webpack-env": "^1.13.6"
 }
 ```
 
@@ -103,7 +108,7 @@ const config = {
         use: ['babel-loader']
       },
       {
-        test: /\.tsx$/,
+        test: /\.tsx?$/, // .ts .tsx
         exclude: /node_modules/,
         use: [
           {
@@ -308,37 +313,79 @@ const config = {
 
 图片大小大于 limit，url-loader 会调用 file-loader 进行处理，参数也会直接传给 file-loader
 
-**react 图片路径写法**
-
-创建 images.d.ts 文件，声明模块，否则无法找到图片资源
-
-```ts
-declare module '*.svg'
-declare module '*.png'
-declare module '*.jpg'
-declare module '*.jpeg'
-declare module '*.gif'
-declare module '*.bmp'
-declare module '*.tiff'
-```
+## **react 图片导入**
 
 ```ts
 // 引入
-import logo from './logo.svg';
+const logo = require('./logo.svg');
 // 使用
 <img src={logo} alt="" />;
 ```
 
+## **声明导出&导入**
+
+`针对ts文件类型`
+
+```ts
+/**
+ * 导出声明
+ * 任何声明（比如变量、函数、类、类型别名或接口）都能通过添加`export`关键字来导出
+ * 导入声明
+ * 通过`import {} from '';`导入
+ */
+
+// m.ts
+export function log(msg: string): void {
+  console.log(msg);
+}
+export const title = '声明导出测试';
+
+// App.jsx
+// 导入-按需
+import { log, title } from 'm.ts';
+console.log(log); // f log
+console.log(title); // 声明导出测试
+// 导入-全部
+import * as m from 'm.ts';
+console.log(m); // { title: '声明导出测试', log: f }
+// 导入-内容重命名
+import { log as _log } from 'm.ts';
+console.log(_log); // f log
+```
+
+```ts
+// module.d.ts
+/**
+ * 帮助 TypeScript 判断传入的参数类型是否正确
+ */
+declare let log: (msg: string) => void;
+```
+
 ## **使用第三方包**
 
-所有的第三方包必须遵循 ES6 模块写法：  
-需以`export default`或`export`进行输出  
-通过`import`进行引入使用
+`针对js文件`
+
+```js
+/**
+ * foo.js
+ * 声明导出
+ */
+function foo() {
+  console.log('foo');
+}
+module.exports = foo;
+
+/**
+ * App.jsx
+ * 声明导入
+ */
+import foo from 'foo.js';
+```
 
 说明一下`export default`跟`export`的用法区别
 
 ```js
-// test.js (第三方包)
+// test.js
 
 // 方式1： export default 默认输出
 const obj = {};
@@ -356,22 +403,6 @@ import { obj, arr } from 'test.js'; // 全引入
 console.log(obj, arr); // {} []
 import { obj } from 'test.js'; // 部分引入
 console.log(obj); // {}
-```
-
-## **创建第三方包**
-
-规则
-
-```js
-// math.js
-export function first() {
-  // todosomething...
-}
-export function second() {
-  // todosomething...
-}
-// use
-import { first } from './math.js'; // 引入first
 ```
 
 ## **抽离第三方包**
@@ -421,8 +452,7 @@ class App extends React.Component {
         const _ = require('lodash');
         // 使用
         console.log(_.defaults({ a: 1 }, { a: 3, b: 2 })); // {a: 1, b: 2}
-      },
-      'lodash'
+      }
     );
   }
   render() {
