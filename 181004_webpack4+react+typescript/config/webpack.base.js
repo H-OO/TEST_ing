@@ -65,6 +65,12 @@ const base = {
         ]
       },
       {
+        test: /\.tsx?$/,
+        enforce: 'pre', // 前置执行
+        exclude: /node_modules/,
+        use: ['tslint-loader']
+      },
+      {
         test: /\.(png|svg|jpg|gif)$/,
         use: [{
           loader: 'url-loader',

@@ -3,7 +3,7 @@ import './App.scss';
 const logo = require('./logo.svg');
 
 class App extends React.Component {
-  constructor(param: object) {
+    constructor(param: object) {
     super(param);
     this.handler = this.handler.bind(this);
     this.lodashHr = this.lodashHr.bind(this);

@@ -24,7 +24,8 @@
 - `npm i -D webpack webpack-cli`
 - `npm i -D webpack-dev-server webpack-merge`
 - `npm i -D babel-loader @babel/core @babel/polyfill @babel/preset-env @babel/preset-react @babel/runtime`
-- `npm i -D ts-loader react react-dom @types/react @types/react-dom @types/es6-shim @types/webpack-env`
+- `npm i -D ts-loader typescript react react-dom @types/react @types/react-dom @types/es6-shim @types/webpack-env`
+- `npm i -D tslint tslint-loader`
 
 `@types/es6-shim` ES6 语法垫片  
 `@types/webpack-env` 用于解决 `类型“NodeRequire”上不存在属性“ensure”。`
@@ -50,7 +51,9 @@
   "@types/react": "^16.4.14",
   "@types/react-dom": "^16.0.8",
   "@types/es6-shim": "^0.31.37",
-  "@types/webpack-env": "^1.13.6"
+  "@types/webpack-env": "^1.13.6",
+  "tslint": "^5.11.0",
+  "tslint-loader": "^3.5.4"
 }
 ```
 
@@ -461,6 +464,25 @@ class App extends React.Component {
         <button onClick={this.handler}>lodash</button>
       </div>
     );
+  }
+}
+```
+
+## **风格检查**
+
+- `npm i -D tslint tslint-react`
+- 创建`tslint.json`文件
+
+```json
+// tslint.json
+{
+  "rules": {
+    "no-var-keyword": true, // 无var
+    "triple-equals": [true, "allow-null-check"], // 使用全等或不全等
+    "no-console": [false, "log", "error"] // 是否有console.log方法
+  },
+  "linterOptions": {
+    "exclude": ["**/node_modules/**"]
   }
 }
 ```
