@@ -6,7 +6,6 @@
  * @const OptimizeCSSAssetsPlugin 压缩css
  * @const extractCSS 抽离css
  * @const extractSCSS 抽离scss
- * @const vendorAlias 第三方包别名配置
  * @const base 基础配置
  */
 const path = require('path');
@@ -16,7 +15,6 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin'); // version@nex
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const extractCSS = new ExtractTextPlugin('[name].[hash:4].css');
 const extractSCSS = new ExtractTextPlugin('[name].[hash:6].css');
-// const vendorAlias = './vendor.alias.js';
 
 const base = {
   entry: {
