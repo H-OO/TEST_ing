@@ -1,4 +1,4 @@
-// namespace Validation {
+export namespace Validation {
   export interface StringValidator {
       isAcceptable(s: string): boolean;
   }
@@ -17,4 +17,4 @@
           return s.length === 5 && numberRegexp.test(s);
       }
   }
-// }
+}

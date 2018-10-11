@@ -107,6 +107,10 @@ function createP(ctor: PCtor, name: string, age: number): PIF {
 }
 const p = createP(P, 'yy', 18);
 console.log(p); // {name: "yy", age: 18}
+// 类型断言
+let str: any = 'abcde';
+let strLength: number = <string>str.length; // 方式1，不能用于.tsx
+let strLength: number = (str as string).length; // 方式2，可用于.tsx
 ```
 
 ## **接口**
@@ -226,4 +230,22 @@ const res0 = handler({});
 console.log(res0); // 123
 const res1 = handler(0);
 console.log(res1); // 'abc'
+```
+
+## **命名空间**
+
+```ts
+// n.ts
+/**
+ * 命名空间
+ * 提供逻辑分组，避免命名冲突问题
+ */
+export namespace N {
+  export class A {}
+  export class B {}
+}
+
+// App.ts
+import { N } from 'n.ts';
+console.log(N); // {A: ƒ, B: ƒ}
 ```

@@ -2,27 +2,6 @@ import * as React from 'react';
 import './App.scss';
 const logo = require('./logo.svg');
 
-import { log as _log } from '../../asset/m2';
-_log('123');
-
-// Some samples to try
-let strings = ["Hello", "98052", "101"];
-
-import * as Validation from '../../asset/Validation';
-
-console.log(Validation);
-// // Validators to use
-// let validators: { [s: string]: Validation.StringValidator; } = {};
-// validators["ZIP code"] = new Validation.ZipCodeValidator();
-// validators["Letters only"] = new Validation.LettersOnlyValidator();
-
-// // Show whether each string passed each validator
-// for (let s of strings) {
-//   for (let name in validators) {
-//       console.log(`"${ s }" - ${ validators[name].isAcceptable(s) ? "matches" : "does not match" } ${ name }`);
-//   }
-// }
-
 class App extends React.Component {
   constructor(param: object) {
     super(param);
@@ -44,7 +23,11 @@ class App extends React.Component {
       console.log(_.defaults({ a: 1 }, { a: 3, b: 2 }));
     });
   }
-  componentWillMount() {}
+  componentWillMount() {
+    let str: string = 'abcde';
+    let strLength: number = str.length;
+    console.log(strLength);
+  }
   public render() {
     return (
       <div className="App">
