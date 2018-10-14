@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 class Detail extends React.Component {
-  public constructor(params: object) {
-    super(params);
+  public constructor(arg: object) {
+    super(arg);
     this.backHr = this.backHr.bind(this);
     this.state = {
       id: ''
@@ -33,7 +33,7 @@ class Detail extends React.Component {
     }
     const { id }: I_state = this.state;
     return (
-      <div className='Detail'>
+      <div className='detail'>
         <h2>Detail</h2>
         <div>{id}</div>
         <br/>

@@ -3,6 +3,9 @@
     animation: logo_spin infinite 20s linear;
     height: 80px;
   }
+  .home__nav {
+    display: inline-flex;
+  }
 }
 
 @keyframes logo_spin {

@@ -15,8 +15,8 @@ interface I_ListReducer {
 }
 
 class List extends React.Component {
-  public constructor(params: object) {
-    super(params);
+  public constructor(arg: object) {
+    super(arg);
     this.changeListHr = this.changeListHr.bind(this);
     this.getLisHr = this.getLisHr.bind(this);
     const { list }: I_ListReducer = getState().ListReducer;
@@ -67,7 +67,7 @@ class List extends React.Component {
     
     const { random }: I_state = this.state;
     return (
-      <div className="List">
+      <div className="list">
         <div>【List】</div>
         <div>随机数: { random }</div>
         <ul>
