@@ -1,6 +1,9 @@
 import * as React from 'react';
 import './Home.scss';
+
 const logo = require('./logo.svg');
+
+import { Link } from 'react-keeper'; // 需添加声明
 
 interface I_state {
   nav?: Array<string>
@@ -18,7 +21,9 @@ class Home extends React.Component {
     const { nav }: I_state = this.state;
     const lis: Array<object> = nav.map((item, i) => {
       return (
-        <li key={i}>{item}</li>
+        <li className="home__nav__square" key={i}>
+          <Link to={`/${item.toLowerCase()}`}>{item}</Link>
+        </li>
       )
     });
     return (

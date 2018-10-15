@@ -1,0 +1,56 @@
+$top-bar__bgColor: #585858;
+$top-bar__btnColor: #61DAFB;
+$top-bar__arrowsSize: 0.12rem;
+$top-bar__height: 0.44rem;
+.top-bar {
+  position: relative;
+  width: 100%;
+  height: $top-bar__height;
+  background-color: $top-bar__bgColor;
+  .top-bar__arrows__wrap {
+    position: absolute;
+    width: $top-bar__height;
+    height: $top-bar__height;
+    line-height: $top-bar__height;
+    .top-bar__arrows {
+      display: inline-block;
+      position: absolute;
+      width: $top-bar__height;
+      top: 0.1rem;
+      left: 0.08rem;
+      height: $top-bar__height;
+      line-height: $top-bar__height;
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -0.05rem;
+        border-top: $top-bar__arrowsSize solid transparent;
+        border-right: $top-bar__arrowsSize solid $top-bar__btnColor;
+        border-bottom: $top-bar__arrowsSize solid transparent;
+        border-left: $top-bar__arrowsSize solid transparent;
+      }
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-top: $top-bar__arrowsSize solid transparent;
+        border-right: $top-bar__arrowsSize solid $top-bar__bgColor;
+        border-bottom: $top-bar__arrowsSize solid transparent;
+        border-left: $top-bar__arrowsSize solid transparent;
+      }
+    }
+  }
+  .top-bar__menu {
+    display: inline-block;
+    position: absolute;
+    top: -0.02rem;
+    right: 0rem;
+    width: $top-bar__height;
+    height: $top-bar__height;
+    line-height: $top-bar__height;
+    color: $top-bar__btnColor;
+    font-size: 0.33rem;
+  }
+}

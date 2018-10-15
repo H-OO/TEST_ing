@@ -6,6 +6,7 @@ import Rem from '../../asset/lib/rem';
 import Home from '../Home/Home';
 import List from '../List/List';
 import Detail from '../Detail/Detail';
+import TopBar from '../TopBar/TopBar';
 
 class App extends React.Component {
   public componentWillMount(): void {
@@ -17,6 +18,7 @@ class App extends React.Component {
     return (
       <HashRouter>
         <div className='App'>
+          <Route component={TopBar} path='/' />
           <Route component={Home} path='/>' index />
           <Route component={List} path='/list' />
           <Route component={Detail} path='/detail/:id' />
