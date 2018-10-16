@@ -1,14 +1,14 @@
 export default (state: object = {}, action: object = {}) => {
   interface I_action {
     type?: string;
-    list?: Array<number | string>;
+    bannerList?: Array<string>;
   }
-  const { type, list }: I_action = action;
+  const { type, bannerList }: I_action = action;
   switch (type) {
-    case 'GET_LIST':
+    case 'GET_BANNERLIST':
       return {
         type,
-        list
+        bannerList
       };
     default:
       return state;

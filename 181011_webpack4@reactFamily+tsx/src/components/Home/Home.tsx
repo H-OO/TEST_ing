@@ -13,10 +13,10 @@ class Home extends React.Component {
   public constructor(arg: object) {
     super(arg);
     this.state = {
-      nav: ['List', 'M1', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8']
+      nav: ['List', 'Banner', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8']
     };
   }
-  public render() {
+  public render(): object {
     console.log('Home render..');
     const { nav }: I_state = this.state;
     const lis: Array<object> = nav.map((item, i) => {

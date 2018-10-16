@@ -3,13 +3,9 @@ import * as React from 'react';
 class Detail extends React.Component {
   public constructor(arg: object) {
     super(arg);
-    this.backHr = this.backHr.bind(this);
     this.state = {
       id: ''
     };
-  }
-  public backHr(): void {
-    window.history.back();
   }
   public componentWillMount(): void {
     interface I_props {
@@ -25,19 +21,15 @@ class Detail extends React.Component {
       id
     });
   }
-  public render() {
+  public render(): object {
     console.log('Detail..');
-    console.log(this.state);
     interface I_state {
       id?: string
     }
     const { id }: I_state = this.state;
     return (
       <div className='detail'>
-        <h2>Detail</h2>
         <div>{id}</div>
-        <br/>
-        <button onClick={this.backHr}>back</button>
       </div>
     )
   }
