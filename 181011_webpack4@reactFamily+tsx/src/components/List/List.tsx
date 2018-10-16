@@ -18,7 +18,7 @@ interface I_ListReducer {
 }
 
 class List extends React.Component {
-  public constructor(arg: object) {
+  public constructor(arg: Object) {
     super(arg);
     this.changeListHr = this.changeListHr.bind(this);
     this.getLisHr = this.getLisHr.bind(this);
@@ -73,7 +73,7 @@ class List extends React.Component {
       click: true // 允许点击事件
     });
     // refresh() 当列表长度改变时触发BScroll重新计算
-    // console.log(listScroll);
+    console.log(listScroll);
   }
   public componentWillUnmount(): void {
     // 退订

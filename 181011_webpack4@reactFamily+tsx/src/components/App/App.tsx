@@ -14,7 +14,7 @@ class App extends React.Component {
     const rem = new Rem();
     rem.init();
   }
-  public render(): object {
+  public render(): Object {
     console.log('App render..');
     return (
       <HashRouter>

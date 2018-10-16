@@ -10,16 +10,16 @@ interface I_state {
 }
 
 class Home extends React.Component {
-  public constructor(arg: object) {
+  public constructor(arg: Object) {
     super(arg);
     this.state = {
       nav: ['List', 'Banner', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8']
     };
   }
-  public render(): object {
+  public render(): Object {
     console.log('Home render..');
     const { nav }: I_state = this.state;
-    const lis: Array<object> = nav.map((item, i) => {
+    const lis: Array<Object> = nav.map((item, i) => {
       return (
         <li className="home__nav__square" key={i}>
           <Link to={`/${item.toLowerCase()}`}>{item}</Link>

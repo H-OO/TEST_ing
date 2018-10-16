@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 class Detail extends React.Component {
-  public constructor(arg: object) {
+  public constructor(arg: Object) {
     super(arg);
     this.state = {
       id: ''
@@ -9,19 +9,19 @@ class Detail extends React.Component {
   }
   public componentWillMount(): void {
     interface I_props {
-      params? :object;
+      params? :Object;
       [propName: string]: any
     }
     const { params }: I_props = this.props;
     interface I_params {
-      id?: object
+      id?: Object
     }
     const { id }: I_params = params;
     this.setState({
       id
     });
   }
-  public render(): object {
+  public render(): Object {
     console.log('Detail..');
     interface I_state {
       id?: string

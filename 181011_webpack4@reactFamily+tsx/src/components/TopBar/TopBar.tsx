@@ -1,10 +1,10 @@
 import './TopBar.scss';
 import * as React from 'react';
 import store from '../../store';
-const { dispatch, getState, subscribe } = store;
+// const { dispatch, getState, subscribe } = store;
 
 class TopBar extends React.Component {
-  public constructor(arg: object) {
+  public constructor(arg: Object) {
     super(arg);
     this.back = this.back.bind(this);
   }
