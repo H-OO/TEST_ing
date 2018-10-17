@@ -5,3 +5,4 @@ declare module '*.svg';
 declare module 'react-keeper';
 declare module 'hammerjs';
 declare module 'better-scroll';
+declare module 'move-js';

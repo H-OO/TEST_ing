@@ -43,7 +43,7 @@ class Banner extends React.Component {
       const liStyle: I_liStyle = {
         backgroundColor: item
       };
-      return <li key={i} style={liStyle} />;
+      return <li key={i} style={liStyle}>{i}</li>;
     });
     return lis;
   }
@@ -69,7 +69,7 @@ class Banner extends React.Component {
     const banner__wrap = banner__wrap_ref.current;
     // console.log(banner__wrap);
     const tapper = new Tapper(banner__wrap);
-    console.log(tapper);
+    // console.log(tapper);
   }
   public componentWillUnmount(): void {
     const { unsubscribe }: I_state = this.state;
