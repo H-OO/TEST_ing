@@ -177,7 +177,7 @@ class Tapper implements NS_Tapper.I_Tapper {
       scrollerW: number = this.scroller.clientWidth,
       itemW: number = this.scroller.firstElementChild.clientWidth,
       confineR: number = -(scrollerW - itemW);
-    let moveStep: number = currentTranslateX + distance / 20;
+    let moveStep: number = currentTranslateX + distance / 10;
     this.distance = distance;
     if (distance > 0) {
       // 右滑动
