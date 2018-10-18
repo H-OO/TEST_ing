@@ -77,7 +77,7 @@ class Banner extends React.Component {
     // 推送新状态
     BannerActionCreater({
       type: 'GET_BANNERLIST',
-      bannerList: ['#9fa8da', '#c5e1a5', '#ce93d8']
+      bannerList: ['#9fa8da', '#c5e1a5', '#888', '#ce93d8']
     })(dispatch, getState);
   }
   public componentDidMount(): void {

@@ -6,6 +6,8 @@
     height: 2rem;
     font-size: 0;
     .banner__main {
+      transform: translateZ(0);
+      transform: rotateZ(360deg);
       position: absolute;
       top: 0;
       left: 0;
@@ -34,9 +36,10 @@
         box-sizing: border-box;
         width: 0.1rem;
         height: 0.1rem;
-        border-radius: 50%;
+        border-radius: 40%;
         background-color: #fff;
         &.action {
+          transition: background-color 1s;
           background-color: #39CBF5;
         }
       }
