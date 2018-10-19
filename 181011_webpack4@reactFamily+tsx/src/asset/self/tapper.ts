@@ -1,5 +1,5 @@
 /**
- * v1.0 支持水平手势，回弹、速度计算、常用贝塞尔运动曲线效果
+ * v1.0 支持水平手势，回弹、速度判断(单手滑动)、常用贝塞尔运动曲线效果
  */
 
 // 运动库
@@ -25,6 +25,7 @@ namespace NS_Tapper {
     banMoveEvent: boolean;
     siteBox: HTMLElement;
     timer: NodeJS.Timer;
+    banStateEvent: boolean;
     getTranslateX: (ele: HTMLElement) => number;
     getSiteIndex: (index: number, itemLen: number) => number;
     ctrlSiteBoxAction: (scrollerLastIndex: number) => void;
@@ -54,6 +55,7 @@ class Tapper implements NS_Tapper.I_Tapper {
   banMoveEvent: boolean = false; // 默认不禁止滑动(当动画过程中需禁止)
   siteBox: HTMLElement; // 下标指示器
   timer: NodeJS.Timer; // 轮播定时器
+  banStateEvent: boolean = false; // 默认允许点击事件(当动画过程中需禁止)
   constructor(arg: HTMLElement) {
     /**
      * 实例私有方法
@@ -96,6 +98,12 @@ class Tapper implements NS_Tapper.I_Tapper {
   // start事件回调处理函数
   touchStartHr(e: TouchEvent): void {
     clearInterval(this.timer); // 自动轮播中，先清除定时器
+    // 判断是否在动画过程中
+    if (this.banStateEvent) {
+      // 动画过程中禁止点击
+      return;
+    }
+    // console.log('_start_');
     const { timeStamp, touches }: NS_Tapper.I_event = e;
     this.enterTime = timeStamp; // 记录点击时的时间戳
     const { clientX: x } = touches[0];
@@ -107,6 +115,7 @@ class Tapper implements NS_Tapper.I_Tapper {
     if (this.banMoveEvent) {
       return;
     }
+    // console.log('_move_');
     const { touches }: NS_Tapper.I_event = e,
       { clientX: x } = touches[0];
     this.moveX = x; // 记录移动中的x坐标
@@ -118,7 +127,7 @@ class Tapper implements NS_Tapper.I_Tapper {
       lastTranslateX = this.getTranslateX(scroller);
     this.distance = distance; // 记录手指滑动距离
     // 计算新的 translateX
-    let currentTranslateX: number = lastTranslateX + distance / 12;
+    let currentTranslateX: number = lastTranslateX + distance / 17;
     this.currentTranslateX = currentTranslateX; // 记录 scroller 当前的 translateX 值
     // 跟随手指
     const { style: scrollerStyle }: { style?: CSSStyleDeclaration } = scroller;
@@ -127,9 +136,12 @@ class Tapper implements NS_Tapper.I_Tapper {
   // end事件回调处理函数
   touchEndHr(e: TouchEvent): void {
     if (this.banEndEvent) {
+      // 未移动，直接开启定时器，自动播放
+      this.autoplay();
       // 未移动前禁止end事件
       return;
     }
+    // console.log('_end_');
     const { timeStamp: leaveTime }: NS_Tapper.I_event = e,
       {
         enterTime,
@@ -173,6 +185,8 @@ class Tapper implements NS_Tapper.I_Tapper {
     }
     // 禁止滑动事件被触发
     this.banMoveEvent = true;
+    // 禁止点击事件被触发
+    this.banStateEvent = true;
     // 运动曲线 ease elastic
     move['ease']([currentTranslateX, endPosition], 600, (v: number) => {
       scrollerStyle.transform = `translateX(${v}px) translateZ(0)`;
@@ -188,8 +202,9 @@ class Tapper implements NS_Tapper.I_Tapper {
           )}px) translateZ(0)`; // 闪动 0 => 3
           this.index = toIndex; // 当前下标位置
         }
-        this.banMoveEvent = false; // 允许滑动事件
         this.autoplay(); // 重新开启定时器，自动播放
+        this.banMoveEvent = false; // 允许滑动事件
+        this.banStateEvent = false; // 允许点击事件
       }
     });
     /**
@@ -235,8 +250,9 @@ class Tapper implements NS_Tapper.I_Tapper {
   // 自动轮播
   autoplay(): void {
     // 轮播过程中不允许触发 move 事件
+    clearInterval(this.timer);
     this.timer = setInterval(() => {
-      // console.log('timer..');
+      console.log('timer..');
       // 首先禁止move事件
       this.banMoveEvent = true;
       const {
