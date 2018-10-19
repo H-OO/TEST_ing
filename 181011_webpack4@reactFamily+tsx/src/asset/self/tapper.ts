@@ -1,5 +1,5 @@
 /**
- * v1.1 支持水平手势，回弹、速度计算、常用贝塞尔运动曲线效果
+ * v1.0 支持水平手势，回弹、速度计算、常用贝塞尔运动曲线效果
  */
 
 // 运动库
@@ -24,7 +24,12 @@ namespace NS_Tapper {
     index: number;
     banMoveEvent: boolean;
     siteBox: HTMLElement;
+    timer: NodeJS.Timer;
+    getTranslateX: (ele: HTMLElement) => number;
     getSiteIndex: (index: number, itemLen: number) => number;
+    ctrlSiteBoxAction: (scrollerLastIndex: number) => void;
+    autoplay: () => void;
+    destroy: () => void;
   }
   export interface I_event {
     timeStamp?: number;
@@ -48,6 +53,7 @@ class Tapper implements NS_Tapper.I_Tapper {
   index: number = 1; // 默认轮播位置
   banMoveEvent: boolean = false; // 默认不禁止滑动(当动画过程中需禁止)
   siteBox: HTMLElement; // 下标指示器
+  timer: NodeJS.Timer; // 轮播定时器
   constructor(arg: HTMLElement) {
     /**
      * 实例私有方法
@@ -82,13 +88,20 @@ class Tapper implements NS_Tapper.I_Tapper {
     wrapper.addEventListener('touchstart', this.touchStartHr, false);
     wrapper.addEventListener('touchmove', this.touchMoveHr, false);
     wrapper.addEventListener('touchend', this.touchEndHr, false);
+    /**
+     * 自动播放
+     */
+    this.autoplay();
   }
+  // start事件回调处理函数
   touchStartHr(e: TouchEvent): void {
+    clearInterval(this.timer); // 自动轮播中，先清除定时器
     const { timeStamp, touches }: NS_Tapper.I_event = e;
     this.enterTime = timeStamp; // 记录点击时的时间戳
     const { clientX: x } = touches[0];
     this.startX = x; // 记录点击位置的x坐标
   }
+  // move事件回调处理函数
   touchMoveHr(e: TouchEvent): void {
     // 是否禁止滑动
     if (this.banMoveEvent) {
@@ -98,29 +111,20 @@ class Tapper implements NS_Tapper.I_Tapper {
       { clientX: x } = touches[0];
     this.moveX = x; // 记录移动中的x坐标
     this.banEndEvent = false; // 允许end事件
-    const { startX }: NS_Tapper.I_Tapper = this,
+    const { startX, scroller }: NS_Tapper.I_Tapper = this,
       // 计算手指滑动距离
       distance: number = x - startX,
-      // scroller style 对象
-      { style: scrollerStyle }: { style?: CSSStyleDeclaration } = this.scroller,
-      // scroller 计算样式
-      scrollerCSSStyle: CSSStyleDeclaration = window.getComputedStyle(
-        this.scroller
-      ),
-      // scroller 的宽度
-      scrollerW: number = this.scrollerW,
-      // 当前scroller的 translateX
-      lastTranslateX: number = +scrollerCSSStyle.transform
-        .match(/[^a-z\(\)]+/)[0]
-        .replace(/\s/g, '')
-        .split(',')[4];
+      // scroller 上一个 translateX 值
+      lastTranslateX = this.getTranslateX(scroller);
     this.distance = distance; // 记录手指滑动距离
     // 计算新的 translateX
     let currentTranslateX: number = lastTranslateX + distance / 12;
     this.currentTranslateX = currentTranslateX; // 记录 scroller 当前的 translateX 值
-    // 跟随
+    // 跟随手指
+    const { style: scrollerStyle }: { style?: CSSStyleDeclaration } = scroller;
     scrollerStyle.transform = `translateX(${currentTranslateX}px) translateZ(0)`; // 跟随手指滑动
   }
+  // end事件回调处理函数
   touchEndHr(e: TouchEvent): void {
     if (this.banEndEvent) {
       // 未移动前禁止end事件
@@ -134,12 +138,8 @@ class Tapper implements NS_Tapper.I_Tapper {
         itemW,
         scrollerStyle,
         itemLen,
-        siteBox,
-        getSiteIndex
+        ctrlSiteBoxAction
       }: NS_Tapper.I_Tapper = this;
-    // console.log('distance => ' + distance);
-    // console.log('currentTranslateX => ' + currentTranslateX);
-    // console.log(Math.abs(currentTranslateX) - itemW * index);
     // 当前子容器的偏移距离
     const currentStep: number = Math.abs(
       Math.abs(currentTranslateX) - itemW * this.index
@@ -163,13 +163,10 @@ class Tapper implements NS_Tapper.I_Tapper {
         // console.log('→');
         endPosition = -(--this.index * itemW);
       }
-      /** 
+      /**
        * 下标指示器
        */
-      const siteLastIndex: number = getSiteIndex(scrollerLastIndex, itemLen); // 指示器上一次高亮下标
-      const siteCurrentIndex: number = getSiteIndex(this.index, itemLen); // 指示器当前高亮下标
-      siteBox.children[siteLastIndex].classList.remove('action'); // 移除高亮
-      siteBox.children[siteCurrentIndex].classList.add('action'); // 高亮
+      this.ctrlSiteBoxAction(scrollerLastIndex); // 下标指示器高亮控制
     } else {
       // 回弹
       endPosition = -(this.index * itemW); // 哪也不去
@@ -177,7 +174,7 @@ class Tapper implements NS_Tapper.I_Tapper {
     // 禁止滑动事件被触发
     this.banMoveEvent = true;
     // 运动曲线 ease elastic
-    move['ease']([currentTranslateX, endPosition], 600, (v: any) => {
+    move['ease']([currentTranslateX, endPosition], 600, (v: number) => {
       scrollerStyle.transform = `translateX(${v}px) translateZ(0)`;
       if (v === endPosition) {
         // 判断当前是否在最首or最末
@@ -186,10 +183,13 @@ class Tapper implements NS_Tapper.I_Tapper {
           this.index = 1; // 当前下标位置
         } else if (this.index === 0) {
           const toIndex: number = itemLen - 2; // 对应下标
-          scrollerStyle.transform = `translateX(${-(itemW * toIndex)}px) translateZ(0)`; // 闪动 0 => 3
+          scrollerStyle.transform = `translateX(${-(
+            itemW * toIndex
+          )}px) translateZ(0)`; // 闪动 0 => 3
           this.index = toIndex; // 当前下标位置
         }
         this.banMoveEvent = false; // 允许滑动事件
+        this.autoplay(); // 重新开启定时器，自动播放
       }
     });
     /**
@@ -197,6 +197,20 @@ class Tapper implements NS_Tapper.I_Tapper {
      */
     this.banEndEvent = true; // 默认禁止end事件
   }
+  // 获取scroller上一个translateX
+  getTranslateX(ele: HTMLElement): number {
+    // scroller 计算样式
+    const cssStyleDeclaration: CSSStyleDeclaration = window.getComputedStyle(
+      ele
+    );
+    // 当前scroller的 translateX
+    const lastTranslateX: number = +cssStyleDeclaration.transform
+      .match(/[^a-z\(\)]+/)[0]
+      .replace(/\s/g, '')
+      .split(',')[4];
+    return lastTranslateX;
+  }
+  // 获取当前轮播页对应指示器的下标值
   getSiteIndex(index: number, itemLen: number): number {
     if (index === 1 || index === itemLen - 1) {
       // 4 & 1 => 0
@@ -209,6 +223,62 @@ class Tapper implements NS_Tapper.I_Tapper {
       index--;
     }
     return index;
+  }
+  // 控制下标指示器高亮
+  ctrlSiteBoxAction(scrollerLastIndex: number): void {
+    const { itemLen, siteBox }: NS_Tapper.I_Tapper = this;
+    const siteLastIndex: number = this.getSiteIndex(scrollerLastIndex, itemLen); // 指示器上一次高亮下标
+    const siteCurrentIndex: number = this.getSiteIndex(this.index, itemLen); // 指示器当前高亮下标
+    siteBox.children[siteLastIndex].classList.remove('action'); // 移除高亮
+    siteBox.children[siteCurrentIndex].classList.add('action'); // 高亮
+  }
+  // 自动轮播
+  autoplay(): void {
+    // 轮播过程中不允许触发 move 事件
+    this.timer = setInterval(() => {
+      // console.log('timer..');
+      // 首先禁止move事件
+      this.banMoveEvent = true;
+      const {
+        scroller,
+        itemW,
+        scrollerStyle,
+        itemLen
+      }: NS_Tapper.I_Tapper = this;
+      // 记录上一次指示器下标位置
+      const scrollerLastIndex: number = this.index;
+      // 起点位置
+      let lastTranslateX: number = this.getTranslateX(scroller);
+      // 终点位置
+      let endPosition: number = -(++this.index * itemW);
+      // 运动曲线
+      move['ease']([lastTranslateX, endPosition], 600, (v: number) => {
+        scrollerStyle.transform = `translateX(${v}px) translateZ(0)`;
+        if (v === endPosition) {
+          // index 到达边界值重新赋值起点 [0][1|2|3][4]
+          if (this.index >= itemLen - 1) {
+            // 4 => 1
+            scrollerStyle.transform = `translateX(${-itemW}px) translateZ(0)`;
+            this.index = 1;
+          }
+          this.banMoveEvent = false; // 动画结束允许move事件
+        }
+      });
+      /**
+       * 下标指示器
+       */
+      // console.log(ctrlSiteBoxAction === this.ctrlSiteBoxAction);
+      this.ctrlSiteBoxAction(scrollerLastIndex); // 下标指示器高亮控制
+    }, 2000);
+  }
+  // 销毁方法（组件销毁时调用）
+  destroy(): void {
+    clearInterval(this.timer); // 销毁定时器
+    // 移除事件监听
+    const { wrapper }: NS_Tapper.I_Tapper = this;
+    wrapper.removeEventListener('touchstart', this.touchStartHr, false);
+    wrapper.removeEventListener('touchmove', this.touchMoveHr, false);
+    wrapper.removeEventListener('touchend', this.touchEndHr, false);
   }
 }
 

@@ -14,6 +14,7 @@ interface I_state {
   banner__wrap_ref?: any;
   banner__main_ref?: any;
   banner__site_ref?: any;
+  tapper?: any;
   unsubscribe?: (arg: () => void) => void;
 }
 
@@ -38,7 +39,6 @@ class Banner extends React.Component {
   }
   public getLisHr(list: Array<string>): Object {
     // 遍历 main_lis
-    const itemLen = list.length;
     const main_lis: JSX.Element[] = list.map((item, i) => {
       interface I_liStyle {
         backgroundColor: string;
@@ -48,12 +48,6 @@ class Banner extends React.Component {
       };
       return <li key={i} style={liStyle}>{i}</li>;
     });
-    // main_lis.push(<li key={itemLen} style={{backgroundColor: list[0]}}>0</li>);
-    // main_lis.unshift(<li key={itemLen + 1} style={{backgroundColor: list[itemLen - 1]}}>{itemLen - 1}</li>);
-    
-    // console.log(itemLen);
-    // console.log(list.length);
-    // main_lis.unshift(<li key={list.length + 1} style={{backgroundColor: list[0]}}></li>);
 
     // 遍历site_lis
     const site_lis: JSX.Element[] = list.map((item, i) => {
@@ -82,18 +76,19 @@ class Banner extends React.Component {
   }
   public componentDidMount(): void {
     // 设置 main 容器宽度
-    const { bannerList, banner__wrap_ref, banner__main_ref }: I_state = this.state;
-    // const len = bannerList.length;
-    // const banner__main = banner__main_ref.current;
-    // banner__main.style.width = (len + 1) * 100 + '%';
+    const { banner__wrap_ref }: I_state = this.state;
     // wrap 容器滑动事件初始化
     const banner__wrap = banner__wrap_ref.current;
-    const tapper = new Tapper(banner__wrap); // !!!
-    // console.log(tapper);
+    // 轮播插件实例化
+    const tapper = new Tapper(banner__wrap);
+    this.setState({
+      tapper
+    });
   }
   public componentWillUnmount(): void {
-    const { unsubscribe }: I_state = this.state;
-    unsubscribe(this.changeBannerListHr);
+    const { unsubscribe, tapper }: I_state = this.state;
+    unsubscribe(this.changeBannerListHr); // 取消订阅
+    tapper.destroy();
   }
   public render(): Object {
     console.log('Banner..');
