@@ -3,7 +3,7 @@ import './Home.scss';
 
 const logo = require('./logo.svg');
 
-import { Link } from 'react-keeper'; // 需添加声明
+import { Link } from 'react-keeper'; // 需声明
 
 interface I_state {
   nav?: Array<string>
@@ -13,7 +13,7 @@ class Home extends React.Component {
   public constructor(arg: Object) {
     super(arg);
     this.state = {
-      nav: ['List', 'Banner', 'M2', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8']
+      nav: ['List', 'Banner', 'Try', 'M3', 'M4', 'M5', 'M6', 'M7', 'M8']
     };
   }
   public render(): Object {

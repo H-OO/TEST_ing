@@ -192,4 +192,6 @@
 
 // }();
 
-export default new Move();
+// export default new Move();
+
+module.exports = new Move();

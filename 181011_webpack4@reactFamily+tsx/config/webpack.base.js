@@ -26,6 +26,7 @@ const base = {
     chunkFilename: '[name].[chunkhash:5].js'
   },
   resolve: {
+    // alias: {},
     extensions: ['.js', '.ts', '.tsx']
   },
   module: {

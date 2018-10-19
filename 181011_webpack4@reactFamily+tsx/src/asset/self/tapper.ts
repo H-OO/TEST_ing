@@ -1,10 +1,12 @@
 /**
  * v1.0 支持水平手势，回弹、速度判断(单手滑动)、常用贝塞尔运动曲线效果
  */
-
 // 运动库
-const movejs = require('../lib/move');
-const { default: move } = movejs;
+// const movejs = require('../lib/move');
+// import move from '../lib/move';
+import move from 'move';
+
+// const { default: move } = movejs;
 // 声明接口
 namespace NS_Tapper {
   export interface I_Tapper {

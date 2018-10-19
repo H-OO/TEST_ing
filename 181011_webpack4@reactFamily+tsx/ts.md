@@ -249,3 +249,22 @@ export namespace N {
 import { N } from 'n.ts';
 console.log(N); // {A: ƒ, B: ƒ}
 ```
+
+
+## **.d.ts文件**
+
+作用: 描述JS模块内所有导出接口的类型信息
+
+原因：在ts文件中无法从js文件中摘取类型信息，这会导致编译报错
+
+解决：通过`.d.ts`文件写入声明信息，通过编译
+
+```ts
+// 解决1：创建`try.d.ts`文件
+declare let test: () => void
+// 解决2：在ts文件中使用 `三斜线指令`引用`try.d.ts`
+/// <reference path='./try.d.ts'>
+```
+
+## **使用第三方js库**
+

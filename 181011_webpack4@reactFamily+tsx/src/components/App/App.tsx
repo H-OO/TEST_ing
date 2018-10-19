@@ -8,6 +8,7 @@ import List from '../List/List';
 import Detail from '../Detail/Detail';
 import TopBar from '../TopBar/TopBar';
 import Banner from '../Banner/Banner';
+import Try from '../Try/Try';
 
 class App extends React.Component {
   public componentWillMount(): void {
@@ -24,6 +25,7 @@ class App extends React.Component {
           <Route component={List} path='/list' />
           <Route component={Detail} path='/detail/:id' />
           <Route component={Banner} path='/banner' />
+          <Route component={Try} path='/try' />
         </div>
       </HashRouter>
     );

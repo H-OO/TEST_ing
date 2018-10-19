@@ -1,11 +1,10 @@
 import './List.scss';
 import * as React from 'react';
-import { CacheLink } from 'react-keeper'; 
+import { CacheLink } from 'react-keeper'; // 需要声明
 import store from '../../store';
 const { dispatch, getState, subscribe } = store;
 import ListActionCreater from '../../actions/ListActionCreater';
-// import * as Hammer from 'hammerjs';
-import BScroll from 'better-scroll';
+import BScroll from 'better-scroll'; // 需要声明
 
 interface I_state {
   list?: Array<number>;
