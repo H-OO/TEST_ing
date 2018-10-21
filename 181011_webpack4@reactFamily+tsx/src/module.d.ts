@@ -9,5 +9,3 @@ declare module 'react-keeper'  {
   export function CacheLink (): any;
 }
 declare module 'better-scroll';
-
-declare module '*/move.js';
