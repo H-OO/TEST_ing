@@ -10,7 +10,7 @@ const merge = require('webpack-merge');
 const base = require('./webpack.base.js');
 const dev = {
   mode: 'development',
-  // devtool: 'inline-source-map',
+  devtool: 'inline-source-map',
   devServer: {
     // host: '192.168.1.2', // 域名/IP，默认localhost
     // port: '5000', // 端口，默认8080
