@@ -192,6 +192,5 @@
 
 // }();
 
-export default new Move();
-
-// module.exports = new Move();
+// export default new Move(); // {__esModule: true, default: new Move()}
+module.exports = new Move(); // new Move()

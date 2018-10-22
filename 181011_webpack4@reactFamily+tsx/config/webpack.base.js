@@ -49,7 +49,7 @@ const base = {
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /node_modules|lib/, // 解决本地 lib 库 `exports is not defined` 问题
         use: ['babel-loader']
       },
       {
