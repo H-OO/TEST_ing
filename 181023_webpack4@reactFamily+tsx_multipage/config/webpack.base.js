@@ -136,7 +136,7 @@ Object.keys(entries).forEach(function(name) {
   const plugin = new HtmlWebpackPlugin({
     filename: name + '.html',
     template: path.resolve(__dirname, '../public/index.html'),
-    chunks: ['async', 'vendor', name]
+    chunks: ['vendor', name]
   });
   base.plugins.push(plugin);
 });

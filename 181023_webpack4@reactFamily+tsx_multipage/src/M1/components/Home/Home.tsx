@@ -13,9 +13,17 @@ class Home extends React.Component {
     this.clickHr = this.clickHr.bind(this);
   }
   public clickHr() {
-    import('lodash').then((res) => {
-      console.log(res);
-    });
+    // import('lodash').then((res) => {
+    //   console.log(res);
+    // });
+    // 抽离并异步加载
+    require.ensure(
+      [],
+      () => {
+        const _ = require('lodash');
+        console.log(_.defaults({ a: 1 }, { a: 3, b: 2 }));
+      }
+    );
   }
   public render(): Object {
     console.log('Home render..');
