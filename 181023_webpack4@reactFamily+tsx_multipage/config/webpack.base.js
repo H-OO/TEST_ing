@@ -1,5 +1,6 @@
 /**
  * @const path 路径模块
+ * @const glob shell使用的路径匹配符
  * @const CleanWebpackPlugin 删除文件
  * @const HtmlWebpackPlugin 处理html文件
  * @const ExtractTextPlugin 抽离样式插件
@@ -9,6 +10,7 @@
  * @const base 基础配置
  */
 const path = require('path');
+const glob = require('glob');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin'); // version@next
@@ -17,11 +19,9 @@ const extractCSS = new ExtractTextPlugin('[name].[hash:4].css');
 const extractSCSS = new ExtractTextPlugin('[name].[hash:6].css');
 
 const base = {
-  entry: {
-    m1: path.resolve(__dirname, '../src/M1/index.tsx')
-  },
+  entry: {},
   output: {
-    filename: 'index.[hash:5].js',
+    filename: '[name].[hash:5].js',
     path: path.resolve(__dirname, '../dist'),
     chunkFilename: '[name].[chunkhash:5].js'
   },
@@ -98,9 +98,9 @@ const base = {
       root: path.resolve(__dirname, '../'), // 通过改变root范围越过保护机制
       verbose: true // (true 测试/模拟删除，不删除文件) (false 删除文件)
     }),
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../public/index.html')
-    }),
+    // new HtmlWebpackPlugin({
+    //   template: path.resolve(__dirname, '../public/index.html')
+    // }),
     new OptimizeCSSAssetsPlugin({
       assetNameRegExp: /\.css\.*(?!.*map)/g, // 注意不要写成 /\.css$/g
       cssProcessor: require('cssnano'), // css优化插件
@@ -116,4 +116,29 @@ const base = {
     extractSCSS
   ]
 };
+
+// 获取指定路径下的入口文件
+function getEntries(globPath) {
+  const files = glob.sync(globPath),
+    entries = {};
+  files.forEach(function(filepath) {
+    const split = filepath.split('/');
+    const name = split[split.length - 2];
+    entries[name] = './' + filepath;
+  });
+  return entries;
+}
+
+const entries = getEntries('src/**/index.tsx');
+
+Object.keys(entries).forEach(function(name) {
+  base.entry[name] = entries[name];
+  const plugin = new HtmlWebpackPlugin({
+    filename: name + '.html',
+    template: path.resolve(__dirname, '../public/index.html'),
+    chunks: ['async', 'vendor', name]
+  });
+  base.plugins.push(plugin);
+});
+
 module.exports = base;

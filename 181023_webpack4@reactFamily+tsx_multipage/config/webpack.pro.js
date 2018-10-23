@@ -18,7 +18,7 @@ const pro = {
         vendor: {
           chunks: 'all', // async(默认, 只会提取异步加载模块的公共代码), initial(提取初始入口模块的公共代码), all(同时提取前两者)
           test: /node_modules/,
-          name: 'common',
+          name: 'vendor',
           priority: -20, // 小于`-10`才能进行抽离出异步模块
           minSize: 0, // 大于0kb就被抽离到公共模块
           minChunks: 1, // 模块出现1次就被抽离到公共模块
