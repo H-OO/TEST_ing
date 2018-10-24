@@ -1,3 +1,4 @@
+'use strict';
 /**
  * @const path 路径模块
  * @const glob shell使用的路径匹配符
@@ -98,9 +99,6 @@ const base = {
       root: path.resolve(__dirname, '../'), // 通过改变root范围越过保护机制
       verbose: true // (true 测试/模拟删除，不删除文件) (false 删除文件)
     }),
-    // new HtmlWebpackPlugin({
-    //   template: path.resolve(__dirname, '../public/index.html')
-    // }),
     new OptimizeCSSAssetsPlugin({
       assetNameRegExp: /\.css\.*(?!.*map)/g, // 注意不要写成 /\.css$/g
       cssProcessor: require('cssnano'), // css优化插件

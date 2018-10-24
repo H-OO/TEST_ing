@@ -1,3 +1,4 @@
+'use strict';
 /**
  * 开发环境
  * @const path node内置模块
@@ -14,7 +15,10 @@ const dev = {
   devServer: {
     // host: '192.168.1.2', // 域名/IP，默认localhost
     // port: '5000', // 端口，默认8080
-    // openPage: 'index.html' // 默认打开页面
+    open: true, // 自动开启浏览器 (shell --open)
+    openPage: 'M1.html', // 默认打开页面
+    contentBase: path.resolve(__dirname, '../dist'), // devServer访问该目录的文件
+    progress: true // 构建进度条 (shell --progress)
     // proxy: {
     //   '/api': {
     //     target: 'http://localhost', // 重定向域名
@@ -22,8 +26,6 @@ const dev = {
     //     changeOrigin: true // [默认false] changes the origin of the host header to the target URL
     //   }
     // }
-    contentBase: path.resolve(__dirname, '../dist'), // devServer访问该目录的文件
-    progress: true // 构建进度条
   },
   output: {
     publicPath: '/' // 静态资源路径 (start /) (build ../)

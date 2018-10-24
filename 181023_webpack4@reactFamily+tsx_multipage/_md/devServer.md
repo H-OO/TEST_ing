@@ -4,6 +4,7 @@ devServer属性
 
 - host 项目启动的 IP 地址 `默认localhost`
 - port 端口 `默认8080`
+- open 自动打开浏览器
 - openPage 打开的页面 `默认index.html`
 - inline 自动刷新 `默认true`
 - progress 构建进度条 `默认false`
