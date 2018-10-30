@@ -1,0 +1,35 @@
+.home {
+  text-align: center;
+  .logo {
+    animation: logo_spin infinite 20s linear;
+    height: 80px;
+  }
+  .home__nav {
+    display: flex;
+    flex-direction: row; // 主轴方向：水平
+    flex-wrap: wrap; // 换行
+    justify-content: center; // 交叉轴对齐方向：居中
+    align-content: space-between;
+    li {
+      flex-grow: 0; // 不自动填充剩余空间
+      flex-shrink: 1; // 空间不足就压缩大小
+      flex-basis: 1rem; // 占据的固定空间
+      margin: 0.05rem; // 设置间隙
+      height: 1rem;
+      line-height: 1rem;
+      background-color: #61DAFB;
+      border-radius: 0.2rem;
+      a {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        color: #fff;
+      }
+    }
+  }
+}
+
+@keyframes logo_spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "no-var-keyword": true,
+    "triple-equals": [true, "allow-null-check"],
+    "no-console": [false, "log", "error"]
+  },
+  "linterOptions": {
+    "exclude": ["**/node_modules/**"]
+  }
+}
