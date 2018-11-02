@@ -1,0 +1,89 @@
+const canvas: HTMLCanvasElement = document.querySelector('#myCanvas');
+const ctx: CanvasRenderingContext2D = canvas.getContext('2d');
+// 设置画布大小
+// console.log(document.body.clientWidth, document.body.clientHeight);
+const bodyW = document.body.clientWidth;
+const bodyH = document.body.clientHeight;
+canvas.width = bodyW;
+canvas.height = bodyH;
+// 新建一个image对象
+const image: HTMLImageElement = new Image();
+let imageData: ImageData = null;
+image.onload = () => {
+  const startX: number = (canvas.width / 2 - image.width / 2) >> 0;
+  const startY: number = 200;
+  const imageW: number = image.width;
+  const imageH: number = image.height;
+  ctx.drawImage(image, startX, startY, imageW, imageH);
+  imageData = ctx.getImageData(startX, startY, imageW, imageH);
+  calculate({
+    startX,
+    startY
+  });
+  draw();
+};
+
+image.src = '../src/img/isux.png';
+
+const particles: Array<any> = []; // 粒子容器
+
+function calculate(arg: {startX: number; startY: number}) {
+  // 绘制位置
+  const {startX, startY} = arg;
+  const len: number = imageData.data.length;
+  // 只保存100行100列的像素值
+  const rows: number = 100;
+  const cols: number = 100;
+  // 设成100行100列后每个单元的宽高
+  const s_width: number = (image.width / cols) >> 0;
+  const s_height: number = (image.height / rows) >> 0;
+  let pos: number = 0; // 数组中的位置
+  const data = imageData.data; // 像素值数组
+  // i,j 从1开始
+  for (let i = 1; i <= cols; i++) {
+    for (let j = 1; j <= rows; j++) {
+      let _pos: number = (j * s_height - 1) * image.width + (i * s_width - 1);
+      pos = _pos * 4;
+      // console.log(pos);
+      //判断像素透明度值是否符合要求
+      if (data[pos + 3] > 100) {
+        const particle = {
+          // x,y值都随机设置
+          x: startX + i * s_width + (Math.random() - 0.5) * 20,
+          y: startY + j * s_height + (Math.random() - 0.5) * 20,
+          fillStyle: ''
+        };
+        // 根据图像不同的色值来设定粒子色值
+        if (data[pos + 1] < 175 && data[pos + 2] < 10) {
+          particle.fillStyle = 'rgb(255,169,0)';
+        } else if (data[pos + 1] < 75 && data[pos + 1] > 50) {
+          particle.fillStyle = 'rgb(255,64,133)';
+        } else if (data[pos + 1] < 195 && data[pos + 1] > 175) {
+          particle.fillStyle = 'rgb(154,188,29)';
+        } else if (data[pos + 1] < 220 && data[pos + 1] > 190) {
+          particle.fillStyle = 'rgb(0,207,255)';
+        }
+        particles.push(particle);
+      }
+    }
+  }
+}
+
+function draw() {
+  // 清空画布
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const len: number = particles.length;
+  let curr_particle: { fillStyle: string; x: number; y: number } = null;
+  for (let i = 0; i < len; i++) {
+    curr_particle = particles[i];
+    const {
+      fillStyle,
+      x,
+      y
+    }: { fillStyle: string; x: number; y: number } = curr_particle;
+    // 设置填充颜色
+    ctx.fillStyle = fillStyle;
+    // 粒子绘制到画布上
+    ctx.fillRect(x, y, 1, 1);
+  }
+}
