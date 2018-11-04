@@ -53,6 +53,8 @@ function calculate(arg: {startX: number; startY: number}) {
           y: startY + j * s_height + (Math.random() - 0.5) * 20,
           fillStyle: ''
         };
+        console.log(particle);
+        
         // 根据图像不同的色值来设定粒子色值
         if (data[pos + 1] < 175 && data[pos + 2] < 10) {
           particle.fillStyle = 'rgb(255,169,0)';
