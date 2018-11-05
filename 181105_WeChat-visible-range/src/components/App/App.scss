@@ -1,0 +1,15 @@
+$w: 800px;
+$h: 900px;
+
+html, body {
+  height: 100%;
+  background-color: #323232;
+}
+
+.App {
+  margin: 0 auto;
+  width: $w;
+  min-width: $w;
+  height: $h;
+  min-height: $h;
+}
