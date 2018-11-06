@@ -1,0 +1,119 @@
+import * as React from 'react';
+import './Home.scss';
+import { device } from './device'; // 机型
+
+interface I_state {
+  deviceList?: JSX.Element;
+  deviceListRef?: React.RefObject<HTMLSelectElement>;
+  effectRef?: React.RefObject<HTMLDivElement>;
+  sizeWRef?: React.RefObject<HTMLDivElement>;
+  sizeHRef?: React.RefObject<HTMLDivElement>;
+}
+
+class Home extends React.Component {
+  public constructor(arg: Object) {
+    super(arg);
+    this.getDeviceSelectList = this.getDeviceSelectList.bind(this);
+    this.init = this.init.bind(this);
+    this.getFile = this.getFile.bind(this);
+    const state: I_state = {
+      deviceList: null,
+      deviceListRef: React.createRef(),
+      effectRef: React.createRef(),
+      sizeWRef: React.createRef(),
+      sizeHRef: React.createRef()
+    };
+    this.state = state;
+  }
+  public componentDidMount() {
+    this.init();
+  }
+  public init() {
+    this.setState({
+      deviceList: this.getDeviceSelectList()
+    });
+    this.typeSelect();
+    this.getFile();
+  }
+  public getDeviceSelectList() {
+    // console.log(device);
+    const deviceList: any = device;
+    const options = [];
+    for(let name in deviceList) {
+      let option: JSX.Element;
+      if (name === 'iPhoneX') {
+        option = (
+          <option value={name} key={name}>{name}</option>
+        );
+      } else if (name === 'main1') {
+        option = (
+          <option value={name} key={name}>非全面屏主流机型</option>
+        );
+      } else {
+        option = (
+          <option value={name} key={name}>{name}</option>
+        );
+      }
+      options.push(option);
+    }
+    return options;
+  }
+  public typeSelect() {
+    const { deviceListRef }: I_state = this.state;
+    const { current: deviceListNode } = deviceListRef;
+    deviceListNode.addEventListener('change', () => {
+      const type: string = deviceListNode.value;
+      const _device: any = device;
+      const seletDevice = _device[type];
+      const { wx } = seletDevice;
+      console.log(wx);
+    }, false);
+  }
+  public getFile() {
+    const { effectRef }: I_state = this.state;
+    const { current: effectNode } = effectRef;
+    const file: HTMLInputElement = document.querySelector('#file');
+    file.addEventListener('change', () => {
+      const { files } = file;
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        console.log(reader.result);
+        const img = new Image();
+        img.style.width = '100%';
+        img.addEventListener('load', () => {
+          effectNode.appendChild(img);
+        }, false);
+        img.src = reader.result as string;
+        file.value = '';
+      }, false);
+      reader.readAsDataURL(files[0]);
+    }, false);
+  }
+  public render(): Object {
+    console.log('home..');
+    const { deviceList, effectRef, deviceListRef }: I_state = this.state;
+    const options = deviceList;
+    return (
+      <div className="home">
+        <div className="home__menu">
+          <select className="home__device-list" ref={deviceListRef}>
+            <option value="">选择机型</option>
+            {options}
+          </select>
+          <div className="home__size">
+            <span>尺寸: </span>
+            <span className="home__size-w">宽</span>
+            <span>×</span>
+            <span className="home__size-h">高</span>
+          </div>
+        </div>
+        <div className="home__effect" ref={effectRef}></div>
+        <div className="home__file-btn">
+          <input id="file" type="file" accept="video/*,image/*" />
+        </div>
+      </div>
+    );
+  }
+}
+
+export default Home;
