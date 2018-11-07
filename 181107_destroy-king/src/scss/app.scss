@@ -1,0 +1,31 @@
+.wrap {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  .loading,
+  .part1,
+  .part2,
+  .part3 {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+  }
+  .loading {
+    color: red;
+  }
+  .part1 {
+    .part1-video {
+      width: 100%;
+    }
+  }
+  .part2 {
+    .part2-video {
+      width: 100%;
+    }
+  }
+  .part3 {
+    .part3-video {
+      width: 100%;
+    }
+  }
+}

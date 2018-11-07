@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>destroy-king</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body,
+    html {
+      height: 100%;
+    }
+  </style>
+  <!-- <link rel="stylesheet" href="./dist/app.css"> -->
+  <script>
+    // 引入样式
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'http://3gimg.qq.com/mig_market/activity/act/h/1810/app5.css?' + +new Date();
+    var head = document.querySelector('head');
+    head.appendChild(link);
+  </script>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="loading"></div>
+    <div class="part1">
+      <video class="part1-video"></video>
+    </div>
+    <div class="part2">
+      <video class="part2-video"></video>
+    </div>
+    <div class="part3">
+      <video class="part3-video"></video>
+    </div>
+  </div>
+  <!-- <script src="./dist/app3.js"></script> -->
+  <script>
+    // 引入逻辑
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    // script.src = 'http://3gimg.qq.com/mig_market/activity/act/h/1810/app3.js?' + +new Date();
+    script.src = 'http://3gimg.qq.com/mig_market/activity/act/h/1810/app6.js';
+    document.body.appendChild(script);
+  </script>
+</body>
+
+</html>
