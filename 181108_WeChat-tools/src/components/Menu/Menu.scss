@@ -1,0 +1,29 @@
+$menu_left: 40px;
+.menu {
+  position: absolute;
+  left: 760px;
+  top: 0;
+  width: 340px;
+  height: 100%;
+  background-color: skyblue;
+  .menu__device-list {
+    position: absolute;
+    left: $menu_left;
+    top: 10px;
+  }
+  .menu__file {
+    position: absolute;
+    left: $menu_left;
+    top: 40px;
+  }
+  .menu__cut {
+    position: absolute;
+    left: $menu_left;
+    top: 70px;
+  }
+  .menu__log {
+    position: absolute;
+    left: $menu_left;
+    top: 100px;
+  }
+}
