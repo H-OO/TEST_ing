@@ -145,11 +145,15 @@ class Progress implements I_Progress {
 }
 
 // 逻辑区
-const video1 = 'http://3gimg.qq.com/mig_market/activity/act/h/video/destroy-king_loading_part1_test.mp4';
-const video2 = 'http://3gimg.qq.com/mig_market/activity/act/h/video/destroy-king_loading_part2_test.mp4';
+const video1 =
+  'http://3gimg.qq.com/mig_market/activity/act/h/video/destroy-king_loading_part1_test.mp4';
+const video2 =
+  'http://3gimg.qq.com/mig_market/activity/act/h/video/destroy-king_loading_part2_test.mp4';
 
 const loadingNode: HTMLElement = document.querySelector('.loading');
-const loadingProgressNode: HTMLElement = document.querySelector('.loading__progress');
+const loadingProgressNode: HTMLElement = document.querySelector(
+  '.loading__progress'
+);
 const part1Box: HTMLElement = document.querySelector('.part1');
 const part2Box: HTMLElement = document.querySelector('.part2');
 const part1Video: HTMLVideoElement = document.querySelector('.part1-video');
@@ -173,7 +177,27 @@ progress.run((step: number) => {
 /**
  * Part1
  */
-part1Video.oncanplay = () => {
+part1Video.onended = () => {
+  console.log('1ended');
+  if (!part2CanPlay) {
+    return;
+  }
+  // 点击part1跳转到part2
+  part1Video.onclick = () => {
+    part1Box.style.display = 'none';
+    part2Video.play(); // 播放part2
+  };
+};
+// part1 onload
+const part1_xhr = new XMLHttpRequest();
+part1_xhr.open('GET', video1);
+part1_xhr.responseType = 'blob';
+part1_xhr.onload = () => {
+  console.log('part1_xhr_onload');
+  // 加载完毕
+  const blob = window.URL.createObjectURL(part1_xhr.response);
+  part1Video.src = blob;
+  //
   // const w: number = part1Video.videoWidth; // 缩放后设计稿宽
   // const h: number = part1Video.videoHeight; // 缩放后设计稿高
   const w: number = 288; // 缩放后设计稿宽
@@ -192,30 +216,30 @@ part1Video.oncanplay = () => {
       // loadingNode.innerHTML = '点击播放';
     }
     loadingNode.onclick = () => {
-      loadingNode.style.display = 'none'; // 隐藏loading区
       part1Video.play(); // 播放part1Video
+      loadingNode.style.display = 'none'; // 隐藏loading区
     };
-  })
+  });
 };
-part1Video.onended = () => {
-  console.log('1ended');
-  if (!part2CanPlay) {
-    return;
-  }
-  // 点击part1跳转到part2
-  part1Video.onclick = () => {
-    part1Box.style.display = 'none';
-    part2Video.play(); // 播放part2
-  };
-};
-part1Video.src = video1;
+part1_xhr.send(null);
 
 /**
  * Part2
  */
-part2Video.oncanplay = () => {
+part2Video.onended = () => {
+  console.log('2ended');
+};
+// part2 onload
+const part2_xhr = new XMLHttpRequest();
+part2_xhr.open('GET', video2);
+part2_xhr.responseType = 'blob';
+part2_xhr.onload = () => {
+  console.log('part2_xhr_onload');
+  // 加载完毕
+  const blob = window.URL.createObjectURL(part2_xhr.response);
+  part2Video.src = blob;
+  //
   part2CanPlay = true;
-  console.log('part2CanPlay');
   // const w: number = part2Video.videoWidth; // 缩放后设计稿宽
   // const h: number = part2Video.videoHeight; // 缩放后设计稿高
   const w: number = 288; // 缩放后设计稿宽
@@ -227,11 +251,7 @@ part2Video.oncanplay = () => {
   const { cut }: { cut: number } = part2Adapter.msg;
   part2Video.style.transform = `translateY(${cut}px)`;
 };
-part2Video.onended = () => {
-  console.log('2ended');
-};
-part2Video.src = video2;
-
+part2_xhr.send(null);
 
 // /**
 //  * 测试
