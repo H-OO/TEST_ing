@@ -16,39 +16,52 @@
       height: 100%;
     }
   </style>
-  <!-- <link rel="stylesheet" href="./dist/app.css"> -->
-  <script>
+  <link rel="stylesheet" href="./dist/app.css">
+  <link rel="stylesheet" href="./src/css/persion.css">
+  <link rel="stylesheet" href="./src/css/dail.css">
+  <!-- <script>
     // 引入样式
     var link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = 'http://3gimg.qq.com/mig_market/activity/act/h/1810/app5.css?' + +new Date();
     var head = document.querySelector('head');
     head.appendChild(link);
-  </script>
+  </script> -->
 </head>
 
 <body>
   <div class="wrap">
-    <div class="loading"></div>
+    <div class="loading">
+      <div class="loading__box">
+        <div class="loading__persion"></div>
+        <div class="loading__dail"></div>
+        <div class="loading__progress">
+          <div class="loading__progress_1"></div>
+          <div class="loading__progress_2"></div>
+          <div class="loading__progress_3"></div>
+          <div class="loading__progress_4"></div>
+        </div>
+      </div>
+    </div>
     <div class="part1">
       <video class="part1-video"></video>
     </div>
     <div class="part2">
       <video class="part2-video"></video>
     </div>
-    <div class="part3">
+    <!-- <div class="part3">
       <video class="part3-video"></video>
-    </div>
+    </div> -->
   </div>
-  <!-- <script src="./dist/app3.js"></script> -->
-  <script>
+  <script src="./dist/app.js"></script>
+  <!-- <script>
     // 引入逻辑
     var script = document.createElement('script');
     script.type = 'text/javascript';
     // script.src = 'http://3gimg.qq.com/mig_market/activity/act/h/1810/app3.js?' + +new Date();
     script.src = 'http://3gimg.qq.com/mig_market/activity/act/h/1810/app6.js';
     document.body.appendChild(script);
-  </script>
+  </script> -->
 </body>
 
 </html>

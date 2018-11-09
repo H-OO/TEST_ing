@@ -149,6 +149,7 @@ const video1 = 'http://3gimg.qq.com/mig_market/activity/act/h/video/destroy-king
 const video2 = 'http://3gimg.qq.com/mig_market/activity/act/h/video/destroy-king_loading_part2_test.mp4';
 
 const loadingNode: HTMLElement = document.querySelector('.loading');
+const loadingProgressNode: HTMLElement = document.querySelector('.loading__progress');
 const part1Box: HTMLElement = document.querySelector('.part1');
 const part2Box: HTMLElement = document.querySelector('.part2');
 const part1Video: HTMLVideoElement = document.querySelector('.part1-video');
@@ -165,8 +166,8 @@ const progress = new Progress({
   runTs: 5000
 });
 progress.run((step: number) => {
-  // console.log(step);
-  loadingNode.innerHTML = step.toString();
+  console.log('run → ' + step);
+  // loadingNode.innerHTML = step.toString();
 });
 
 /**
@@ -185,9 +186,10 @@ part1Video.oncanplay = () => {
   part1Video.style.transform = `translateY(${cut}px)`;
   // 进度条：加载完成
   progress.end((step: number) => {
-    loadingNode.innerHTML = step.toString(); // → 100
+    console.log('end → ' + step);
+    // loadingNode.innerHTML = step.toString(); // → 100
     if (step === 100) {
-      loadingNode.innerHTML = '点击播放';
+      // loadingNode.innerHTML = '点击播放';
     }
     loadingNode.onclick = () => {
       loadingNode.style.display = 'none'; // 隐藏loading区
@@ -231,28 +233,27 @@ part2Video.onended = () => {
 part2Video.src = video2;
 
 
-
-/**
- * 测试
- */
-const part3Box: HTMLElement = document.querySelector('.part3');
-const part3Video: HTMLVideoElement = document.querySelector('.part3-video');
-const xhr = new XMLHttpRequest();
-xhr.open('GET', video1);
-xhr.responseType = 'blob';
-// xhr.onprogress = (e) => {
-//   if (e.lengthComputable) {
-//     if (e.loaded === e.total) {
-//       console.log('100');
-//     }
-//   }
+// /**
+//  * 测试
+//  */
+// const part3Box: HTMLElement = document.querySelector('.part3');
+// const part3Video: HTMLVideoElement = document.querySelector('.part3-video');
+// const xhr = new XMLHttpRequest();
+// xhr.open('GET', video1);
+// xhr.responseType = 'blob';
+// // xhr.onprogress = (e) => {
+// //   if (e.lengthComputable) {
+// //     if (e.loaded === e.total) {
+// //       console.log('100');
+// //     }
+// //   }
+// // };
+// xhr.onload = () => {
+//   var blob = window.URL.createObjectURL(xhr.response);
+//   part3Video.src = blob;
+//   // console.dir(testPart1);
+//   console.log('part3VideoWidth → ' + part3Video.width);
+//   console.log('part3VideoHeight → ' + part3Video.height);
+//   console.dir(part3Video);
 // };
-xhr.onload = () => {
-  var blob = window.URL.createObjectURL(xhr.response);
-  part3Video.src = blob;
-  // console.dir(testPart1);
-  console.log('part3VideoWidth → ' + part3Video.width);
-  console.log('part3VideoHeight → ' + part3Video.height);
-  console.dir(part3Video);
-};
-xhr.send(null);
+// xhr.send(null);

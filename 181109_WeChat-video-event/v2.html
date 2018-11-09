@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .video {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="log_1"></div>
+  <div class="log_2"></div>
+  <video class="video" controls></video>
+  <script>
+    const video = document.querySelector('.video');
+    const videoSrc = 'http://3gimg.qq.com/mig_market/activity/act/h/video/destroy-king_loading_part1_test.mp4';
+    const log_1 = document.querySelector('.log_1');
+    const log_2 = document.querySelector('.log_2');
+    console.dir(video);
+    
+    // video.onload = function () {
+    //   log_1.innerHTML = 'onload';
+    // }
+    video.onended = function () {
+      log_2.innerHTML = 'onended';
+    }
+    // video.src = videoSrc;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', videoSrc);
+    xhr.responseType = 'blob';
+    xhr.onload = function() {
+      log_1.innerHTML = 'onload';
+      var blob = window.URL.createObjectURL(xhr.response);
+      console.log(blob);
+      video.src = blob;
+      video.style.display = 'block';
+    }
+    xhr.send();
+  </script>
+</body>
+</html>
