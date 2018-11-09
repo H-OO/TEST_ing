@@ -44,16 +44,27 @@
         bottom: 0;
         left: 0;
         margin: 0 auto;
-        width: 58px;
+        width: 40px;
         height: 16px;
         .loading__progress_1,
         .loading__progress_2,
         .loading__progress_3,
         .loading__progress_4 {
           float: left;
-          width: 14px;
+          width: 8px;
           height: 100%;
           background-color: #fff;
+        }
+        // http://3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/progress_number.png
+        // 1200 x 220
+        // 16
+        .loading__progress_1,
+        .loading__progress_2,
+        .loading__progress_3 {
+          background-size: cover;
+          background-position-x: -76px;
+          background-repeat: no-repeat;
+          background-image: url('http://3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/progress_number.png')
         }
         .loading__progress_4 {
           width: 16px;
