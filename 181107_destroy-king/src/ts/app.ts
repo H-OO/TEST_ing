@@ -158,8 +158,12 @@ const part1Box: HTMLElement = document.querySelector('.part1');
 const part2Box: HTMLElement = document.querySelector('.part2');
 const part1Video: HTMLVideoElement = document.querySelector('.part1-video');
 const part2Video: HTMLVideoElement = document.querySelector('.part2-video');
+const progress_1: HTMLVideoElement = document.querySelector('.loading__progress_1');
+const progress_2: HTMLVideoElement = document.querySelector('.loading__progress_2');
 
 let part2CanPlay = false; // 默认为false
+
+let part2Blob: any;
 
 /**
  * loading
@@ -172,6 +176,9 @@ const progress = new Progress({
 progress.run((step: number) => {
   console.log('run → ' + step);
   // loadingNode.innerHTML = step.toString();
+  const actionClassName_Number = step / 10 + '';
+  console.log(actionClassName_Number);
+  progress_2.className = `loading__progress_2 loading__progress_number_${actionClassName_Number}`;
 });
 
 /**
@@ -184,9 +191,15 @@ part1Video.onended = () => {
   }
   // 点击part1跳转到part2
   part1Video.onclick = () => {
-    part1Box.style.display = 'none';
     part2Video.play(); // 播放part2
+    part1Box.style.display = 'none';
   };
+  // test...
+  // document.body.addEventListener('click', () => {
+  //   // alert('click');
+  //   part1Video.src = part2Blob;
+  //   part1Video.play();
+  // }, false);
 };
 // part1 onload
 const part1_xhr = new XMLHttpRequest();
@@ -211,9 +224,15 @@ part1_xhr.onload = () => {
   // 进度条：加载完成
   progress.end((step: number) => {
     console.log('end → ' + step);
+    const actionClassName_Number = step / 10 + '';
+    console.log(actionClassName_Number);
     // loadingNode.innerHTML = step.toString(); // → 100
     if (step === 100) {
       // loadingNode.innerHTML = '点击播放';
+      progress_1.className = 'loading__progress_1 loading__progress_number_1';
+      progress_2.className = 'loading__progress_2 loading__progress_number_0';
+    } else {
+      progress_2.className = `loading__progress_2 loading__progress_number_${actionClassName_Number}`;
     }
     loadingNode.onclick = () => {
       part1Video.play(); // 播放part1Video
@@ -237,6 +256,7 @@ part2_xhr.onload = () => {
   console.log('part2_xhr_onload');
   // 加载完毕
   const blob = window.URL.createObjectURL(part2_xhr.response);
+  part2Blob = blob; // test...
   part2Video.src = blob;
   //
   part2CanPlay = true;
