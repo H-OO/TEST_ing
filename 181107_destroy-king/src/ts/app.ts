@@ -146,24 +146,58 @@ class Progress implements I_Progress {
 
 // 逻辑区
 const video1 =
-  'http://3gimg.qq.com/mig_market/activity/act/h/video/destroy-king_loading_part1_test.mp4';
+  'http://3gimg.qq.com/mig_market/activity/act/h/video/part1_20181109.mp4';
 const video2 =
-  'http://3gimg.qq.com/mig_market/activity/act/h/video/destroy-king_loading_part2_test.mp4';
+  'http://3gimg.qq.com/mig_market/activity/act/h/video/part2_20181109.mp4';
 
 const loadingNode: HTMLElement = document.querySelector('.loading');
 const loadingProgressNode: HTMLElement = document.querySelector(
   '.loading__progress'
 );
+const warningNode: HTMLElement = document.querySelector('.warning');
+const warningGoNode: HTMLElement = document.querySelector('.warning_go');
+const warningFps: HTMLElement = document.querySelector('.warning_fps');
+const warning_bgm: HTMLAudioElement = document.querySelector('.warning_bgm');
 const part1Box: HTMLElement = document.querySelector('.part1');
+const part1GoNode: HTMLElement = document.querySelector('.part1_go');
 const part2Box: HTMLElement = document.querySelector('.part2');
 const part1Video: HTMLVideoElement = document.querySelector('.part1-video');
 const part2Video: HTMLVideoElement = document.querySelector('.part2-video');
-const progress_1: HTMLVideoElement = document.querySelector('.loading__progress_1');
-const progress_2: HTMLVideoElement = document.querySelector('.loading__progress_2');
+const progress_1: HTMLVideoElement = document.querySelector(
+  '.loading__progress_1'
+);
+const progress_2: HTMLVideoElement = document.querySelector(
+  '.loading__progress_2'
+);
 
 let part2CanPlay = false; // 默认为false
 
-let part2Blob: any;
+let fileFinish: number = 0; // 本次资源warning+part1+part2 === 3 开始运作
+function fileFinishCallback() {
+  // 进度条：加载完成
+  progress.end((step: number) => {
+    // console.log('end → ' + step);
+    const actionClassName_Number = step / 10 + '';
+    // console.log(actionClassName_Number);
+    if (step === 100) {
+      // loadingNode.innerHTML = '点击播放';
+      progress_1.className = 'loading__progress_1 loading__progress_number_1';
+      progress_2.className = 'loading__progress_2 loading__progress_number_0';
+      setTimeout(() => {
+        warning_bgm.play(); // warning背景音播放
+        loadingNode.style.display = 'none'; // 隐藏loading区
+        warningFps.className += ' warning_fps_animation'; // warning播放帧动画
+        warningGoNode.onclick = () => {
+          warning_bgm.pause(); // 暂停播放
+          part1Video.play(); // 播放part1Video
+          warningNode.style.display = 'none'; // 隐藏warning区
+        };
+      }, 600);
+    } else {
+      progress_2.className = `loading__progress_2 loading__progress_number_${actionClassName_Number}`;
+    }
+  });
+}
 
 /**
  * loading
@@ -174,12 +208,113 @@ const progress = new Progress({
   runTs: 5000
 });
 progress.run((step: number) => {
-  console.log('run → ' + step);
-  // loadingNode.innerHTML = step.toString();
+  // console.log('run → ' + step);
   const actionClassName_Number = step / 10 + '';
-  console.log(actionClassName_Number);
+  // console.log(actionClassName_Number);
   progress_2.className = `loading__progress_2 loading__progress_number_${actionClassName_Number}`;
 });
+
+/**
+ * warning
+ */
+let warningCache: Array<any>;
+function preloadImage(
+  names: Array<string>,
+  cb: (imgs: any) => void,
+  prefix: string
+) {
+  warningCache = [];
+  var n = 0,
+    img,
+    imgs: any = {};
+  names.forEach(function(name) {
+    img = new Image();
+    warningCache.push(img);
+    img.onload = (function(name, img) {
+      return function() {
+        imgs[name] = img;
+        ++n === names.length && cb && cb(imgs);
+      };
+    })(name, img);
+    img.src = (prefix || '') + name;
+  });
+}
+
+preloadImage(
+  [
+    'warning(1).jpg',
+    'warning(2).jpg',
+    'warning(3).jpg',
+    'warning(4).jpg',
+    'warning(5).jpg',
+    'warning(6).jpg',
+    'warning(7).jpg',
+    'warning(8).jpg',
+    'warning(9).jpg',
+    'warning(10).jpg',
+    'warning(11).jpg',
+    'warning(12).jpg',
+    'warning(13).jpg',
+    'warning(14).jpg',
+    'warning(15).jpg',
+    'warning(16).jpg',
+    'warning(17).jpg',
+    'warning(18).jpg',
+    'warning(19).jpg',
+    'warning(20).jpg',
+    'warning(21).jpg',
+    'warning(22).jpg',
+    'warning(23).jpg',
+    'warning(24).jpg',
+    'warning(25).jpg',
+    'warning(26).jpg',
+    'warning(27).jpg',
+    'warning(28).jpg',
+    'warning(29).jpg',
+    'warning(30).jpg',
+    'warning(31).jpg',
+    'warning(32).jpg',
+    'warning(33).jpg',
+    'warning(34).jpg',
+    'warning(35).jpg'
+  ],
+  () => {
+    console.log('warning_xhr_onload');
+    fileFinish++;
+    if (fileFinish === 3) {
+      fileFinishCallback(); // 资源就位
+    }
+  },
+  'http://3gimg.qq.com/mig_market/activity/act/h/img/warning/'
+);
+
+// console.log(warningFps);
+const w: number = 750; // 缩放后设计稿宽
+const h: number = 1624; // 缩放后设计稿高
+const warningAdapter = new Adapter({
+  planW: w,
+  planH: h
+});
+const { cut }: { cut: number } = warningAdapter.msg;
+warningFps.style.backgroundPosition = `0 ${cut}px`;
+
+/**
+ * warning背景音自动播放
+ */
+// wx.config({
+//   // 配置信息, 即使不正确也能使用 wx.ready
+//   debug: false,
+//   appId: 'gh_1a8c118653f8',
+//   timestamp: 1,
+//   nonceStr: '',
+//   signature: '',
+//   jsApiList: []
+// });
+// wx.ready(function() {
+//   // 获取控制权
+//   warning_bgm.play();
+//   warning_bgm.pause();
+// });
 
 /**
  * Part1
@@ -190,16 +325,10 @@ part1Video.onended = () => {
     return;
   }
   // 点击part1跳转到part2
-  part1Video.onclick = () => {
+  part1GoNode.onclick = () => {
     part2Video.play(); // 播放part2
     part1Box.style.display = 'none';
   };
-  // test...
-  // document.body.addEventListener('click', () => {
-  //   // alert('click');
-  //   part1Video.src = part2Blob;
-  //   part1Video.play();
-  // }, false);
 };
 // part1 onload
 const part1_xhr = new XMLHttpRequest();
@@ -221,24 +350,11 @@ part1_xhr.onload = () => {
   });
   const { cut }: { cut: number } = part1Adapter.msg;
   part1Video.style.transform = `translateY(${cut}px)`;
-  // 进度条：加载完成
-  progress.end((step: number) => {
-    console.log('end → ' + step);
-    const actionClassName_Number = step / 10 + '';
-    console.log(actionClassName_Number);
-    // loadingNode.innerHTML = step.toString(); // → 100
-    if (step === 100) {
-      // loadingNode.innerHTML = '点击播放';
-      progress_1.className = 'loading__progress_1 loading__progress_number_1';
-      progress_2.className = 'loading__progress_2 loading__progress_number_0';
-    } else {
-      progress_2.className = `loading__progress_2 loading__progress_number_${actionClassName_Number}`;
-    }
-    loadingNode.onclick = () => {
-      part1Video.play(); // 播放part1Video
-      loadingNode.style.display = 'none'; // 隐藏loading区
-    };
-  });
+  // 判断资源是否就位
+  fileFinish++;
+  if (fileFinish === 3) {
+    fileFinishCallback();
+  }
 };
 part1_xhr.send(null);
 
@@ -256,7 +372,6 @@ part2_xhr.onload = () => {
   console.log('part2_xhr_onload');
   // 加载完毕
   const blob = window.URL.createObjectURL(part2_xhr.response);
-  part2Blob = blob; // test...
   part2Video.src = blob;
   //
   part2CanPlay = true;
@@ -270,30 +385,10 @@ part2_xhr.onload = () => {
   });
   const { cut }: { cut: number } = part2Adapter.msg;
   part2Video.style.transform = `translateY(${cut}px)`;
+  // 判断资源是否就位
+  fileFinish++;
+  if (fileFinish === 3) {
+    fileFinishCallback();
+  }
 };
 part2_xhr.send(null);
-
-// /**
-//  * 测试
-//  */
-// const part3Box: HTMLElement = document.querySelector('.part3');
-// const part3Video: HTMLVideoElement = document.querySelector('.part3-video');
-// const xhr = new XMLHttpRequest();
-// xhr.open('GET', video1);
-// xhr.responseType = 'blob';
-// // xhr.onprogress = (e) => {
-// //   if (e.lengthComputable) {
-// //     if (e.loaded === e.total) {
-// //       console.log('100');
-// //     }
-// //   }
-// // };
-// xhr.onload = () => {
-//   var blob = window.URL.createObjectURL(xhr.response);
-//   part3Video.src = blob;
-//   // console.dir(testPart1);
-//   console.log('part3VideoWidth → ' + part3Video.width);
-//   console.log('part3VideoHeight → ' + part3Video.height);
-//   console.dir(part3Video);
-// };
-// xhr.send(null);

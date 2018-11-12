@@ -1,0 +1,156 @@
+.warning_fps_animation {
+  width: 100%;
+  /* height: 100%; */
+  /* background-size: 750px 1624px; */
+  background-size: cover;
+  background-repeat: no-repeat;
+  animation-name: keyframes-warning;
+  animation-duration: 3.8s;
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-timing-function: steps(1);
+}
+
+@keyframes keyframes-warning {
+  0% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(1).jpg');
+  }
+
+  2.86% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(2).jpg');
+  }
+
+  5.71% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(3).jpg');
+  }
+
+  8.57% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(4).jpg');
+  }
+
+  11.43% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(5).jpg');
+  }
+
+  14.29% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(6).jpg');
+  }
+
+  17.14% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(7).jpg');
+  }
+
+  20.00% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(8).jpg');
+  }
+
+  22.86% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(9).jpg');
+  }
+
+  25.71% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(10).jpg');
+  }
+
+  28.57% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(11).jpg');
+  }
+
+  31.43% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(12).jpg');
+  }
+
+  34.29% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(13).jpg');
+  }
+
+  37.14% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(14).jpg');
+  }
+
+  40.00% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(15).jpg');
+  }
+
+  42.86% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(16).jpg');
+  }
+
+  45.71% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(17).jpg');
+  }
+
+  48.57% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(18).jpg');
+  }
+
+  51.43% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(19).jpg');
+  }
+
+  54.29% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(20).jpg');
+  }
+
+  57.14% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(21).jpg');
+  }
+
+  60.00% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(22).jpg');
+  }
+
+  62.86% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(23).jpg');
+  }
+
+  65.71% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(24).jpg');
+  }
+
+  68.57% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(25).jpg');
+  }
+
+  71.43% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(26).jpg');
+  }
+
+  74.29% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(27).jpg');
+  }
+
+  77.14% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(28).jpg');
+  }
+
+  80.00% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(29).jpg');
+  }
+
+  82.86% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(30).jpg');
+  }
+
+  85.71% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(31).jpg');
+  }
+
+  88.57% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(32).jpg');
+  }
+
+  91.43% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(33).jpg');
+  }
+
+  94.29% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(34).jpg');
+  }
+
+  97.14%,
+  100% {
+    background-image: url('http://3gimg.qq.com/mig_market/activity/act/h/img/warning/warning(35).jpg');
+  }
+}

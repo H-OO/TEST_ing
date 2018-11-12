@@ -3,12 +3,15 @@
   width: 100%;
   height: 100%;
   .loading,
+  .warning,
   .part1,
   .part2,
   .part3 {
     overflow: hidden;
+    position: relative;
     width: 100%;
     height: 100%;
+    // background-color: #000;
   }
   .loading {
     position: relative;
@@ -106,9 +109,34 @@
       }
     }
   }
+  .warning {
+    position: relative;
+    .warning_fps {
+      height: 100%;
+    }
+    .warning_go {
+      position: absolute;
+      bottom: 25%;
+      width: 100%;
+      height: 100px;
+      // background-color: yellowgreen;
+    }
+    .warning_bgm {
+      display: none;
+    }
+  }
   .part1 {
     .part1-video {
       width: 100%;
+    }
+    .part1_go {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 26%;
+      height: 22%;
+      // background-color: skyblue;
+      // opacity: 0.5;
     }
   }
   .part2 {
@@ -116,9 +144,10 @@
       width: 100%;
     }
   }
-  .part3 {
-    .part3-video {
-      width: 100%;
-    }
-  }
+  // .part3 {
+  //   background-color: #000;
+  //   .part3-video {
+  //     width: 100%;
+  //   }
+  // }
 }
