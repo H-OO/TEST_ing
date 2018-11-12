@@ -18,10 +18,10 @@ class Home extends React.Component {
     };
   }
   componentDidMount() {
-    this.center();
-    window.addEventListener('resize', () => {
-      this.center();
-    }, false);
+    // this.center();
+    // window.addEventListener('resize', () => {
+    //   this.center();
+    // }, false);
   }
   // 居中
   center() {
