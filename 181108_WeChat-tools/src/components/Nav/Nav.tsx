@@ -58,10 +58,10 @@ class Nav extends React.Component {
         _mode = 'full-';
       }
       return (
-        <li key={i}>
+        <li key={i} className={item === '微信环境' ? 'action' : ''}>
           {item}
           <ol>
-            <li data-file-type={`${_mode}img`}>图片</li>
+            <li data-file-type={`${_mode}img`} className={_mode + 'img' === 'wx-img' ? 'action': ''}>图片</li>
             <li data-file-type={`${_mode}video`}>视频</li>
           </ol>
         </li>

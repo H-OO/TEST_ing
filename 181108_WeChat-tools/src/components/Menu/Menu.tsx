@@ -6,15 +6,15 @@ import store from '../../store';
 console.log(store.getState().NavReducer.mode);
 
 interface I_state {
-  deviceListRef?: React.Ref<HTMLSelectElement>
 }
 
 class Menu extends React.Component {
   constructor(arg: Object) {
     super(arg);
     this.getOptions = this.getOptions.bind(this);
+    this.selectChangeHr = this.selectChangeHr.bind(this);
+    this.fileChangeHr = this.fileChangeHr.bind(this);
     this.state = {
-      deviceListRef: React.createRef()
     };
   }
   getOptions() {
@@ -27,19 +27,28 @@ class Menu extends React.Component {
     }
     return options;
   }
-
-  componentDidMount() {
-    
+  selectChangeHr(e: React.ChangeEvent<HTMLSelectElement>) {
+    const { currentTarget }: { currentTarget: HTMLSelectElement } = e;
+    const { value }: { value: string } = currentTarget;
+    console.log(value);
+    console.log(store.getState().NavReducer.mode);
+  }
+  fileChangeHr(e: React.ChangeEvent<HTMLInputElement>) {
+    const { currentTarget }: { currentTarget: HTMLInputElement } = e;
+    const { files }: { files: FileList } = currentTarget;
+    const file: File = files[0]; // 获取文件
+    console.log(file);
+    console.log(file.type);
   }
   render() {
-    const { deviceListRef }: I_state = this.state;
+    // const {  }: I_state = this.state;
     const options: Array<JSX.Element> = this.getOptions();
     return (
       <div className="menu">
-        <select className="menu__device-list" defaultValue="iPhoneX" ref={deviceListRef}>
+        <select onChange={this.selectChangeHr} className="menu__device-list" defaultValue="iPhoneX">
           {options}
         </select>
-        <input type="file" name="" className="menu__file" />
+        <input type="file" name="" className="menu__file" onChange={this.fileChangeHr} />
         <button className="menu__cut">裁剪显示</button>
         <div className="menu__log">打印区</div>
       </div>

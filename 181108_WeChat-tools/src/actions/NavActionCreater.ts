@@ -1,5 +1,5 @@
-export default (params: object = {}) => (
-  dispatch: (arg: object) => void,
+export default (params: any = {}) => (
+  dispatch: (arg: any) => void,
   getState: () => any
 ) => {
   dispatch(params);
