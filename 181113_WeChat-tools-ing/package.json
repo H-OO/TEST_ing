@@ -1,0 +1,26 @@
+{
+  "name": "tools",
+  "version": "0.0.1",
+  "description": "wx-tools",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-tsx-mode start",
+    "build": "react-tsx-mode build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/H-OO/react-tsx-template.git"
+  },
+  "author": "h",
+  "keywords": [
+    "react-tsx-template"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/H-OO/react-tsx-template/issues"
+  },
+  "homepage": "https://github.com/H-OO/react-tsx-template#readme",
+  "dependencies": {
+    "react-tsx-mode": "^0.0.2"
+  }
+}

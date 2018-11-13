@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
-// import testReducer from './testReducer'; // 参考
-import NavReducer from './NavReducer'; // 参考
+import NavReducer from './NavReducer';
+import MenuReducer from './MenuReducer';
 const reducers = combineReducers({
-  NavReducer
+  NavReducer,
+  MenuReducer
 });
 export default reducers;

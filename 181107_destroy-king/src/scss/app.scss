@@ -129,6 +129,19 @@
     .part1-video {
       width: 100%;
     }
+    .part1_mark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: #fff;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      &.action {
+        transition: all 1.2s;
+        opacity: 1;
+      }
+    }
     .part1_go {
       position: absolute;
       top: 0;

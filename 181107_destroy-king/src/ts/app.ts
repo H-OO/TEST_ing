@@ -159,6 +159,7 @@ const warningGoNode: HTMLElement = document.querySelector('.warning_go');
 const warningFps: HTMLElement = document.querySelector('.warning_fps');
 const warning_bgm: HTMLAudioElement = document.querySelector('.warning_bgm');
 const part1Box: HTMLElement = document.querySelector('.part1');
+const part1MarkNode: HTMLElement = document.querySelector('.part1_mark');
 const part1GoNode: HTMLElement = document.querySelector('.part1_go');
 const part2Box: HTMLElement = document.querySelector('.part2');
 const part1Video: HTMLVideoElement = document.querySelector('.part1-video');
@@ -301,20 +302,20 @@ warningFps.style.backgroundPosition = `0 ${cut}px`;
 /**
  * warning背景音自动播放
  */
-// wx.config({
-//   // 配置信息, 即使不正确也能使用 wx.ready
-//   debug: false,
-//   appId: 'gh_1a8c118653f8',
-//   timestamp: 1,
-//   nonceStr: '',
-//   signature: '',
-//   jsApiList: []
-// });
-// wx.ready(function() {
-//   // 获取控制权
-//   warning_bgm.play();
-//   warning_bgm.pause();
-// });
+wx.config({
+  // 配置信息, 即使不正确也能使用 wx.ready
+  debug: false,
+  appId: 'gh_1a8c118653f8',
+  timestamp: 1,
+  nonceStr: '',
+  signature: '',
+  jsApiList: []
+});
+wx.ready(function() {
+  // 获取控制权
+  warning_bgm.play();
+  warning_bgm.pause();
+});
 
 /**
  * Part1
@@ -326,8 +327,13 @@ part1Video.onended = () => {
   }
   // 点击part1跳转到part2
   part1GoNode.onclick = () => {
-    part2Video.play(); // 播放part2
-    part1Box.style.display = 'none';
+    // 
+    part1MarkNode.classList.toggle('action');
+    setTimeout(() => {
+      part1MarkNode.classList.toggle('action');
+      part2Video.play(); // 播放part2 bug!!
+      part1Box.style.display = 'none';
+    }, 1200);
   };
 };
 // part1 onload
