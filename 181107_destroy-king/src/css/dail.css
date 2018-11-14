@@ -1,6 +1,7 @@
 .loading__dail {
   width: 165px;
   height: 30px;
+  transform: translateZ(0);
   /* background-size: 330px 60px; */
   background-size: cover;
   background-repeat: no-repeat;

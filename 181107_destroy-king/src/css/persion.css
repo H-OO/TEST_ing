@@ -1,6 +1,7 @@
 .loading__persion {
   width: 105px;
   height: 110px;
+  transform: translateZ(0);
   /* background-size: 210px 220px; */
   background-size: cover;
   background-repeat: no-repeat;

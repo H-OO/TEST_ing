@@ -157,8 +157,11 @@ const loadingProgressNode: HTMLElement = document.querySelector(
 const warningNode: HTMLElement = document.querySelector('.warning');
 const warningGoNode: HTMLElement = document.querySelector('.warning_go');
 const warningFps: HTMLElement = document.querySelector('.warning_fps');
+const warningIcon: HTMLElement = document.querySelector('.warning_icon');
+const warningCheck: HTMLElement = document.querySelector('.warning_check');
 const warning_bgm: HTMLAudioElement = document.querySelector('.warning_bgm');
 const part1Box: HTMLElement = document.querySelector('.part1');
+const part1Logo: HTMLElement = document.querySelector('.part1_logo');
 const part1MarkNode: HTMLElement = document.querySelector('.part1_mark');
 const part1GoNode: HTMLElement = document.querySelector('.part1_go');
 const part2Box: HTMLElement = document.querySelector('.part2');
@@ -173,7 +176,9 @@ const progress_2: HTMLVideoElement = document.querySelector(
 
 let part2CanPlay = false; // 默认为false
 
-let fileFinish: number = 0; // 本次资源warning+part1+part2 === 3 开始运作
+let fileLoadCount: number = 0; // 本次资源warning+part1+part2 === 3 开始运作
+const fileFinish: number = 3; // 资源数
+
 function fileFinishCallback() {
   // 进度条：加载完成
   progress.end((step: number) => {
@@ -185,12 +190,20 @@ function fileFinishCallback() {
       progress_1.className = 'loading__progress_1 loading__progress_number_1';
       progress_2.className = 'loading__progress_2 loading__progress_number_0';
       setTimeout(() => {
+        setTimeout(() => {
+          warningIcon.classList.add('warning_icon_animation');
+          warningCheck.classList.add('warning_check_animation');
+        }, 3800);
         warning_bgm.play(); // warning背景音播放
         loadingNode.style.display = 'none'; // 隐藏loading区
         warningFps.className += ' warning_fps_animation'; // warning播放帧动画
         warningGoNode.onclick = () => {
           warning_bgm.pause(); // 暂停播放
-          part1Video.play(); // 播放part1Video
+          // 获取part2控制权
+          part2Video.play();
+          part2Video.pause();
+          // 播放part1Video
+          part1Video.play(); 
           warningNode.style.display = 'none'; // 隐藏warning区
         };
       }, 600);
@@ -241,6 +254,9 @@ function preloadImage(
   });
 }
 
+/**
+ * warning_fps
+ */
 preloadImage(
   [
     'warning(1).jpg',
@@ -277,16 +293,22 @@ preloadImage(
     'warning(32).jpg',
     'warning(33).jpg',
     'warning(34).jpg',
-    'warning(35).jpg'
+    'warning(35).jpg',
+    'warning(36).jpg',
+    'warning(37).jpg',
+    'warning(38).jpg',
+    'warning(39).jpg',
+    'warning(40).jpg',
+    'warning(41).jpg'
   ],
   () => {
     console.log('warning_xhr_onload');
-    fileFinish++;
-    if (fileFinish === 3) {
+    fileLoadCount++;
+    if (fileLoadCount === fileFinish) {
       fileFinishCallback(); // 资源就位
     }
   },
-  'http://3gimg.qq.com/mig_market/activity/act/h/img/warning/'
+  'http://3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/img/warning/'
 );
 
 // console.log(warningFps);
@@ -297,12 +319,14 @@ const warningAdapter = new Adapter({
   planH: h
 });
 const { cut }: { cut: number } = warningAdapter.msg;
-warningFps.style.backgroundPosition = `0 ${cut}px`;
+warningFps.style.backgroundPosition = `0 ${cut}px`; // warning适配
+warningIcon.style.backgroundPosition = `0 ${cut}px`; // icon容器适配
+warningCheck.style.backgroundPosition = `0 ${cut}px`; // check容器适配
 
 /**
  * warning背景音自动播放
  */
-wx.config({
+wx && wx.config({
   // 配置信息, 即使不正确也能使用 wx.ready
   debug: false,
   appId: 'gh_1a8c118653f8',
@@ -311,10 +335,15 @@ wx.config({
   signature: '',
   jsApiList: []
 });
-wx.ready(function() {
+wx && wx.ready(function() {
   // 获取控制权
   warning_bgm.play();
   warning_bgm.pause();
+  // 就位
+  // fileLoadCount++;
+  // if (fileLoadCount === fileFinish) {
+  //   fileFinishCallback();
+  // }
 });
 
 /**
@@ -325,15 +354,17 @@ part1Video.onended = () => {
   if (!part2CanPlay) {
     return;
   }
+  // logo循环缩放
+  part1Logo.classList.add('part1_logo_animation');
   // 点击part1跳转到part2
   part1GoNode.onclick = () => {
-    // 
-    part1MarkNode.classList.toggle('action');
+    part1MarkNode.classList.toggle('action'); // 白光效果
     setTimeout(() => {
-      part1MarkNode.classList.toggle('action');
-      part2Video.play(); // 播放part2 bug!!
+      part1MarkNode.classList.toggle('action'); // 隐藏白光效果
+      part2Video.play(); // 播放part2
       part1Box.style.display = 'none';
     }, 1200);
+    
   };
 };
 // part1 onload
@@ -357,12 +388,22 @@ part1_xhr.onload = () => {
   const { cut }: { cut: number } = part1Adapter.msg;
   part1Video.style.transform = `translateY(${cut}px)`;
   // 判断资源是否就位
-  fileFinish++;
-  if (fileFinish === 3) {
+  fileLoadCount++;
+  if (fileLoadCount === fileFinish) {
     fileFinishCallback();
   }
 };
 part1_xhr.send(null);
+
+// logo
+const logoPlanW: number = 288; // 缩放后设计稿宽
+const logoPlanH: number = 640; // 缩放后设计稿高
+const warningLogoAdapter = new Adapter({
+  planW: logoPlanW,
+  planH: logoPlanH
+});
+const { cut: logoCut }: { cut: number } = warningLogoAdapter.msg;
+part1Logo.style.backgroundPosition = `0 ${logoCut}px`; // part1_logo容器适配
 
 /**
  * Part2
@@ -392,8 +433,8 @@ part2_xhr.onload = () => {
   const { cut }: { cut: number } = part2Adapter.msg;
   part2Video.style.transform = `translateY(${cut}px)`;
   // 判断资源是否就位
-  fileFinish++;
-  if (fileFinish === 3) {
+  fileLoadCount++;
+  if (fileLoadCount === fileFinish) {
     fileFinishCallback();
   }
 };
