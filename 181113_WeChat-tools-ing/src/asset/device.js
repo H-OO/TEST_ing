@@ -36,7 +36,10 @@ for (let k in device) {
   _wx[k] = wx;
 }
 
-export const mode = ['微信环境', '全屏环境'];
+export const mode = {
+  wx: '微信环境',
+  full: '全屏环境'
+};
 export const list = _list;
 export const full = _full;
 export const wx = _wx;

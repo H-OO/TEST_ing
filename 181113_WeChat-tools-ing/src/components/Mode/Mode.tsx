@@ -2,6 +2,7 @@ import * as React from 'react';
 import './Mode.scss';
 // device
 import { mode } from '../../asset/device';
+// const _mode
 
 // 局部仓库成员接口声明
 interface I_state {
@@ -27,17 +28,37 @@ class Mode extends React.Component {
   // 获取li
   public lisEle(): void {
     // 遍历
-    const lis: Array<JSX.Element> = mode.map((item, i) => {
-      return <li key={i}>{item}</li>;
-    });
+    // const lis: Array<JSX.Element> = mode.map((item, i) => {
+    //   return (
+    //     <li className={i === 0 ? 'action' : ''} key={i} data-mode>
+    //       {item}
+    //     </li>
+    //   );
+    // });
+    const lis: Array<JSX.Element> = [];
+    for (let k in mode) {
+      lis.push(
+        <li className={k === 'wx' ? 'action' : ''} data-mode={k} key={k}></li>
+      )
+    }
     // 同步到局部仓库
     this.setState({
       lis
-    })
+    });
   }
   // li点击高亮
-  public liAction(e: any): void {
-    
+  public liAction(e: React.MouseEvent<HTMLUListElement>): void {
+    const { currentTarget }: React.MouseEvent<HTMLUListElement> = e;
+    const { children }: { children: HTMLCollection } = currentTarget; // 事件委托节点
+    const target: HTMLLIElement = e.target as HTMLLIElement; // 目标节点
+    // 移除所有高亮
+    [].forEach.call(children, (item: HTMLLIElement) => {
+      item.classList.remove('action');
+    });
+    // 目标节点高亮
+    target.classList.add('action');
+    // 打印自定义属性 `data-mode`
+
   }
   // 渲染
   public render(): JSX.Element {
