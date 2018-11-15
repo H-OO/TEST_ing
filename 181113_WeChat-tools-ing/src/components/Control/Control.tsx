@@ -39,7 +39,6 @@ class Control extends React.Component {
         <option value={k} key={k}>{list[k]}</option>
       );
     }
-    console.log('默认设备 → ' + options[0].props.value); // 获取默认值
     // 同步到局部仓库
     this.setState({
       options
@@ -49,8 +48,8 @@ class Control extends React.Component {
   public selectValueChange(e: React.ChangeEvent<HTMLSelectElement>): void {
     const { mode }: I_state = this.state;
     const device: string = e.currentTarget.value;
-    console.log('当前设备 → ' + device); // 当前选项
     console.log('当前模式 → ' + mode); // 当前模式
+    console.log('当前设备 → ' + device); // 当前选项
     // 派发当前设备
     ControlActionCreater({
       type: 'Control_device',
@@ -60,7 +59,7 @@ class Control extends React.Component {
   // 全局仓库订阅回调
   public callState() {
     const { mode } = store.getState().ModeReducer;
-    console.log('Control mode → ' + mode);
+    // console.log('Control mode → ' + mode);
     this.setState({
       mode
     });
@@ -73,8 +72,16 @@ class Control extends React.Component {
       unsubscribe
     });
     this.optionsEle();
+    // 派发默认设备
+    ControlActionCreater({
+      type: 'Control_device',
+      device: 'iPhoneX'
+    })(store.dispatch, store.getState);
+    // 默认默认
     const { mode }: I_state = this.state;
     console.log('默认模式 → ' + mode);
+    // 默认设备
+    console.log('默认设备 → ' + store.getState().ControlReducer.device);
   }
   // 渲染函数
   public render(): JSX.Element {
