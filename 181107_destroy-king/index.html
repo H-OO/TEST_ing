@@ -1,97 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>destroy-king</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body,
+      html {
+        height: 100%;
+      }
+    </style>
+    <!--
+      <link rel="stylesheet" href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/app0.0.2.css">
+      <link rel="stylesheet" href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/persion.css">
+      <link rel="stylesheet" href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/dail.css">
+      <link rel="stylesheet" href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/warning.css">
+      <link rel="stylesheet" href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/warning_icon.css">
+      <link rel="stylesheet" href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/warning_check.css">
+      <link rel="stylesheet" href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/part1_logo.css">
+      <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    -->
+    <!-- 水滴 -->
+    <script>
+      window.moziArgs = {
+        appid: '431bl22a6fjmnde2tq',
+        host: 'ws://mozi.m.qq.com',
+        enable: true
+      };
+    </script>
+    <script
+      id="sdi_js"
+      aid=""
+      type="text/javascript"
+      src="//3gimg.qq.com/webapp_scan/sdi/common/sdi_js_full_v2.js"
+    ></script>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>destroy-king</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-    body,
-    html {
-      height: 100%;
-    }
-  </style>
-  <link rel="stylesheet" href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/app0.0.2.css">
-  <link rel="stylesheet" href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/persion.css">
-  <link rel="stylesheet" href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/dail.css">
-  <link rel="stylesheet" href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/warning.css">
-  <link rel="stylesheet" href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/warning_icon.css">
-  <link rel="stylesheet" href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/warning_check.css">
-  <link rel="stylesheet" href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/part1_logo.css">
-  <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
-  <!-- <link rel="stylesheet" href="./dist/app.css">
-  <link rel="stylesheet" href="./src/css/persion.css">
-  <link rel="stylesheet" href="./src/css/dail.css">
-  <link rel="stylesheet" href="./src/css/warning.css">
-  <link rel="stylesheet" href="./src/css/warning_icon.css">
-  <link rel="stylesheet" href="./src/css/warning_check.css">
-  <link rel="stylesheet" href="./src/css/part1_logo.css"> -->
-  <!-- <script>
-    // 引入样式
-    var link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'http://3gimg.qq.com/mig_market/activity/act/h/1810/app5.css?' + +new Date();
-    var head = document.querySelector('head');
-    head.appendChild(link);
-  </script> -->
-</head>
+    <!-- dev -->
+    <link rel="stylesheet" href="./dist/app.css" />
+    <link rel="stylesheet" href="./src/css/persion.css" />
+    <link rel="stylesheet" href="./src/css/dail.css" />
+    <link rel="stylesheet" href="./src/css/warning.css" />
+    <link rel="stylesheet" href="./src/css/warning_icon.css" />
+    <link rel="stylesheet" href="./src/css/warning_check.css" />
+    <link rel="stylesheet" href="./src/css/part1_logo.css" />
+  </head>
 
-<body>
-  <div class="wrap">
-    <!-- loading -->
-    <div class="loading">
-      <div class="loading__box">
-        <div class="loading__persion"></div>
-        <div class="loading__dail"></div>
-        <div class="loading__progress">
-          <div class="loading__progress_1"></div>
-          <div class="loading__progress_2"></div>
-          <div class="loading__progress_3"></div>
-          <div class="loading__progress_4"></div>
+  <body>
+    <div class="wrap">
+      <!-- loading -->
+      <div class="loading">
+        <div class="loading__box">
+          <div class="loading__persion"></div>
+          <div class="loading__dail"></div>
+          <div class="loading__progress">
+            <div class="loading__progress_1"></div>
+            <div class="loading__progress_2"></div>
+            <div class="loading__progress_3"></div>
+            <div class="loading__progress_4"></div>
+          </div>
         </div>
       </div>
+      <!-- warning -->
+      <div class="warning">
+        <div class="warning_fps"></div>
+        <div class="warning_icon"></div>
+        <div class="warning_check"></div>
+        <div class="warning_go"></div>
+        <audio
+          class="warning_bgm"
+          src="//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/audio/warning.wav"
+          controls
+        ></audio>
+      </div>
+      <!-- part1 -->
+      <div class="part1">
+        <video
+          class="part1-video"
+          preload="auto"
+          webkit-playsinline="true"
+          playsinline="true"
+          x-webkit-airplay="allow"
+          x5-video-orientation="portrait"
+        ></video>
+        <div class="part1_logo"></div>
+        <div class="part1_mark"></div>
+        <div class="part1_go"></div>
+      </div>
+      <!-- part2 -->
+      <div class="part2">
+        <video
+          class="part2-video"
+          preload="auto"
+          webkit-playsinline="true"
+          playsinline="true"
+          x-webkit-airplay="allow"
+          x5-video-orientation="portrait"
+        ></video>
+      </div>
     </div>
-    <!-- warning -->
-    <div class="warning">
-      <div class="warning_fps"></div>
-      <div class="warning_icon"></div>
-      <div class="warning_check"></div>
-      <div class="warning_go"></div>
-      <audio
-        class="warning_bgm"
-        src="//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/audio/warning.wav"
-        controls
-      ></audio>
-    </div>
-    <!-- part1 -->
-    <div class="part1">
-      <video class="part1-video" preload="auto" webkit-playsinline="true" playsinline="true" x-webkit-airplay="allow"
-      x5-video-orientation="portrait"></video>
-      <div class="part1_logo"></div>
-      <div class="part1_mark"></div>
-      <div class="part1_go"></div>
-    </div>
-    <!-- part2 -->
-    <div class="part2">
-      <video class="part2-video" preload="auto" webkit-playsinline="true" playsinline="true" x-webkit-airplay="allow"
-      x5-video-orientation="portrait"></video>
-    </div>
-  </div>
-  <script src="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/app0.0.2.js"></script>
-  <!-- <script src="./dist/app.js"></script> -->
-  <!-- <script>
-    // 引入逻辑
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    // script.src = 'http://3gimg.qq.com/mig_market/activity/act/h/1810/app3.js?' + +new Date();
-    script.src = 'http://3gimg.qq.com/mig_market/activity/act/h/1810/app6.js';
-    document.body.appendChild(script);
-  </script> -->
-</body>
-
+    <!-- 分享 -->
+    <script>
+      (function() {
+        _sdi && _sdi.share.init(
+          {
+            appid: '', // 固定为空字符串
+            img_url: 'http://xxx.png',
+            link: window.location.href,
+            desc: '我是描述内容',
+            title: '我是标题'
+          },
+          function(opt) {
+            //分享前的回调，opt是分享的参数
+          },
+          function(res) {
+            //分享完成后回调，可以用来判断用户是否分享成功了
+          }
+        );
+      })()
+    </script>
+    <!--
+      <script src="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/app0.0.2.js"></script>
+    -->
+    <script src="./dist/app.js"></script>
+  </body>
 </html>

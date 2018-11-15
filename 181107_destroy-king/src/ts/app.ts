@@ -198,6 +198,7 @@ function fileFinishCallback() {
         loadingNode.style.display = 'none'; // 隐藏loading区
         warningFps.className += ' warning_fps_animation'; // warning播放帧动画
         warningGoNode.onclick = () => {
+          console.log('水滴-立即查看');
           warning_bgm.pause(); // 暂停播放
           // 获取part2控制权
           part2Video.play();
@@ -326,25 +327,25 @@ warningCheck.style.backgroundPosition = `0 ${cut}px`; // check容器适配
 /**
  * warning背景音自动播放
  */
-wx && wx.config({
-  // 配置信息, 即使不正确也能使用 wx.ready
-  debug: false,
-  appId: 'gh_1a8c118653f8',
-  timestamp: 1,
-  nonceStr: '',
-  signature: '',
-  jsApiList: []
-});
-wx && wx.ready(function() {
-  // 获取控制权
-  warning_bgm.play();
-  warning_bgm.pause();
-  // 就位
-  // fileLoadCount++;
-  // if (fileLoadCount === fileFinish) {
-  //   fileFinishCallback();
-  // }
-});
+// wx && wx.config({
+//   // 配置信息, 即使不正确也能使用 wx.ready
+//   debug: false,
+//   appId: 'gh_1a8c118653f8',
+//   timestamp: 1,
+//   nonceStr: '',
+//   signature: '',
+//   jsApiList: []
+// });
+// wx && wx.ready(function() {
+//   // 获取控制权
+//   warning_bgm.play();
+//   warning_bgm.pause();
+//   // 就位
+//   // fileLoadCount++;
+//   // if (fileLoadCount === fileFinish) {
+//   //   fileFinishCallback();
+//   // }
+// });
 
 /**
  * Part1
@@ -410,6 +411,7 @@ part1Logo.style.backgroundPosition = `0 ${logoCut}px`; // part1_logo容器适配
  */
 part2Video.onended = () => {
   console.log('2ended');
+  // 弹窗
 };
 // part2 onload
 const part2_xhr = new XMLHttpRequest();

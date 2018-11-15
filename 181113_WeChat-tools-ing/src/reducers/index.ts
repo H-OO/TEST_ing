@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux';
-import testReducer from './testReducer'; // 参考
+import ModeReducer from './ModeReducer';
+import ControlReducer from './ControlReducer';
 const reducers = combineReducers({
-  testReducer
+  ModeReducer,
+  ControlReducer
 });
 export default reducers;

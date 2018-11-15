@@ -1,10 +1,5 @@
 /**
- * TestReducer 格式参考
- * -------------------
- * 最终目的是通过`switch-case`进行state的更新
- * @param defaultAction 默认值 Action
- * @param newAction 新获取到的 Action
- * -------------------
+ * ModeReducer
  */
 interface I_action {
   type?: string;
@@ -17,7 +12,7 @@ export default (
 ) => {
   const { type, mode }: I_action = newAction;
   switch (type) {
-    case 'test':
+    case 'Mode_mode':
       return {
         type,
         mode

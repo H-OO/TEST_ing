@@ -2,7 +2,15 @@ import * as React from 'react';
 import './Mode.scss';
 // device
 import { mode } from '../../asset/device';
-// const _mode
+interface I_mode {
+  [propName: string]: string
+}
+const _mode: I_mode = mode;
+
+// 仓库
+import store from '../../store';
+// ActionCreater
+import ModeActionCreater from '../../actions/ModeActionCreater';
 
 // 局部仓库成员接口声明
 interface I_state {
@@ -24,21 +32,23 @@ class Mode extends React.Component {
   public componentWillMount() {
     // 执行-获取li
     this.lisEle();
+    // 默认值派发
+    ModeActionCreater({
+      type: 'Mode_mode',
+      mode: 'wx'
+    })(store.dispatch, store.getState);
+  }
+  // 生命钩子-挂载之后
+  public componentDidMount() {
+    // console.log(store.getState().ModeReducer.mode); // 获取全局仓库默认值
   }
   // 获取li
   public lisEle(): void {
     // 遍历
-    // const lis: Array<JSX.Element> = mode.map((item, i) => {
-    //   return (
-    //     <li className={i === 0 ? 'action' : ''} key={i} data-mode>
-    //       {item}
-    //     </li>
-    //   );
-    // });
     const lis: Array<JSX.Element> = [];
-    for (let k in mode) {
+    for (let k in _mode) {
       lis.push(
-        <li className={k === 'wx' ? 'action' : ''} data-mode={k} key={k}></li>
+        <li className={k === 'wx' ? 'action' : ''} data-mode={k} key={k}>{_mode[k]}</li>
       )
     }
     // 同步到局部仓库
@@ -58,7 +68,13 @@ class Mode extends React.Component {
     // 目标节点高亮
     target.classList.add('action');
     // 打印自定义属性 `data-mode`
-
+    const dataMode = target.getAttribute('data-mode');
+    // console.log(dataMode);
+    // 点击修改全局仓库
+    ModeActionCreater({
+      type: 'Mode_mode',
+      mode: dataMode
+    })(store.dispatch, store.getState);
   }
   // 渲染
   public render(): JSX.Element {
