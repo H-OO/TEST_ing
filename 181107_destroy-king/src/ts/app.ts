@@ -146,33 +146,42 @@ class Progress implements I_Progress {
 
 // 逻辑区
 const video1 =
-  'http://3gimg.qq.com/mig_market/activity/act/h/video/part1_20181109.mp4';
+  'http://3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/video/part1_181116_6.36.mp4';
 const video2 =
-  'http://3gimg.qq.com/mig_market/activity/act/h/video/part2_20181109.mp4';
-
+  'http://3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/video/part2_181116_15.2.mp4';
+// loading
 const loadingNode: HTMLElement = document.querySelector('.loading');
 const loadingProgressNode: HTMLElement = document.querySelector(
   '.loading__progress'
 );
+// warning
 const warningNode: HTMLElement = document.querySelector('.warning');
 const warningGoNode: HTMLElement = document.querySelector('.warning_go');
 const warningFps: HTMLElement = document.querySelector('.warning_fps');
 const warningIcon: HTMLElement = document.querySelector('.warning_icon');
 const warningCheck: HTMLElement = document.querySelector('.warning_check');
-const warning_bgm: HTMLAudioElement = document.querySelector('.warning_bgm');
+// part1
 const part1Box: HTMLElement = document.querySelector('.part1');
 const part1Logo: HTMLElement = document.querySelector('.part1_logo');
 const part1MarkNode: HTMLElement = document.querySelector('.part1_mark');
 const part1GoNode: HTMLElement = document.querySelector('.part1_go');
-const part2Box: HTMLElement = document.querySelector('.part2');
 const part1Video: HTMLVideoElement = document.querySelector('.part1-video');
+// part2
+const part2Box: HTMLElement = document.querySelector('.part2');
 const part2Video: HTMLVideoElement = document.querySelector('.part2-video');
+const part2Weal: HTMLVideoElement = document.querySelector('.part2_weal');
+const part2Go: HTMLVideoElement = document.querySelector('.part2_go');
+// progress
 const progress_1: HTMLVideoElement = document.querySelector(
   '.loading__progress_1'
 );
 const progress_2: HTMLVideoElement = document.querySelector(
   '.loading__progress_2'
 );
+// BGM
+const bgm1: HTMLAudioElement = document.querySelector('.bgm_1'); // 帧背景音
+const bgmJoin: HTMLAudioElement = document.querySelector('.bgm_join'); // 衔接音效
+const bgm2: HTMLVideoElement = document.querySelector('.bgm_2'); // 视频背景音
 
 let part2CanPlay = false; // 默认为false
 
@@ -194,18 +203,24 @@ function fileFinishCallback() {
           warningIcon.classList.add('warning_icon_animation');
           warningCheck.classList.add('warning_check_animation');
         }, 3800);
-        warning_bgm.play(); // warning背景音播放
         loadingNode.style.display = 'none'; // 隐藏loading区
         warningFps.className += ' warning_fps_animation'; // warning播放帧动画
         warningGoNode.onclick = () => {
-          console.log('水滴-立即查看');
-          warning_bgm.pause(); // 暂停播放
+          console.log('立即查看');
+          bgm1.pause(); // 暂停第一段背景音
+          bgmJoin.play();// 开启衔接音效
           // 获取part2控制权
           part2Video.play();
           part2Video.pause();
           // 播放part1Video
-          part1Video.play(); 
-          warningNode.style.display = 'none'; // 隐藏warning区
+          part1Video.play();
+          part1Video.pause();
+          setTimeout(() => {
+            bgm2.play(); // 播放第二段背景音
+            part1Video.play();
+            // 隐藏warning区
+            warningNode.style.display = 'none';
+          }, 800);
         };
       }, 600);
     } else {
@@ -213,6 +228,23 @@ function fileFinishCallback() {
     }
   });
 }
+
+/**
+ * wx ready
+ * 背景音
+ */
+wx && wx.config({
+  // 配置信息, 即使不正确也能使用 wx.ready
+  debug: false,
+  appId: 'gh_1a8c118653f8',
+  timestamp: 1,
+  nonceStr: '',
+  signature: '',
+  jsApiList: []
+});
+wx && wx.ready(function() {
+  bgm1.play(); // 播放背景音
+});
 
 /**
  * loading
@@ -323,29 +355,7 @@ const { cut }: { cut: number } = warningAdapter.msg;
 warningFps.style.backgroundPosition = `0 ${cut}px`; // warning适配
 warningIcon.style.backgroundPosition = `0 ${cut}px`; // icon容器适配
 warningCheck.style.backgroundPosition = `0 ${cut}px`; // check容器适配
-
-/**
- * warning背景音自动播放
- */
-// wx && wx.config({
-//   // 配置信息, 即使不正确也能使用 wx.ready
-//   debug: false,
-//   appId: 'gh_1a8c118653f8',
-//   timestamp: 1,
-//   nonceStr: '',
-//   signature: '',
-//   jsApiList: []
-// });
-// wx && wx.ready(function() {
-//   // 获取控制权
-//   warning_bgm.play();
-//   warning_bgm.pause();
-//   // 就位
-//   // fileLoadCount++;
-//   // if (fileLoadCount === fileFinish) {
-//   //   fileFinishCallback();
-//   // }
-// });
+part2Weal.style.backgroundPosition = `0 ${cut}px`; // 福利按钮容器适配
 
 /**
  * Part1
@@ -364,6 +374,13 @@ part1Video.onended = () => {
       part1MarkNode.classList.toggle('action'); // 隐藏白光效果
       part2Video.play(); // 播放part2
       part1Box.style.display = 'none';
+      setTimeout(() => {
+        part2Go.onclick = () => {
+          console.log('跳转路径...');
+          const jumpPath = 'https://sdi.3g.qq.com/v/2018111216374111578?sdi_from=16';
+          window.location.href = jumpPath;
+        };
+      }, 16500);
     }, 1200);
     
   };
@@ -380,8 +397,8 @@ part1_xhr.onload = () => {
   //
   // const w: number = part1Video.videoWidth; // 缩放后设计稿宽
   // const h: number = part1Video.videoHeight; // 缩放后设计稿高
-  const w: number = 288; // 缩放后设计稿宽
-  const h: number = 640; // 缩放后设计稿高
+  const w: number = 750; // 缩放后设计稿宽
+  const h: number = 1624; // 缩放后设计稿高
   const part1Adapter = new Adapter({
     planW: w,
     planH: h
@@ -397,8 +414,8 @@ part1_xhr.onload = () => {
 part1_xhr.send(null);
 
 // logo
-const logoPlanW: number = 288; // 缩放后设计稿宽
-const logoPlanH: number = 640; // 缩放后设计稿高
+const logoPlanW: number = 750; // 缩放后设计稿宽
+const logoPlanH: number = 1624; // 缩放后设计稿高
 const warningLogoAdapter = new Adapter({
   planW: logoPlanW,
   planH: logoPlanH
@@ -411,7 +428,8 @@ part1Logo.style.backgroundPosition = `0 ${logoCut}px`; // part1_logo容器适配
  */
 part2Video.onended = () => {
   console.log('2ended');
-  // 弹窗
+  // 福利按钮循环帧
+  part2Weal.classList.add('part2_weal_animation');
 };
 // part2 onload
 const part2_xhr = new XMLHttpRequest();
@@ -426,8 +444,8 @@ part2_xhr.onload = () => {
   part2CanPlay = true;
   // const w: number = part2Video.videoWidth; // 缩放后设计稿宽
   // const h: number = part2Video.videoHeight; // 缩放后设计稿高
-  const w: number = 288; // 缩放后设计稿宽
-  const h: number = 640; // 缩放后设计稿高
+  const w: number = 750; // 缩放后设计稿宽
+  const h: number = 1624; // 缩放后设计稿高
   const part2Adapter = new Adapter({
     planW: w,
     planH: h

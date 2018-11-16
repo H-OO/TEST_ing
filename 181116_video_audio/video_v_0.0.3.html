@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+        }
+        body, html {
+          height: 100%;
+        }
+        .v1 {
+          width: 100%;
+          height: 50%;
+          background-color: #ccc;
+        }
+        .v2 {
+          width: 100%;
+          height: 50%;
+          background-color: #666;
+          display: none;
+        }
+      </style>
+  </head>
+  <body>
+    <button class="btn">play</button>
+    <video
+      class="v1"
+      src="//3gimg.qq.com/mig_market/activity/act/h/video/part1_181116_quiet.mp4"
+      controls
+      preload="auto"
+      webkit-playsinline="true"
+      playsinline="true"
+      x-webkit-airplay="allow"
+      x5-video-orientation="portrait"
+    ></video>
+    <video
+      class="v2"
+      src="//3gimg.qq.com/mig_market/activity/act/h/video/destroy-king_loading_part2_test.mp4"
+      controls
+      preload="auto"
+      webkit-playsinline="true"
+      playsinline="true"
+      x-webkit-airplay="allow"
+      x5-video-orientation="portrait"
+      loop
+    ></video>
+    <script>
+
+      const btn = document.querySelector('.btn');
+      const v1 = document.querySelector('.v1');
+      const v2 = document.querySelector('.v2');
+      btn.onclick = () => {
+        v1.play();
+        v2.play();
+      }
+    </script>
+  </body>
+</html>

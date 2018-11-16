@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body, html {
+        height: 100%;
+      }
+      .video {
+        width: 100%;
+        height: 100%;
+        background-color: #ccc;
+      }
+    </style>
+    <!-- <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script> -->
+  </head>
+  <body>
+    <audio
+      class="bgm"
+      src="//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/audio/bgm_181116.mp3"
+      controls
+      loop
+    ></audio>
+    <video
+      class="video"
+      src="//3gimg.qq.com/mig_market/activity/act/h/video/part1_181116_quiet.mp4"
+      controls
+    ></video>
+    <script>
+      const bgm = document.querySelector('bgm');
+      const video = document.querySelector('video');
+      wx &&
+        wx.config({
+          // 配置信息, 即使不正确也能使用 wx.ready
+          debug: false,
+          appId: 'gh_1a8c118653f8',
+          timestamp: 1,
+          nonceStr: '',
+          signature: '',
+          jsApiList: []
+        });
+      wx &&
+        wx.ready(function() {
+          // 播放背景音
+          bgm.play();
+        });
+        
+      video.onclick = () => {
+        video.play();
+      };
+
+    
+    </script>
+  </body>
+</html>
