@@ -147,9 +147,9 @@ class Progress implements I_Progress {
 
 // 逻辑区
 const video1 =
-  'http://3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/video/part1_181116_6.36.mp4';
+  'http://3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/video/part1_181117_1.33.mp4';
 const video2 =
-  'http://3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/video/part2_181116_15.2.mp4';
+  'http://3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/video/part2_181117_3.26.mp4';
 // loading
 const loadingNode: HTMLElement = document.querySelector('.loading');
 const loadingProgressNode: HTMLElement = document.querySelector(
@@ -260,7 +260,7 @@ function fileFinishCallback() {
             bgm2.pause();
             // 处理兼容问题 等待音效播放完毕 替换mp4作为背景音输出
             setTimeout(() => {
-              bgmJoin.pause(); // 暂停衔接音效
+              bgmJoin.src = ''; // 暂停衔接音效
               bgm2.play(); // 播放bgm2
               part1Video.play(); // 播放video1
               warningNode.style.display = 'none'; // 隐藏warning区
@@ -285,9 +285,9 @@ function fileFinishCallback() {
  * loading
  */
 const progress = new Progress({
-  range: [20, 40],
+  range: [30, 50],
   pace: 10,
-  runTs: 13000
+  runTs: 10000
 });
 progress.run((step: number) => {
   // console.log('run → ' + step);
@@ -422,9 +422,9 @@ part1Video.onended = () => {
   part1Logo.classList.add('part1_logo_animation');
   // 点击part1跳转到part2
   part1GoNode.onclick = () => {
-    part1MarkNode.classList.toggle('action'); // 白光效果
+    part1MarkNode.classList.toggle('action1'); // 白光效果
     setTimeout(() => {
-      part1MarkNode.classList.toggle('action'); // 隐藏白光效果
+      part1MarkNode.classList.toggle('action1'); // 隐藏白光效果
       part2Video.play(); // 播放part2
       part1Box.style.display = 'none';
       setTimeout(() => {
@@ -436,6 +436,24 @@ part1Video.onended = () => {
         };
       }, 16500);
     }, 1200);
+    // test
+    // part1MarkNode.className = 'part1_mark action1'; // 白光效果
+    // setTimeout(() => {
+    //   part2Video.play(); // 播放part2
+    //   setTimeout(() => {
+    //     // 绑定点击事件
+    //     part2Go.onclick = () => {
+    //       console.log('跳转路径...');
+    //       const jumpPath =
+    //         'https://sdi.3g.qq.com/v/2018111216374111578?sdi_from=16';
+    //       window.location.href = jumpPath;
+    //     };
+    //   }, 16500);
+    // }, 300)
+    // setTimeout(() => {
+    //   part1Box.style.display = 'none'; // part1Box隐藏
+    //   // part1MarkNode.className = 'part1_mark action2'; // 隐藏白光效果
+    // }, 800);
   };
 };
 // part1 onload
