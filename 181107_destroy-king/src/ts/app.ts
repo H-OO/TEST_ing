@@ -129,7 +129,8 @@ class Progress implements I_Progress {
     }
     clearInterval(this.timer); // 打断前往 randomPosition 的行为
     const rest: number = 100 - currentPosition; // 剩余部分
-    const time: number = 1000 / rest; // 定时器时间
+    const time: number = 1000 / (rest / pace); // 定时器时间
+    console.log(time);
     let step: number = currentPosition; // 累加定时器循环次数
     this.timer = setInterval(() => {
       step += pace;
@@ -186,7 +187,40 @@ const bgm2: HTMLVideoElement = document.querySelector('.bgm_2'); // 视频背景
 let part2CanPlay = false; // 默认为false
 
 let fileLoadCount: number = 0; // 本次资源warning+part1+part2 === 3 开始运作
-const fileFinish: number = 3; // 资源数
+// let fileFinish: number = 3; // 资源数
+
+// test ↓↓↓
+let fileFinish: number; // 资源数
+const u = navigator.userAgent;
+const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+if (isAndroid) {
+  fileFinish = 4; // bgm2
+  /**
+   * BGM2 mp4 onload
+   */
+  const bgm2_xhr = new XMLHttpRequest();
+  bgm2_xhr.open(
+    'GET',
+    '//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/audio/bgm_181116.mp4'
+  );
+  bgm2_xhr.responseType = 'blob';
+  bgm2_xhr.onload = () => {
+    console.log('bgm2_mp4 onload');
+    const blob = window.URL.createObjectURL(bgm2_xhr.response);
+    bgm2.src = blob;
+    // 判断资源是否就位
+    fileLoadCount++;
+    if (fileLoadCount === fileFinish) {
+      fileFinishCallback();
+    }
+  };
+  bgm2_xhr.send(null);
+} else {
+  fileFinish = 3;
+}
+// test ↑↑↑
+
+let warningGoOnce: boolean = false; // warningGo只允许点击一次
 
 function fileFinishCallback() {
   // 进度条：加载完成
@@ -207,20 +241,37 @@ function fileFinishCallback() {
         warningFps.className += ' warning_fps_animation'; // warning播放帧动画
         warningGoNode.onclick = () => {
           console.log('立即查看');
-          bgm1.pause(); // 暂停第一段背景音
-          bgmJoin.play();// 开启衔接音效
-          // 获取part2控制权
-          part2Video.play();
-          part2Video.pause();
-          // 播放part1Video
-          part1Video.play();
-          part1Video.pause();
-          setTimeout(() => {
-            bgm2.play(); // 播放第二段背景音
+          if (warningGoOnce) {
+            return;
+          }
+          warningGoOnce = true; // 关闭回调执行入口
+          const u = navigator.userAgent;
+          const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+          if (isAndroid) {
+            // Android设备
+            bgm1.pause(); // 暂停bgm1
+            bgmJoin.play(); // 衔接音效
+            // 获取part1+part2+bgm2控制权
+            part2Video.play();
+            part2Video.pause();
             part1Video.play();
-            // 隐藏warning区
-            warningNode.style.display = 'none';
-          }, 800);
+            part1Video.pause();
+            bgm2.play();
+            bgm2.pause();
+            // 处理兼容问题 等待音效播放完毕 替换mp4作为背景音输出
+            setTimeout(() => {
+              bgm2.play(); // 播放bgm2
+              part1Video.play(); // 播放video1
+              warningNode.style.display = 'none'; // 隐藏warning区
+            }, 800);
+          } else {
+            // iOS设备
+            // 获取part2控制权
+            part2Video.play();
+            part2Video.pause();
+            part1Video.play(); // 播放part1Video
+            warningNode.style.display = 'none'; // 隐藏warning区
+          }
         };
       }, 600);
     } else {
@@ -230,29 +281,12 @@ function fileFinishCallback() {
 }
 
 /**
- * wx ready
- * 背景音
- */
-wx && wx.config({
-  // 配置信息, 即使不正确也能使用 wx.ready
-  debug: false,
-  appId: 'gh_1a8c118653f8',
-  timestamp: 1,
-  nonceStr: '',
-  signature: '',
-  jsApiList: []
-});
-wx && wx.ready(function() {
-  bgm1.play(); // 播放背景音
-});
-
-/**
  * loading
  */
 const progress = new Progress({
-  range: [50, 70],
+  range: [20, 40],
   pace: 10,
-  runTs: 5000
+  runTs: 13000
 });
 progress.run((step: number) => {
   // console.log('run → ' + step);
@@ -260,6 +294,24 @@ progress.run((step: number) => {
   // console.log(actionClassName_Number);
   progress_2.className = `loading__progress_2 loading__progress_number_${actionClassName_Number}`;
 });
+
+/**
+ * wx ready
+ * 背景音
+ */
+// wx && wx.config({
+//   // 配置信息, 即使不正确也能使用 wx.ready
+//   debug: false,
+//   appId: 'gh_1a8c118653f8',
+//   timestamp: 1,
+//   nonceStr: '',
+//   signature: '',
+//   jsApiList: []
+// });
+// wx && wx.ready(function() {
+//   var bgm1 = document.querySelector('.bgm_1'); // 帧背景音
+//   bgm1.play(); // 播放背景音
+// });
 
 /**
  * warning
@@ -377,12 +429,12 @@ part1Video.onended = () => {
       setTimeout(() => {
         part2Go.onclick = () => {
           console.log('跳转路径...');
-          const jumpPath = 'https://sdi.3g.qq.com/v/2018111216374111578?sdi_from=16';
+          const jumpPath =
+            'https://sdi.3g.qq.com/v/2018111216374111578?sdi_from=16';
           window.location.href = jumpPath;
         };
       }, 16500);
     }, 1200);
-    
   };
 };
 // part1 onload

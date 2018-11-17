@@ -20,6 +20,24 @@
     </style>
 
     <!-- lib -->
+    <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script>
+      wx &&
+        wx.config({
+          // 配置信息, 即使不正确也能使用 wx.ready
+          debug: false,
+          appId: 'gh_1a8c118653f8',
+          timestamp: 1,
+          nonceStr: '',
+          signature: '',
+          jsApiList: []
+        });
+      wx &&
+        wx.ready(function() {
+          var bgm1 = document.querySelector('.bgm_1'); // 帧背景音
+          bgm1.play(); // 播放背景音
+        });
+    </script>
     <link
       rel="stylesheet"
       href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/app0.0.9.css"
@@ -32,27 +50,6 @@
       rel="stylesheet"
       href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/dail.css"
     />
-    <link
-      rel="stylesheet"
-      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/warning.css"
-    />
-    <link
-      rel="stylesheet"
-      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/warning_icon.css"
-    />
-    <link
-      rel="stylesheet"
-      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/warning_check.css"
-    />
-    <link
-      rel="stylesheet"
-      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/part1_logo.css"
-    />
-    <link
-      rel="stylesheet"
-      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/part2_weal_0.0.1.css"
-    />
-    <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 
     <!-- sdi -->
     <script>
@@ -71,20 +68,46 @@
     ></script>
 
     <!-- dev -->
-    
-      <!-- <link rel="stylesheet" href="./dist/app.css" />
+
+    <!--
+      <link rel="stylesheet" href="./dist/app.css" />
       <link rel="stylesheet" href="./src/css/persion.css" />
       <link rel="stylesheet" href="./src/css/dail.css" />
       <link rel="stylesheet" href="./src/css/warning.css" />
       <link rel="stylesheet" href="./src/css/warning_icon.css" />
       <link rel="stylesheet" href="./src/css/warning_check.css" />
       <link rel="stylesheet" href="./src/css/part1_logo.css" />
-      <link rel="stylesheet" href="./src/css/part2_weal_0.0.1.css" /> -->
-   
+      <link rel="stylesheet" href="./src/css/part2_weal_0.0.1.css" />
+    -->
   </head>
 
   <body>
     <div class="wrap">
+      <!-- BGM -->
+      <audio
+        class="bgm_1"
+        preload="auto"
+        src="./src/audio/bgm_1.mp3"
+        controls
+        loop
+      ></audio>
+      <audio
+        class="bgm_join"
+        src="//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/audio/bgm_join.wav"
+        controls
+      ></audio>
+      <video
+        class="bgm_2"
+        src="./src/audio/bgm_2.mp4"
+        controls
+        preload="auto"
+        webkit-playsinline="true"
+        playsinline="true"
+        x-webkit-airplay="allow"
+        x5-video-orientation="portrait"
+        loop
+      ></video>
+
       <!-- loading -->
       <div class="loading">
         <div class="loading__box">
@@ -132,28 +155,6 @@
         <div class="part2_weal"></div>
         <div class="part2_go"></div>
       </div>
-      <!-- BGM -->
-      <audio
-        class="bgm_1"
-        src="//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/audio/bgm_181116.mp3"
-        controls
-        ></audio>
-      <audio
-        class="bgm_join"
-        src="//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/audio/bgm_join.wav"
-        controls
-      ></audio>
-      <video
-        class="bgm_2"
-        src="//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/audio/bgm_181116.mp4"
-        controls
-        preload="auto"
-        webkit-playsinline="true"
-        playsinline="true"
-        x-webkit-airplay="allow"
-        x5-video-orientation="portrait"
-        loop
-      ></video>
     </div>
     <!-- 分享 -->
     <script>
@@ -177,9 +178,29 @@
           );
       })();
     </script>
-
-    <script src="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/app0.0.9.js"></script>
-
-    <!-- <script src="./dist/app.js"></script> -->
+    <link
+      rel="stylesheet"
+      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/warning.css"
+    />
+    <link
+      rel="stylesheet"
+      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/warning_icon.css"
+    />
+    <link
+      rel="stylesheet"
+      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/warning_check.css"
+    />
+    <link
+      rel="stylesheet"
+      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/part1_logo.css"
+    />
+    <link
+      rel="stylesheet"
+      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/part2_weal_0.0.1.css"
+    />
+    <script src="./dist/app.js"></script>
+    <!--
+      <script src="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/try/app0.0.9.js"></script>
+    -->
   </body>
 </html>
