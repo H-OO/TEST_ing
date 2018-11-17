@@ -159,7 +159,7 @@ const loadingProgressNode: HTMLElement = document.querySelector(
 const warningNode: HTMLElement = document.querySelector('.warning');
 const warningGoNode: HTMLElement = document.querySelector('.warning_go');
 const warningFps: HTMLElement = document.querySelector('.warning_fps');
-const warningIcon: HTMLElement = document.querySelector('.warning_icon');
+// const warningIcon: HTMLElement = document.querySelector('.warning_icon');
 const warningCheck: HTMLElement = document.querySelector('.warning_check');
 // part1
 const part1Box: HTMLElement = document.querySelector('.part1');
@@ -201,7 +201,7 @@ if (isAndroid) {
   const bgm2_xhr = new XMLHttpRequest();
   bgm2_xhr.open(
     'GET',
-    '//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/audio/bgm_181116.mp4'
+    'http://3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/audio/bgm_2_181117_t.mp4'
   );
   bgm2_xhr.responseType = 'blob';
   bgm2_xhr.onload = () => {
@@ -234,7 +234,7 @@ function fileFinishCallback() {
       progress_2.className = 'loading__progress_2 loading__progress_number_0';
       setTimeout(() => {
         setTimeout(() => {
-          warningIcon.classList.add('warning_icon_animation');
+          // warningIcon.classList.add('warning_icon_animation');
           warningCheck.classList.add('warning_check_animation');
         }, 3800);
         loadingNode.style.display = 'none'; // 隐藏loading区
@@ -260,6 +260,7 @@ function fileFinishCallback() {
             bgm2.pause();
             // 处理兼容问题 等待音效播放完毕 替换mp4作为背景音输出
             setTimeout(() => {
+              bgmJoin.pause(); // 暂停衔接音效
               bgm2.play(); // 播放bgm2
               part1Video.play(); // 播放video1
               warningNode.style.display = 'none'; // 隐藏warning区
@@ -405,7 +406,7 @@ const warningAdapter = new Adapter({
 });
 const { cut }: { cut: number } = warningAdapter.msg;
 warningFps.style.backgroundPosition = `0 ${cut}px`; // warning适配
-warningIcon.style.backgroundPosition = `0 ${cut}px`; // icon容器适配
+// warningIcon.style.backgroundPosition = `0 ${cut}px`; // icon容器适配
 warningCheck.style.backgroundPosition = `0 ${cut}px`; // check容器适配
 part2Weal.style.backgroundPosition = `0 ${cut}px`; // 福利按钮容器适配
 

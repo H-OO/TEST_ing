@@ -6,7 +6,7 @@
   background-repeat: no-repeat;
   animation-name: keyframes-check;
   animation-duration: 0.9s;
-  animation-delay: 1.2s;
+  animation-delay: 0s;
   animation-iteration-count: infinite;
   animation-fill-mode: forwards;
   animation-timing-function: steps(1);
