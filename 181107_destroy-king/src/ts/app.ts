@@ -130,7 +130,7 @@ class Progress implements I_Progress {
     clearInterval(this.timer); // 打断前往 randomPosition 的行为
     const rest: number = 100 - currentPosition; // 剩余部分
     const time: number = 1000 / (rest / pace); // 定时器时间
-    console.log(time);
+    // console.log(time);
     let step: number = currentPosition; // 累加定时器循环次数
     this.timer = setInterval(() => {
       step += pace;
@@ -164,7 +164,6 @@ const warningCheck: HTMLElement = document.querySelector('.warning_check');
 // part1
 const part1Box: HTMLElement = document.querySelector('.part1');
 const part1Logo: HTMLElement = document.querySelector('.part1_logo');
-const part1MarkNode: HTMLElement = document.querySelector('.part1_mark');
 const part1GoNode: HTMLElement = document.querySelector('.part1_go');
 const part1Video: HTMLVideoElement = document.querySelector('.part1-video');
 // part2
@@ -183,6 +182,8 @@ const progress_2: HTMLVideoElement = document.querySelector(
 const bgm1: HTMLAudioElement = document.querySelector('.bgm_1'); // 帧背景音
 const bgmJoin: HTMLAudioElement = document.querySelector('.bgm_join'); // 衔接音效
 const bgm2: HTMLVideoElement = document.querySelector('.bgm_2'); // 视频背景音
+// light
+const light: HTMLDivElement = document.querySelector('.light'); // 白光
 
 let part2CanPlay = false; // 默认为false
 
@@ -240,7 +241,9 @@ function fileFinishCallback() {
         loadingNode.style.display = 'none'; // 隐藏loading区
         warningFps.className += ' warning_fps_animation'; // warning播放帧动画
         warningGoNode.onclick = () => {
-          console.log('立即查看');
+          console.log('sdi → 立即查看 参与1');
+          // _sdi && _sdi.stat({ ptype: '2', stype: '1' }); // 参与1
+          // 
           if (warningGoOnce) {
             return;
           }
@@ -252,8 +255,8 @@ function fileFinishCallback() {
             bgm1.pause(); // 暂停bgm1
             bgmJoin.play(); // 衔接音效
             // 获取part1+part2+bgm2控制权
-            part2Video.play();
-            part2Video.pause();
+            // part2Video.play();
+            // part2Video.pause();
             part1Video.play();
             part1Video.pause();
             bgm2.play();
@@ -268,10 +271,12 @@ function fileFinishCallback() {
           } else {
             // iOS设备
             // 获取part2控制权
-            part2Video.play();
-            part2Video.pause();
+            // part2Video.play();
+            // part2Video.pause();
             part1Video.play(); // 播放part1Video
-            warningNode.style.display = 'none'; // 隐藏warning区
+            setTimeout(() => {
+              warningNode.style.display = 'none'; // 隐藏warning区
+            }, 800)
           }
         };
       }, 600);
@@ -388,7 +393,7 @@ preloadImage(
     'warning(41).jpg'
   ],
   () => {
-    console.log('warning_xhr_onload');
+    // console.log('warning_xhr_onload');
     fileLoadCount++;
     if (fileLoadCount === fileFinish) {
       fileFinishCallback(); // 资源就位
@@ -414,7 +419,7 @@ part2Weal.style.backgroundPosition = `0 ${cut}px`; // 福利按钮容器适配
  * Part1
  */
 part1Video.onended = () => {
-  console.log('1ended');
+  // console.log('1ended');
   if (!part2CanPlay) {
     return;
   }
@@ -422,38 +427,26 @@ part1Video.onended = () => {
   part1Logo.classList.add('part1_logo_animation');
   // 点击part1跳转到part2
   part1GoNode.onclick = () => {
-    part1MarkNode.classList.toggle('action1'); // 白光效果
+    console.log('sdi → 点击logo 按钮1');
+    // _sdi && _sdi.stat({ ptype: '7', stype: '1' }); // 按钮1
+    // 
+    light.classList.toggle('action'); // 开启白光效果
+    part2Video.play(); // 播放part2
     setTimeout(() => {
-      part1MarkNode.classList.toggle('action1'); // 隐藏白光效果
-      part2Video.play(); // 播放part2
-      part1Box.style.display = 'none';
+      light.classList.toggle('action'); // 隐藏白光效果
+      part1Box.style.display = 'none'; // 隐藏part1
       setTimeout(() => {
         part2Go.onclick = () => {
-          console.log('跳转路径...');
+          console.log('sdi → 去领福利 转化1');
+          // _sdi && _sdi.stat({ ptype: '4', stype: '1' }); // 转化1
+          // 
+          // console.log('跳转路径...');
           const jumpPath =
             'https://sdi.3g.qq.com/v/2018111216374111578?sdi_from=16';
           window.location.href = jumpPath;
         };
       }, 16500);
-    }, 1200);
-    // test
-    // part1MarkNode.className = 'part1_mark action1'; // 白光效果
-    // setTimeout(() => {
-    //   part2Video.play(); // 播放part2
-    //   setTimeout(() => {
-    //     // 绑定点击事件
-    //     part2Go.onclick = () => {
-    //       console.log('跳转路径...');
-    //       const jumpPath =
-    //         'https://sdi.3g.qq.com/v/2018111216374111578?sdi_from=16';
-    //       window.location.href = jumpPath;
-    //     };
-    //   }, 16500);
-    // }, 300)
-    // setTimeout(() => {
-    //   part1Box.style.display = 'none'; // part1Box隐藏
-    //   // part1MarkNode.className = 'part1_mark action2'; // 隐藏白光效果
-    // }, 800);
+    }, 800);
   };
 };
 // part1 onload
@@ -461,7 +454,7 @@ const part1_xhr = new XMLHttpRequest();
 part1_xhr.open('GET', video1);
 part1_xhr.responseType = 'blob';
 part1_xhr.onload = () => {
-  console.log('part1_xhr_onload');
+  // console.log('part1_xhr_onload');
   // 加载完毕
   const blob = window.URL.createObjectURL(part1_xhr.response);
   part1Video.src = blob;
@@ -498,7 +491,7 @@ part1Logo.style.backgroundPosition = `0 ${logoCut}px`; // part1_logo容器适配
  * Part2
  */
 part2Video.onended = () => {
-  console.log('2ended');
+  // console.log('2ended');
   // 福利按钮循环帧
   part2Weal.classList.add('part2_weal_animation');
 };
@@ -507,7 +500,7 @@ const part2_xhr = new XMLHttpRequest();
 part2_xhr.open('GET', video2);
 part2_xhr.responseType = 'blob';
 part2_xhr.onload = () => {
-  console.log('part2_xhr_onload');
+  // console.log('part2_xhr_onload');
   // 加载完毕
   const blob = window.URL.createObjectURL(part2_xhr.response);
   part2Video.src = blob;

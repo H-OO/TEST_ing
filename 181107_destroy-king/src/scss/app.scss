@@ -126,6 +126,7 @@
       bottom: 25%;
       width: 100%;
       height: 100px;
+      z-index: 100;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
       // background-color: skyblue;
       // opacity: 0.5;
@@ -144,27 +145,11 @@
       top: 0;
       left: 0;
     }
-    .part1_mark {
-      position: absolute;
-      top: 0;
-      left: 0;
-      background-color: #fff;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      &.action1 {
-        transition: opacity 1.2s;
-        opacity: 1;
-      }
-      &.action2 {
-        transition: opacity 1.2s;
-        opacity: 0;
-      }
-    }
     .part1_go {
       position: absolute;
       top: 0;
       left: 0;
+      z-index: 100;
       width: 26%;
       height: 22%;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -187,6 +172,7 @@
     .part2_go {
       position: absolute;
       bottom: 34%;
+      z-index: 100;
       width: 100%;
       height: 100px;
       -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -198,5 +184,20 @@
   .bgm_join,
   .bgm_2 {
     display: none;
+  }
+  .light {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ccc;
+    width: 100%;
+    height: 100%;
+    z-index: 90;
+    transition: opacity 0.8s;
+    opacity: 0;
+    &.action {
+      transition: opacity 0.8s;
+      opacity: 1;
+    }
   }
 }
