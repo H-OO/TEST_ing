@@ -242,7 +242,7 @@ function fileFinishCallback() {
         warningFps.className += ' warning_fps_animation'; // warning播放帧动画
         warningGoNode.onclick = () => {
           console.log('sdi → 立即查看 参与1');
-          // _sdi && _sdi.stat({ ptype: '2', stype: '1' }); // 参与1
+          _sdi && _sdi.stat({ ptype: '2', stype: '1' }); // 参与1
           // 
           if (warningGoOnce) {
             return;
@@ -428,7 +428,7 @@ part1Video.onended = () => {
   // 点击part1跳转到part2
   part1GoNode.onclick = () => {
     console.log('sdi → 点击logo 按钮1');
-    // _sdi && _sdi.stat({ ptype: '7', stype: '1' }); // 按钮1
+    _sdi && _sdi.stat({ ptype: '7', stype: '1' }); // 按钮1
     // 
     const u = navigator.userAgent;
     const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
@@ -452,7 +452,7 @@ part1Video.onended = () => {
     setTimeout(() => {
       part2Go.onclick = () => {
         console.log('sdi → 去领福利 转化1');
-        // _sdi && _sdi.stat({ ptype: '4', stype: '1' }); // 转化1
+        _sdi && _sdi.stat({ ptype: '4', stype: '1' }); // 转化1
         // 
         // console.log('跳转路径...');
         const jumpPath =
@@ -460,30 +460,6 @@ part1Video.onended = () => {
         window.location.href = jumpPath;
       };
     }, 16500);
-
-    //
-    // // light.classList.toggle('action'); // 开启白光效果
-    // part2Video.play(); // 播放part2
-    // setTimeout(() => {
-    //   // light.classList.toggle('action'); // 隐藏白光效果
-    //   part1Box.style.display = 'none'; // 隐藏part1
-    // }, 500)
-    // setTimeout(() => {
-    //   part2Go.onclick = () => {
-    //     console.log('sdi → 去领福利 转化1');
-    //     // _sdi && _sdi.stat({ ptype: '4', stype: '1' }); // 转化1
-    //     // 
-    //     // console.log('跳转路径...');
-    //     const jumpPath =
-    //       'https://sdi.3g.qq.com/v/2018111216374111578?sdi_from=16';
-    //     window.location.href = jumpPath;
-    //   };
-    // }, 16500);
-    // // setTimeout(() => {
-    // //   // light.classList.toggle('action'); // 隐藏白光效果
-    // //   // part1Box.style.display = 'none'; // 隐藏part1
-      
-    // // }, 1200);
   };
 };
 // part1 onload
