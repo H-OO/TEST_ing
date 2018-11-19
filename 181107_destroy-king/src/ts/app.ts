@@ -1,3 +1,4 @@
+console.log('v1.0.1');
 /**
  * 适配器
  */
@@ -254,12 +255,8 @@ function fileFinishCallback() {
             // Android设备
             bgm1.pause(); // 暂停bgm1
             bgmJoin.play(); // 衔接音效
-            // 获取part1+part2+bgm2控制权
-            // part2Video.play();
-            // part2Video.pause();
-            part1Video.play();
-            // part1Video.pause();
-            bgm2.play();
+            part1Video.play(); // 播放part1
+            bgm2.play(); // 播放bgm
             // bgm2.pause();
             // 处理兼容问题 等待音效播放完毕 替换mp4作为背景音输出
             setTimeout(() => {
@@ -270,9 +267,11 @@ function fileFinishCallback() {
             }, 800);
           } else {
             // iOS设备
-            // 获取part2控制权
-            // part2Video.play();
-            // part2Video.pause();
+            const isWx = (/micromessenger/i).test(navigator.userAgent);
+            // 非微信环境
+            if (!isWx) {
+              bgm1.play(); // 播放mp3
+            }
             part1Video.play(); // 播放part1Video
             setTimeout(() => {
               warningNode.style.display = 'none'; // 隐藏warning区
