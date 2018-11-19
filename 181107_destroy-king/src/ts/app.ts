@@ -258,14 +258,14 @@ function fileFinishCallback() {
             // part2Video.play();
             // part2Video.pause();
             part1Video.play();
-            part1Video.pause();
+            // part1Video.pause();
             bgm2.play();
-            bgm2.pause();
+            // bgm2.pause();
             // 处理兼容问题 等待音效播放完毕 替换mp4作为背景音输出
             setTimeout(() => {
               bgmJoin.src = ''; // 暂停衔接音效
-              bgm2.play(); // 播放bgm2
-              part1Video.play(); // 播放video1
+              // bgm2.play(); // 播放bgm2
+              // part1Video.play(); // 播放video1
               warningNode.style.display = 'none'; // 隐藏warning区
             }, 800);
           } else {
@@ -430,23 +430,60 @@ part1Video.onended = () => {
     console.log('sdi → 点击logo 按钮1');
     // _sdi && _sdi.stat({ ptype: '7', stype: '1' }); // 按钮1
     // 
-    light.classList.toggle('action'); // 开启白光效果
-    part2Video.play(); // 播放part2
-    setTimeout(() => {
-      light.classList.toggle('action'); // 隐藏白光效果
+    const u = navigator.userAgent;
+    const isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+    if (isAndroid) {
+      part1Video.src = ''; // 清除part1
       part1Box.style.display = 'none'; // 隐藏part1
+      light.classList.toggle('ad'); // 直接白屏遮罩
+      part2Video.play(); // 播放part2
       setTimeout(() => {
-        part2Go.onclick = () => {
-          console.log('sdi → 去领福利 转化1');
-          // _sdi && _sdi.stat({ ptype: '4', stype: '1' }); // 转化1
-          // 
-          // console.log('跳转路径...');
-          const jumpPath =
-            'https://sdi.3g.qq.com/v/2018111216374111578?sdi_from=16';
-          window.location.href = jumpPath;
-        };
-      }, 16500);
-    }, 800);
+        light.classList.toggle('ad'); // 隐藏白光效果
+      }, 500);
+    } else {
+      light.classList.toggle('action'); // 开启白光效果
+      part2Video.play(); // 播放part2
+      setTimeout(() => {
+        light.classList.toggle('action'); // 隐藏白光效果
+        part1Box.style.display = 'none'; // 隐藏part1
+      }, 800);
+    }
+    // 领取福利按钮绑定事件
+    setTimeout(() => {
+      part2Go.onclick = () => {
+        console.log('sdi → 去领福利 转化1');
+        // _sdi && _sdi.stat({ ptype: '4', stype: '1' }); // 转化1
+        // 
+        // console.log('跳转路径...');
+        const jumpPath =
+          'https://sdi.3g.qq.com/v/2018111216374111578?sdi_from=16';
+        window.location.href = jumpPath;
+      };
+    }, 16500);
+
+    //
+    // // light.classList.toggle('action'); // 开启白光效果
+    // part2Video.play(); // 播放part2
+    // setTimeout(() => {
+    //   // light.classList.toggle('action'); // 隐藏白光效果
+    //   part1Box.style.display = 'none'; // 隐藏part1
+    // }, 500)
+    // setTimeout(() => {
+    //   part2Go.onclick = () => {
+    //     console.log('sdi → 去领福利 转化1');
+    //     // _sdi && _sdi.stat({ ptype: '4', stype: '1' }); // 转化1
+    //     // 
+    //     // console.log('跳转路径...');
+    //     const jumpPath =
+    //       'https://sdi.3g.qq.com/v/2018111216374111578?sdi_from=16';
+    //     window.location.href = jumpPath;
+    //   };
+    // }, 16500);
+    // // setTimeout(() => {
+    // //   // light.classList.toggle('action'); // 隐藏白光效果
+    // //   // part1Box.style.display = 'none'; // 隐藏part1
+      
+    // // }, 1200);
   };
 };
 // part1 onload
