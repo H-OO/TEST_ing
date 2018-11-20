@@ -1,4 +1,4 @@
-console.log('v1.0.1');
+console.log('v1.0.3');
 /**
  * 适配器
  */
@@ -148,9 +148,9 @@ class Progress implements I_Progress {
 
 // 逻辑区
 const video1 =
-  'http://3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/video/part1_181117_1.33.mp4';
+  '//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/video/part1_181117_1.33.mp4';
 const video2 =
-  'http://3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/video/part2_181117_3.26.mp4';
+  '//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/video/part2_181120_5.13.mp4';
 // loading
 const loadingNode: HTMLElement = document.querySelector('.loading');
 const loadingProgressNode: HTMLElement = document.querySelector(
@@ -203,7 +203,7 @@ if (isAndroid) {
   const bgm2_xhr = new XMLHttpRequest();
   bgm2_xhr.open(
     'GET',
-    'http://3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/audio/bgm_2_181117_t.mp4'
+    '//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/audio/bgm_2_181117_t.mp4'
   );
   bgm2_xhr.responseType = 'blob';
   bgm2_xhr.onload = () => {
@@ -398,7 +398,7 @@ preloadImage(
       fileFinishCallback(); // 资源就位
     }
   },
-  'http://3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/img/warning/'
+  '//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/img/warning/'
 );
 
 // console.log(warningFps);
@@ -455,7 +455,7 @@ part1Video.onended = () => {
         // 
         // console.log('跳转路径...');
         const jumpPath =
-          'https://sdi.3g.qq.com/v/2018111216374111578?sdi_from=16';
+          '//sdi.3g.qq.com/v/2018111216374111578?sdi_from=16';
         window.location.href = jumpPath;
       };
     }, 16500);
