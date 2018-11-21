@@ -20,7 +20,14 @@
     </style>
 
     <!-- lib -->
-    <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script
+      src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="//jsapi.qq.com/get?api=app.setShareInfo,app.share"
+      type="text/javascript"
+    ></script>
     <script>
       wx &&
         wx.config({
@@ -38,19 +45,19 @@
           bgm1.play(); // 播放背景音
         });
     </script>
-    <link rel="stylesheet" href="./dist/app.css" />
+    <!-- <link rel="stylesheet" href="./dist/app.css" /> -->
+    <link
+      rel="stylesheet"
+      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.2/app.css"
+    />
     <!-- <link
       rel="stylesheet"
-      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.0/app.css"
+      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.2/persion.css"
     /> -->
-    <link
+    <!-- <link
       rel="stylesheet"
-      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.0/persion.css"
-    />
-    <link
-      rel="stylesheet"
-      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.0/dail.css"
-    />
+      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.2/dail.css"
+    /> -->
 
     <!-- sdi -->
     <script>
@@ -100,8 +107,12 @@
       <!-- loading -->
       <div class="loading">
         <div class="loading__box">
-          <div class="loading__persion"></div>
-          <div class="loading__dail"></div>
+          <div class="loading__persion">
+            <img src="//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/img/gif/person1.1.gif" alt="" width="105" height="110">
+          </div>
+          <div class="loading__dail">
+            <img src="//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/img/gif/dail1.1.gif" alt="" width="165" height="30">
+          </div>
           <div class="loading__progress">
             <div class="loading__progress_1"></div>
             <div class="loading__progress_2"></div>
@@ -145,52 +156,26 @@
         <div class="part2_go"></div>
       </div>
     </div>
-    <!-- 分享 -->
-    <script>
-      (function() {
-        _sdi &&
-          _sdi.share.init(
-            {
-              appid: '', // 固定为空字符串
-              img_url:
-                '//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/img/share/destroy_king.png',
-              link: window.location.href,
-              desc: '立即围观',
-              title: '无敌破坏王拉尔夫登录WiFi，引发福利放送！'
-            },
-            function(opt) {
-              //分享前的回调，opt是分享的参数
-            },
-            function(res) {
-              //分享完成后回调，可以用来判断用户是否分享成功了
-            }
-          );
-      })();
-    </script>
+    <script src="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.2/share.js"></script>
+    <!-- <link rel="stylesheet" href="./src/css/warning.css"> -->
     <link
       rel="stylesheet"
-      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.0/warning.css"
-    />
-    <!-- <link
-      rel="stylesheet"
-      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.0/warning_icon.css"
-    /> -->
-    <link
-      rel="stylesheet"
-      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.0/warning_check.css"
+      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.2/warning.css"
     />
     <link
       rel="stylesheet"
-      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.0/part1_logo.css"
+      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.2/warning_check.css"
     />
-    <!-- <link
+    <link
       rel="stylesheet"
-      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.0/part2_weal.css"
-    /> -->
-    <link rel="stylesheet" href="./src/css/part2_weal.css">
-    <script src="./dist/app.js"></script>
-    
-    <!-- <script src="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.0/app.js"></script> -->
-   
+      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.2/part1_logo.css"
+    />
+    <link
+      rel="stylesheet"
+      href="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.2/part2_weal.css"
+    />
+    <!-- <script src="./dist/ts/app.js"></script> -->
+
+    <script src="//3gimg.qq.com/mig_market/activity/act/h5/wifi_steward/destroy_king/1.2/app.js"></script>
   </body>
 </html>

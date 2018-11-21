@@ -17,3 +17,7 @@ ctx.clearRect(0, 0, 50, 50);
 // part3
 ctx.fillStyle = 'rgb(0, 200, 0)';
 ctx.fillRect(0, 0, 10, 10);
+
+// part3
+ctx.strokeStyle = 'rgb(0,0,0)';
+ctx.strokeRect(0, 0, 80, 80);

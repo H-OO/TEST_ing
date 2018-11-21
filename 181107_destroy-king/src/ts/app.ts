@@ -1,4 +1,4 @@
-console.log('v1.0.3');
+console.log('v1.2');
 /**
  * 适配器
  */
@@ -289,9 +289,9 @@ function fileFinishCallback() {
  * loading
  */
 const progress = new Progress({
-  range: [30, 50],
+  range: [40, 60],
   pace: 10,
-  runTs: 10000
+  runTs: 3000
 });
 progress.run((step: number) => {
   // console.log('run → ' + step);
@@ -369,27 +369,7 @@ preloadImage(
     'warning(18).jpg',
     'warning(19).jpg',
     'warning(20).jpg',
-    'warning(21).jpg',
-    'warning(22).jpg',
-    'warning(23).jpg',
-    'warning(24).jpg',
-    'warning(25).jpg',
-    'warning(26).jpg',
-    'warning(27).jpg',
-    'warning(28).jpg',
-    'warning(29).jpg',
-    'warning(30).jpg',
-    'warning(31).jpg',
-    'warning(32).jpg',
-    'warning(33).jpg',
-    'warning(34).jpg',
-    'warning(35).jpg',
-    'warning(36).jpg',
-    'warning(37).jpg',
-    'warning(38).jpg',
-    'warning(39).jpg',
-    'warning(40).jpg',
-    'warning(41).jpg'
+    'warning(21).jpg'
   ],
   () => {
     // console.log('warning_xhr_onload');
@@ -398,7 +378,7 @@ preloadImage(
       fileFinishCallback(); // 资源就位
     }
   },
-  '//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/img/warning/'
+  '//3gimg.qq.com/mig_market/activity/act/asset/destroy_king_h5/img/warning1.1/'
 );
 
 // console.log(warningFps);
