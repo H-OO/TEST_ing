@@ -1,112 +1,82 @@
-/**
- * 需求：模板引擎，占位符替换
- */
 const path = require('path');
 const fs = require('fs');
+// 1、检查输出文件夹是否存在，存在则删除输出文件夹，不存在则创建输出文件夹
+// 文件信息： stat { (assetName: string, callback: (err: null|Error, res: ) => void ) => void }
+const output = path.resolve(__dirname, './build');
+fs.stat(output, (err, res) => {
+  if (err) {
+    // 文件夹不存在
+    // 创建目录：mkdir { (dirname: string) => void }
+    fs.mkdirSync(output); // 新建输出文件夹
+  } else {
+    // 文件夹存在
+    // 移除文件所有再创建
+    // 删除文件：unlinkSync { (dirname: string) => void }
+    // 删除目录：rmdirSync { (dirname: string) => void }
+    emptyDir(output); // 清空文件
+    rmEmptyDir(output); // 删除全部空文件夹
+    fs.mkdirSync(output); // 新建输出文件夹
+  }
+})
 
-class Merger {
-  constructor(args) {
-    this.sourceDir = args.sourceDir; // 源码文件目录名
-    this.outputPath = args.output; // 输出路径
-    this.merginFileList = args.merginFileList; // 模板html文件
-    this.saveTemplateStream = {}; // 保存模板html文件流
-  }
-  /**
-   * 初始化
-   */
-  init() {
-    const sourceDir_A = path.resolve(__dirname, this.sourceDir); // 转绝对路径
-    this.getTemplateStream(); // 读取模板html文件流
-    this.readSourceDir(sourceDir_A); // 读取目录获取目标文件流
-  }
-  /**
-   * 读取模板html文件流
-   */
-  getTemplateStream() {
-    const merginFileList = this.merginFileList;
-    merginFileList.forEach(basename => {
-      const filename = path.resolve(
-        __dirname,
-        this.sourceDir,
-        `${basename}.html`
-      ); // 转绝对路径
-      // readFile { (filename: string, type?: string, handler: (err, data: string|Buffer) => void) => void }
-      fs.readFile(filename, 'utf-8', (err, fileStream) => {
-        if (err) throw err;
-        this.saveTemplateStream[basename] = fileStream;
-      });
+// 清空文件
+function emptyDir(dirPath) {
+  const files = fs.readdirSync(dirPath);
+  files.forEach((file) => {
+    const filePath = path.resolve(dirPath, file);
+    // statSync { (filePath: string) => States }
+    const states = fs.statSync(filePath);
+    if (states.isDirectory()) {
+      emptyDir(filePath);
+    } else {
+      // 删除文件：unlinkSync { (filename: string) => void }
+      fs.unlinkSync(filePath);
+    }
+  });
+}
+
+// 删除全部空文件夹
+function rmEmptyDir(dirPath) {
+  const files = fs.readdirSync(dirPath); // 空文件夹列表
+  if (files.length === 0) {
+    fs.rmdirSync(dirPath); // 母文件夹中没有其他文件夹，直接删除
+  } else {
+    // 存在其他文件夹
+    let count = 0; // 累计已删除的空文件夹数量
+    files.forEach((file) => {
+      const filePath = path.resolve(dirPath, file);
+      rmEmptyDir(filePath);
+      count ++;
     });
-  }
-  /**
-   * 读取该目录下所有文件夹和文件名 { (dir: string) => Array }
-   */
-  readSourceDir(dir) {
-    // readdir { (path: string, handler: (err, res: Array<string>) => void) => void }
-    fs.readdir(dir, (err, res) => {
-      if (err) throw err;
-      const fileList = res.filter(item => {
-        // 过滤1：只保留html文件名
-        if (!item.includes('.html')) {
-          return false;
-        }
-        // 过滤2：去除模板html文件
-        const merginFileList = this.merginFileList;
-        let isTarget = true;
-        merginFileList.forEach(basename => {
-          const regE = new RegExp(`^${basename}.html$`);
-          if (regE.test(item)) {
-            isTarget = false;
-          }
-        });
-        return isTarget;
-      });
-      this.getTargetStream(fileList); // 读取目标文件流
-    });
-  }
-  /**
-   * 读取目标文件流
-   */
-  getTargetStream(fileList) {
-    fileList.forEach(targetName => {
-      const filename = path.resolve(__dirname, this.sourceDir, targetName); // 完整文件路径
-      fs.readFile(filename, 'utf-8', (err, targetStream) => {
-        if (err) throw err;
-        // console.log(targetStream);
-        this.replacePlaceholder(targetName, targetStream); // 替换占位符
-      });
-    });
-  }
-  /**
-   * 替换占位符
-   */
-  replacePlaceholder(targetName, targetStream) {
-    const merginFileList = this.merginFileList;
-    let resStream = targetStream;
-    merginFileList.forEach(basename => {
-      // console.log(basename);
-      const placeholder = `<${basename}/>`;
-      if (targetStream.includes(placeholder)) {
-        resStream = resStream.replace(
-          placeholder,
-          this.saveTemplateStream[basename]
-        );
-      }
-    });
-    // 输出
-    this.output(targetName, resStream);
-  }
-  /**
-   * 输出
-   */
-  output(targetName, resStream) {
-    const outPath = path.resolve(__dirname, this.outputPath, `${targetName}`); // 导出路径
-    fs.writeFileSync(outPath, resStream);
+    // 删除母文件夹
+    if (files.length === count) {
+      fs.rmdirSync(dirPath);
+    }
   }
 }
 
-const merger = new Merger({
-  sourceDir: './src',
-  merginFileList: ['Top', 'Bottom'],
-  output: './build'
+// 2、根据入口文件夹读取所有子文件夹和子文件名
+// readdir { (entry: string, callback: (err: null|Error, res: Array<string>) => void ) => void }
+const entry = path.resolve(__dirname, './src');
+const files = fs.readdirSync(entry);
+
+// 3、过滤非目标文件，仅保留html文件名、文件夹名
+// console.log(files);
+const folder = [];
+const htmlFile = [];
+files.forEach((file) => {
+  const filename = path.resolve(__dirname, file);
+  const states = fs.statSync(filename);
+  console.log(states);
+  if (states.isDirectory()) {
+    folder.push(file);
+  } else if (file.includes('.html')) {
+    htmlFile.push(file);
+  }
 });
-merger.init();
+// console.log(_files);
+console.log(folder);
+console.log(htmlFile);
+
+// 4、检查目标html文件流，替换占位符，输出
+// 5、处理子文件夹，获取入口路径重新执行3的流程
