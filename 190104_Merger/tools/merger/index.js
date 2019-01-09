@@ -1,6 +1,7 @@
+'use strict';
 /**
  * Merger
- * v0.1
+ * v0.0.1
  * ---
  * 检索所有HTML中的标签占位符，将其替换成代码块后，输出到一个新文件夹中
  * ---
@@ -40,14 +41,14 @@ class Merger {
    * getTmpFileStream { (dir: string) => void }
    */
   getTmpFileStream(dir) {
-    const dirname = path.resolve(__dirname, dir);
-    const list = fs.readdirSync(dirname);
+    const _dir = dir;
+    const list = fs.readdirSync(_dir);
     // 遍历模板目录下的HTML文件
     list.forEach(item => {
       if (!item.includes('.html')) {
         return;
       }
-      const filename = path.resolve(dirname, item);
+      const filename = path.resolve(_dir, item);
       const stream = fs.readFileSync(filename).toString();
       const key = item.replace('.html', '');
       this.tmpFileStream[key] = stream;
@@ -59,23 +60,26 @@ class Merger {
    */
   mergeHandler(params) {
     const { entry, output, tmp } = params;
-    console.log(tmp);
     // 获取目录下的所有文件夹与文件名
     const files = fs.readdirSync(entry);
     // 1.过滤非目标文件，仅保留html文件名、文件夹名
     const folder = []; // 文件夹
     const htmlFile = []; // html文件
     files.forEach(file => {
-      console.log(file);
       const filename = path.resolve(entry, file);
       const states = fs.statSync(filename);
-      if (states.isDirectory() && file !== tmp) {
-        folder.push(file);
+      const isDir = states.isDirectory();
+      if (isDir) {
+        // 过滤指定文件夹
+        const regE = new RegExp(`${file}$`);
+        const isExclude = !regE.test(tmp);
+        if (isExclude) {
+          folder.push(file);
+        }
       } else if (file.includes('.html')) {
         htmlFile.push(file);
       }
     });
-    console.log(folder)
     // 2.检查目标html文件流，替换占位符，输出
     const htmlFileStream = {};
     // 检查与替换
@@ -128,26 +132,26 @@ class Merger {
   cleanFolder(dir) {
     // 1、检查输出文件夹是否存在，存在则删除输出文件夹，不存在则创建输出文件夹
     // 文件信息： stat { (assetName: string, callback: (err: null|Error, res: States) => void ) => void }
-    const _dir = path.resolve(__dirname, dir);
+    const _dir = dir;
     try {
       fs.statSync(_dir);
       // 存在
       this.emptyDir(_dir); // 清空文件
       this.rmEmptyDir(_dir); // 删除全部空文件夹
-      // fs.mkdirSync(_dir); // 新建输出文件夹
     } catch (err) {
       // 不存在
-      // fs.mkdirSync(_dir); // 新建输出文件夹
     }
+    // fs.mkdirSync(_dir); // 新建输出文件夹
   }
   /**
    * @tools
    * 清空文件 { (dir: string) => void }
    */
   emptyDir(dir) {
-    const files = fs.readdirSync(dir);
+    const _dir = dir;
+    const files = fs.readdirSync(_dir);
     files.forEach(file => {
-      const filename = path.resolve(dir, file);
+      const filename = path.resolve(_dir, file);
       // statSync { (filename: string) => States }
       const states = fs.statSync(filename);
       if (states.isDirectory()) {
@@ -182,10 +186,4 @@ class Merger {
   }
 }
 
-const merger = new Merger({
-  entry: path.resolve(__dirname, 'src'),
-  output: path.resolve(__dirname, 'build'),
-  tmp: path.resolve(__dirname, 'src/common')
-});
-
-merger.init();
+module.exports = Merger;
