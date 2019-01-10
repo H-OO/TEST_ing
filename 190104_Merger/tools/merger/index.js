@@ -67,8 +67,8 @@ class Merger {
     const htmlFile = []; // html文件
     files.forEach(file => {
       const filename = path.resolve(entry, file);
-      const states = fs.statSync(filename);
-      const isDir = states.isDirectory();
+      const stats = fs.statSync(filename);
+      const isDir = stats.isDirectory();
       if (isDir) {
         // 过滤指定文件夹
         const regE = new RegExp(`${file}$`);
@@ -131,7 +131,7 @@ class Merger {
    */
   cleanFolder(dir) {
     // 1、检查输出文件夹是否存在，存在则删除输出文件夹，不存在则创建输出文件夹
-    // 文件信息： stat { (assetName: string, callback: (err: null|Error, res: States) => void ) => void }
+    // 文件信息： stat { (assetName: string, callback: (err: null|Error, res: Stats) => void ) => void }
     const _dir = dir;
     try {
       fs.statSync(_dir);
@@ -152,9 +152,9 @@ class Merger {
     const files = fs.readdirSync(_dir);
     files.forEach(file => {
       const filename = path.resolve(_dir, file);
-      // statSync { (filename: string) => States }
-      const states = fs.statSync(filename);
-      if (states.isDirectory()) {
+      // statSync { (filename: string) => Stats }
+      const stats = fs.statSync(filename);
+      if (stats.isDirectory()) {
         this.emptyDir(filename);
       } else {
         // 删除文件：unlinkSync { (filename: string) => void }
